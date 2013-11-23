@@ -5,9 +5,10 @@ define(['lodash', 'backbone'], function (_, Backbone) {
 
     _.extend(Game.prototype, Backbone.Events, {
         initialize: function (options) {
-
         }
     });
+
+
 
     return self;
 });
