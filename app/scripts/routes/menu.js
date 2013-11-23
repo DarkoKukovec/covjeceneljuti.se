@@ -1,11 +1,11 @@
 /*global define*/
 
 define([
-  'jquery',
+  'app',
   'backbone',
   'views/menu/main'
 ], function (
-  $,
+  app,
   Backbone,
   MainMenuView
   ) {
@@ -19,9 +19,7 @@ define([
     index: function() {
       var me = this;
       var view = new MainMenuView();
-      view.render();
-      $('#main').html(view.el);
-      console.log('first view!');
+      app.switchView(view);
       view.on('navigate', function(route) {
         me.navigate(route, {trigger: true});
       });

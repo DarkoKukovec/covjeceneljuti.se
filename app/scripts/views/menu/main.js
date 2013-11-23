@@ -41,6 +41,7 @@ define([
       });
 
       this.$el.append(menuView.el);
+      return this;
     }
   });
 

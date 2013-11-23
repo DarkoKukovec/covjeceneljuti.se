@@ -1,11 +1,15 @@
 /*global define*/
 
 define([
+  'app',
   'backbone',
-  'views/menu/board-chooser'
+  'views/menu/board-chooser',
+  'views/menu/player-chooser'
 ], function (
+  app,
   Backbone,
-  BoardChooser
+  BoardChooser,
+  PlayerChooser
   ) {
   'use strict';
 
@@ -19,8 +23,7 @@ define([
       //first show board chooser
       var me = this;
       var boardChooser = new BoardChooser();
-      boardChooser.render();
-      $('#main').html(boardChooser.el);
+      app.switchView(boardChooser);
       boardChooser.on('board:choosen', function(boardId) {
         this.choosenBoard = boardId;
         me.navigate('player-chooser', {trigger: true});
@@ -28,7 +31,8 @@ define([
     },
 
     playerChooser: function() {
-
+      var playerChooser = new PlayerChooser();
+      app.switchView(playerChooser);
     }
   });
 
