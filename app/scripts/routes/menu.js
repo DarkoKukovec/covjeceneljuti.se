@@ -4,12 +4,12 @@ define([
   'jquery',
   'backbone',
   'views/menu/main',
-  'views/game/board'
+  'views/game/main'
 ], function(
   $,
   Backbone,
   MainMenuView,
-  GameBoardView
+  GameMainView
 ) {
   'use strict';
 
@@ -27,8 +27,13 @@ define([
     },
 
     board: function() {
-      var view = new GameBoardView();
-      $('body').html(view.render().el);
+      var gameView = new GameMainView();
+      $('body').html(gameView.render().el);
+      $.ajax('boards/1.json', {
+        success: function(response) {
+          gameView.createBoard(response);
+        }
+      });
     }
 
   });

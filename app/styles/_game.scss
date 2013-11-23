@@ -1,0 +1,31 @@
+.game {
+  // position: relative;
+  @include stretch(0,0,0,0);
+  
+  .board-container {
+    @include stretch(0,0,0,0);
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
+    padding: 2% 5%;
+  }
+}
+
+.board {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  border: 1px solid #666;
+  background-color: #f1f1f1;
+  overflow: hidden;
+  @include box-shadow(0 0 20px 0 #ccc);
+
+  .point {
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    border: 1px solid #666;
+    background-color: #fff;
+    @include border-radius(50%);
+  }
+}
