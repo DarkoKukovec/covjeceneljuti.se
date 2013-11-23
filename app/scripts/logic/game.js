@@ -1,42 +1,42 @@
-define(['lodash', 'backbone'], function (_, Backbone) {
-  var RandomThrowGenerator = function () {
-    this.generate = function () {
+define(['lodash', 'backbone'], function(_, Backbone) {
+  var RandomThrowGenerator = function() {
+    this.generate = function() {
       return Math.round(Math.random() * (6 - 1) + 1);
     }
   };
 
-  var Pawn = function (homePosition, path) {
+  var Pawn = function(homePosition, path) {
     this._homePosition = homePosition;
     this._position = homePosition;
     this._path = path;
-    this.isAtHome = function () {
+    this.isAtHome = function() {
       return this._homePosition === this._position;
     };
 
-    this.isOnTheBoard = function () {
+    this.isOnTheBoard = function() {
       for (var i = 0; i < this._path.length - 4; i++) {
         if (this._path[i] === this.getPosition()) return true;
       }
       return false;
     }
 
-    this.isAtTheFinish = function () {
+    this.isAtTheFinish = function() {
       return !this.isAtHome() && !this.isOnTheBoard();
     };
 
-    this.setPosition = function (position) {
+    this.setPosition = function(position) {
       this._position = position;
     };
 
-    this.getPosition = function () {
+    this.getPosition = function() {
       return this._position;
     };
 
-    this._getFirstPositionOnPath = function () {
+    this._getFirstPositionOnPath = function() {
       return this._path[0];
     };
 
-    this.getNextPosition = function (die) {
+    this.getNextPosition = function(die) {
       if (this.isAtHome()) {
         if (die === 6) {
           return this._getFirstPositionOnPath();
@@ -51,15 +51,15 @@ define(['lodash', 'backbone'], function (_, Backbone) {
       return null;
     }
 
-    this.moveBy = function (die) {
+    this.moveBy = function(die) {
       this.setPosition(this.getNextPosition(die));
     }
 
-    this.getNextPositionOnPath = function (startPosition, distance) {
+    this.getNextPositionOnPath = function(startPosition, distance) {
       return this._path[this._findPositionIndex(startPosition) + distance];
     };
 
-    this._findPositionIndex = function (position) {
+    this._findPositionIndex = function(position) {
       for (var i = 0; i < this._path.length; i++) {
         if (this._path[i] == position) return i;
       }
@@ -67,47 +67,46 @@ define(['lodash', 'backbone'], function (_, Backbone) {
 
   };
 
-  var Player = function (pawns, path) {
+  var Player = function(pawns, path) {
     this._pawns = pawns;
     this._path = path;
-    this.getPawn = function (pawnId) {
+    this.getPawn = function(pawnId) {
       return this._getPawn(pawnId);
     };
 
-    this.isMovablePawnsExist = function (die) {
+    this.isMovablePawnsExist = function(die) {
       return this.getMovablePawns(die).length > 0;
     };
 
-    this.isAnyPawnsOnTheBoard = function () {
+    this.isAnyPawnsOnTheBoard = function() {
       for (var i = 0; i < this._pawns.length; i++) {
         if (this._getPawn(i).isOnTheBoard()) {
           return true;
         }
       }
-      ;
       return false;
     };
 
-    this.isAllPawnsAreAtHome = function () {
+    this.isAllPawnsAreAtHome = function() {
       for (var i = 0; i < this._pawns.length; i++) {
         if (!this._getPawn(i).isAtHome()) {
           return false;
         }
       }
       return true;
-    }
+    };
 
-    this._getPawn = function (id) {
+    this._getPawn = function(id) {
       return this._pawns[id];
     };
 
-    this.getMovablePawns = function (die) {
+    this.getMovablePawns = function(die) {
       var pawnNextPositions = [];
+
       for (var i = 0; i < this._pawns.length; i++) {
         var pawn = this._getPawn(i);
         pawnNextPositions[i] = pawn.getNextPosition(die);
       }
-      ;
 
       for (var i = 0; i < this._pawns.length; i++) {
         var pawn = this._getPawn(i);
@@ -127,17 +126,17 @@ define(['lodash', 'backbone'], function (_, Backbone) {
     };
   };
 
-  var Game = function () {
+  var Game = function() {
     this.initialize.apply(this, arguments);
   };
 
   _.extend(Game.prototype, Backbone.Events, {
-    initialize: function (options) {
+    initialize: function(options) {
       this._board = options.board;
       this._currentPlayerId = 0;
 
       this._dieThrowGenerator = options.dieThrowGenerator || new RandomThrowGenerator();
-      this._generatePlayersFromBoard = function (board) {
+      this._generatePlayersFromBoard = function(board) {
         this._players = {};
         for (var playerId = 0; playerId < 4; playerId++) {
           var paths = board.paths[playerId];
@@ -151,11 +150,11 @@ define(['lodash', 'backbone'], function (_, Backbone) {
       };
       this._generatePlayersFromBoard(this._board);
 
-      this.getCurrentPlayerId = function () {
+      this.getCurrentPlayerId = function() {
         return this._currentPlayerId;
       };
 
-      this.throwDie = function () {
+      this.throwDie = function() {
         var value = this._dieThrowGenerator.generate();
 
         this._incrementDieThrowCount();
@@ -167,60 +166,60 @@ define(['lodash', 'backbone'], function (_, Backbone) {
         return value;
       };
 
-      this._getPlayer = function (playerId) {
+      this._getPlayer = function(playerId) {
         return this._players[playerId];
       };
 
-      this._getCurrentPlayer = function () {
+      this._getCurrentPlayer = function() {
         return this._getPlayer(this.getCurrentPlayerId());
       };
 
-      this._getPlayersCount = function () {
+      this._getPlayersCount = function() {
         return 4;
-      }
+      };
 
-      this._getDieThrowCount = function () {
+      this._getDieThrowCount = function() {
         return this._dieThrowCount || 0;
       };
 
-      this._incrementDieThrowCount = function () {
+      this._incrementDieThrowCount = function() {
         this._dieThrowCount = this._getDieThrowCount() + 1;
       };
 
-      this._resetDieThrowCount = function () {
+      this._resetDieThrowCount = function() {
         this._dieThrowCount = 0;
       };
 
-      this._isPlayedAfterDieThrow = function () {
+      this._isPlayedAfterDieThrow = function() {
         return !!this._playedAfterDieThrow || false;
       };
 
-      this._setPlayedAfterDieThrow = function (value) {
+      this._setPlayedAfterDieThrow = function(value) {
         this._playedAfterDieThrow = value;
       };
 
-      this._shouldChangePlayer = function (die) {
+      this._shouldChangePlayer = function(die) {
         var currentPlayer = this._getCurrentPlayer();
         if (die === 6) {
           return false;
         }
-        ;
+
         if (currentPlayer.isAllPawnsAreAtHome()) {
           return this._getDieThrowCount() >= 3;
         } else {
-          return  this._isPlayedAfterDieThrow() || !currentPlayer.isMovablePawnsExist(die);
+          return this._isPlayedAfterDieThrow() || !currentPlayer.isMovablePawnsExist(die);
         }
         return false;
       };
 
-      this._changePlayerIfNeeded = function (die) {
+      this._changePlayerIfNeeded = function(die) {
         if (this._shouldChangePlayer(die)) {
           this._currentPlayerId = (this._currentPlayerId + 1) % this._getPlayersCount();
           this._resetDieThrowCount();
         }
       };
 
-      this.playMove = function (pawnId, die) {
+      this.playMove = function(pawnId, die) {
         var playerId = this.getCurrentPlayerId();
         var player = this._getCurrentPlayer();
         var pawn = player.getPawn(pawnId);
@@ -232,16 +231,20 @@ define(['lodash', 'backbone'], function (_, Backbone) {
 
         this._changePlayerIfNeeded(die);
 
-        this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
+        this.trigger('player:move', {
+          playerId: playerId,
+          pawnId: pawnId,
+          pointId: newPosition
+        });
       };
-      this.getMovablePawns = function (die) {
+      this.getMovablePawns = function(die) {
         return this._getCurrentPlayer().getMovablePawns(die);
       };
 
     }
   });
 
-  Game.create = function (options) {
+  Game.create = function(options) {
     return new Game(options);
   };
 

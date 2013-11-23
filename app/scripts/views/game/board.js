@@ -4,8 +4,9 @@ define([
   'jquery',
   'lodash',
   'backbone',
+  'app',
   'views/game/point'
-], function($, _, Backbone, PointView) {
+], function($, _, Backbone, app, PointView) {
   'use strict';
 
   var GameBoardView = Backbone.View.extend({
@@ -17,18 +18,23 @@ define([
       []
     ],
     points: [],
+    players: ['1', '2', '3', '4'],
 
-    initialize: function(board) {
-      this.board = board;
-      this.render();
-      window.b = this;
-    },
+    initialize: function(options) {
+      options = options || {};
+      this.game = options.game;
+      this.board = options.board;
+      this.players = app.currentGame ? app.currentGame.players : this.players;
 
-    render: function() {
-      this.$el.html();
+      this.listenTo(this.game, 'player:move', function(event) {
+        this.movePawnToPoint(event.playerId, event.pawnId, event.pointId);
+      }, this);
+
       this.addPointsToBoard();
       this.addPawnsToBoard();
-      return this;
+      this.addHomeBoxes();
+      window.b = this;
+      window.g = this.game;
     },
 
     addPointsToBoard: function() {
@@ -59,8 +65,23 @@ define([
       }
     },
 
+    addHomeBoxes: function() {
+      if (!this.board.homeBoxes) {
+        return;
+      }
+
+      for (var i = 0; i < this.board.homeBoxes.length; i++) {
+        this.$el.append($('<div>')
+          .addClass('home-box home-box-' + i)
+          .css(this.board.style.homeBox)
+          .css(this.board.homeBoxes[i])
+          .css('color', this.board.colors[i].player)
+          .html(this.players[i].substring(0, 1)));
+      }
+    },
+
     onPawnClick: function(playerIndex, pawnIndex, point) {
-      this.movePawnForward(playerIndex, pawnIndex, 3);
+      this.movePawnForward(playerIndex, pawnIndex, 10);
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 

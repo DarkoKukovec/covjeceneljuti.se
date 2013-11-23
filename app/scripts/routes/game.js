@@ -1,17 +1,25 @@
 /*global define*/
 
 define([
+  'app',
   'jquery',
   'backbone',
-  'views/game/test-game',
+  'views/game/main',
   'views/game/dice',
-  'views/game/next-player'
+  'views/game/next-player',
+  'views/game/test-game',
+  'collections/boards',
+  'logic/game'
 ], function(
+  app,
   $,
   Backbone,
-  TestGameView,
+  GameView,
   DiceView,
-  NextPlayerView
+  NextPlayerView,
+  TestGameView,
+  BoardCollection,
+  GameLogic
 ) {
   'use strict';
 
@@ -20,13 +28,22 @@ define([
       'game': 'index',
       'game/dice': 'dice',
       'game/next': 'nextPlayer',
-      'game/board': 'board'
+      'game/board/:name': 'board',
+      'game/test': 'test'
     },
 
     index: function() {
-      var view = new TestGameView();
+      var board = app.currentGame.board;
+      var game = GameLogic.create({
+        board: board.toJSON()
+      });
+      var view = new GameView({
+        game: game,
+        board: board
+      });
+
       view.render();
-      $('body').html(view.el);
+      app.switchView(view);
     },
 
     dice: function() {
@@ -41,12 +58,26 @@ define([
       $('body').html(view.el);
     },
 
-    board: function() {
+    board: function(name) {
       var gameView = new TestGameView();
       $('body').html(gameView.render().el);
-      $.ajax('boards/1.json', {
+      $.ajax('boards/' + name + '.json', {
         success: function(response) {
           gameView.createBoard(response);
+        }
+      });
+    },
+
+    test: function() {
+      var game;
+      var gameView = new TestGameView();
+      $('body').html(gameView.render().el);
+      $.ajax('boards/standard.json', {
+        success: function(response) {
+          game = GameLogic.create({
+            board: response
+          });
+          gameView.createBoard(response, game);
         }
       });
     }
