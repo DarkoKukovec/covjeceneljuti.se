@@ -1,4 +1,10 @@
 define(['lodash', 'backbone'], function (_, Backbone) {
+  var RandomThrowGenerator = function () {
+    this.generate = function () {
+      return Math.round(Math.random() * (6 - 1) + 1);
+    }
+  };
+
   var Pawn = function (homePosition, path) {
     this._homePosition = homePosition;
     this._position = homePosition;
