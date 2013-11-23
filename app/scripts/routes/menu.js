@@ -3,17 +3,20 @@
 define([
   'jquery',
   'backbone',
-  'views/menu/main'
-], function (
+  'views/menu/main',
+  'views/game/board'
+], function(
   $,
   Backbone,
-  MainMenuView
-  ) {
+  MainMenuView,
+  GameBoardView
+) {
   'use strict';
 
   var MenuRouter = Backbone.Router.extend({
     routes: {
-      '': 'index'
+      '': 'index',
+      'board': 'board'
     },
 
     index: function() {
@@ -21,6 +24,11 @@ define([
       view.render();
       $('body').html(view.el);
       console.log('first view!');
+    },
+
+    board: function() {
+      var view = new GameBoardView();
+      $('body').html(view.render().el);
     }
 
   });
