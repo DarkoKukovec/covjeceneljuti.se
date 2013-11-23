@@ -71,6 +71,9 @@ define([
     test: function() {
       var game;
       var gameView = new TestGameView();
+      app.currentGame = {
+        players: ['Ivan', 'Pero', 'Luka', 'Marko']
+      };
       $('body').html(gameView.render().el);
       $.ajax('boards/standard.json', {
         success: function(response) {

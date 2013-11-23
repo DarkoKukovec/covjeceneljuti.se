@@ -25,6 +25,11 @@ define([
     initialize: function(options) {
       this.board = options.board;
       this.game = options.game;
+      this.listenTo(this.game, 'die:thrown', this.onThrowDie, this);
+    },
+
+    onThrowDie: function(object) {
+      console.log(object);
     },
 
     render: function() {
