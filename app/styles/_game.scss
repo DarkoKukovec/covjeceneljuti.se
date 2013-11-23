@@ -145,3 +145,33 @@
   padding: 20px;
   font-size: 22px;
 }
+
+.game {
+  // position: relative;
+  @include stretch(0,0,0,0);
+  
+  .board-container {
+    @include stretch(0,0,0,0);
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
+    padding: 1%;
+  }
+}
+
+.board {
+  position: relative;
+  border: 1px solid #666;
+  background-color: #f1f1f1;
+  overflow: hidden;
+
+  .point {
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    border: 1px solid #666;
+    background-color: #fff;
+    @include border-radius(50%);
+    @include transition(all 200ms);
+  }
+}

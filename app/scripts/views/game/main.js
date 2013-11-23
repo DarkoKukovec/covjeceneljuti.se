@@ -5,12 +5,12 @@ define([
   'backbone',
   'templates',
   'views/abstract/zoom'
-], function (
+], function(
   _,
   Backbone,
   JST,
   ZoomView
-  ) {
+) {
   'use strict';
 
   var MenuMenuView = Backbone.View.extend({
