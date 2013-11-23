@@ -33,27 +33,17 @@ define([
     },
 
     index: function() {
-
-      // TODO: When everything is done, this would have a board model and it would only need to fetch it
-      var boards = new BoardCollection();
-      boards.fetch({
-        success: function() {
-          var board = boards.first();
-          board.fetch({
-            success: function() {
-              var game = GameLogic.create({
-                board: board.toJSON()
-              });
-              var view = new GameView({
-                game: game,
-                board: board
-              });
-              view.render();
-              app.switchView(view);
-            }
-          });
-        }
+      var board = app.currentGame.board;
+      var game = GameLogic.create({
+        board: board.toJSON()
       });
+      var view = new GameView({
+        game: game,
+        board: board
+      });
+
+      view.render();
+      app.switchView(view);
     },
 
     dice: function() {

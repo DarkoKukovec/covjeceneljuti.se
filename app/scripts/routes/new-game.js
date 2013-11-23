@@ -5,19 +5,18 @@ define([
   'backbone',
   'views/menu/board-chooser',
   'views/menu/player-chooser'
-], function (
+], function(
   app,
   Backbone,
   BoardChooser,
   PlayerChooser
-  ) {
+) {
   'use strict';
 
   var NewGameRouter = Backbone.Router.extend({
     routes: {
       'new-game': 'main',
-      'player-chooser': 'playerChooser',
-      'game-start': 'gameStart'
+      'player-chooser': 'playerChooser'
     },
 
     main: function() {
@@ -27,7 +26,9 @@ define([
       app.switchView(boardChooser);
       boardChooser.on('board:choosen', function(board) {
         me.choosenBoard = board;
-        me.navigate('player-chooser', {trigger: true});
+        me.navigate('player-chooser', {
+          trigger: true
+        });
       });
     },
 
@@ -35,22 +36,22 @@ define([
       var me = this;
       this.choosenBoard.fetch().done(function(r) {
         var playerNumber = r.homes.length;
-        var playerChooser = new PlayerChooser({playerNum: playerNumber});
+        var playerChooser = new PlayerChooser({
+          playerNum: playerNumber
+        });
         app.switchView(playerChooser);
         playerChooser.on('game:start', function(playerData) {
           app.currentGame = {
             board: me.choosenBoard,
             players: playerData
           };
-          me.navigate('game-start', {trigger: true});
+          me.navigate('game', {
+            trigger: true
+          });
         });
       });
-    },
-
-    gameStart: function() {
-
     }
-    
+
   });
 
   return NewGameRouter;
