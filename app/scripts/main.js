@@ -32,8 +32,7 @@ require([
   'backbone',
   'routes/init'
 ], function (
-    Backbone,
-    MainMenu
+    Backbone
   ) {
   Backbone.history.start();
 });
