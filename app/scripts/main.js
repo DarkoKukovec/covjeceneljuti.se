@@ -31,19 +31,23 @@ require.config({
     requirejs: '../bower_components/requirejs/require',
     'handlebars.runtime': '../bower_components/handlebars/handlebars.runtime',
     gshake: 'vendor/gShake',
-    hammer: 'vendor/hammer'
+    hammer: 'vendor/hammer',
+    fastclick: '../bower_components/fastclick/lib/fastclick'
   }
 });
 
 require([
   'backbone',
+  'fastclick',
   'gshake',
   'routes/init',
   'utils/handlebars-helper'
 ], function (
-    Backbone
+    Backbone,
+    FastClick
   ) {
 
+  FastClick.attach(document.body);
   if (window.location.hash !== '') {
     window.location.hash = '';
   }
