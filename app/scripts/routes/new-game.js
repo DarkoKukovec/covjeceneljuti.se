@@ -35,7 +35,10 @@ define([
       var playerChooser = new PlayerChooser();
       app.switchView(playerChooser);
       playerChooser.on('game:start', function(playerData) {
-        console.log(playerData);
+        app.currentGame = {
+          board: app.choosenBoard,
+          players: playerData
+        };
         me.navigate('game-start', {trigger: true});
       });
     }
