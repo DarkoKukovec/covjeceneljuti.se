@@ -4,6 +4,14 @@
   left: 0;
   right: 0;
   bottom: 50px;
+
+  .zoom-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 .player {
@@ -165,7 +173,6 @@
 
 .board {
   position: relative;
-  border: 1px solid #666;
   background-color: #f1f1f1;
   overflow: hidden;
 

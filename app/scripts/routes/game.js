@@ -1,17 +1,23 @@
 /*global define*/
 
 define([
+  'app',
   'jquery',
   'backbone',
-  'views/game/test-game',
+  'views/game/main',
   'views/game/dice',
-  'views/game/next-player'
+  'views/game/next-player',
+  'views/game/test-game',
+  'collections/boards'
 ], function(
+  app,
   $,
   Backbone,
-  TestGameView,
+  GameView,
   DiceView,
-  NextPlayerView
+  NextPlayerView,
+  TestGameView,
+  BoardCollection
 ) {
   'use strict';
 
@@ -24,9 +30,23 @@ define([
     },
 
     index: function() {
-      var view = new TestGameView();
-      view.render();
-      $('body').html(view.el);
+
+      // TODO: When everything is done, this would have a board model and it would only need to fetch it
+      var boards = new BoardCollection();
+      boards.fetch({
+        success: function() {
+          var board = boards.first();
+          board.fetch({
+            success: function() {
+              var view = new GameView({
+                board: board
+              });
+              view.render();
+              app.switchView(view);
+            }
+          });
+        }
+      });
     },
 
     dice: function() {
