@@ -25,14 +25,19 @@ define([
       var boardChooser = new BoardChooser();
       app.switchView(boardChooser);
       boardChooser.on('board:choosen', function(boardId) {
-        this.choosenBoard = boardId;
+        me.choosenBoard = boardId;
         me.navigate('player-chooser', {trigger: true});
       });
     },
 
     playerChooser: function() {
+      var me = this;
       var playerChooser = new PlayerChooser();
       app.switchView(playerChooser);
+      playerChooser.on('game:start', function(playerData) {
+        console.log(playerData);
+        me.navigate('game-start', {trigger: true});
+      });
     }
   });
 

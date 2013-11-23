@@ -30,7 +30,8 @@ require.config({
 
 require([
   'backbone',
-  'routes/init'
+  'routes/init',
+  'utils/handlebars-helper'
 ], function (
     Backbone
   ) {
