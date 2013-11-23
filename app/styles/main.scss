@@ -10,6 +10,16 @@ html {
   height: 100%;
 }
 
+body {
+  background-color: #fff8cf;
+  @include filter-gradient(#fff8cf, #dbb885, horizontal);
+  @include background-image(radial-gradient(center, ellipse cover,  #fff8cf 0%,#dbb885 100%));
+
+  color: #658350;
+  text-shadow: 0 1px 1px #fff;
+  padding-bottom: 20px;
+}
+
 #main {
   margin: 20px;
   text-align: center;

@@ -13,7 +13,7 @@ define([
 
   var MenuItemView = Backbone.View.extend({
     template: JST['app/scripts/templates/menu/item.hbs'],
-    className: 'item topcoat-button',
+    className: 'item topcoat-button action-button',
 
     events: {
       'click': 'onClick'

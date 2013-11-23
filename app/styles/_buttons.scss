@@ -1,11 +1,18 @@
-.button {
-  border-radius: 4px;
-  border: 1px solid darkgreen;
-  background-color: black;
-  padding: 8px;
-  margin: 4px;
-  text-align: center;
-  font-weight: bold;
+.action-button {
+  background-color: #79a063;
+  @include filter-gradient(#79a063, #35703c, vertical);
+  @include background-image(linear-gradient(top,  #79a063 0%,#35703c 100%));
+  border: 1px solid #35703c;
+  width: 100%;
   color: #fff;
-  font-size: 16px;
+  text-shadow: 0 1px 0px #35703c;
+}
+.default-button {
+  background-color: #feffe8;
+  @include filter-gradient(#feffe8, #d6dbbf, vertical);
+  @include background-image(linear-gradient(top,  #feffe8 0%,#d6dbbf 100%));
+
+  border: 1px solid #79a063;
+  width: 100%;
+  color: #35703c;
 }
