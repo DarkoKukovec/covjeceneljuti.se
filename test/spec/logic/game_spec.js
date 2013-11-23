@@ -90,7 +90,13 @@
 
         this.getNextPosition = function(die) {
 
-            if (this.isAtHome()) return this._getFirstPositionOnPath();
+            if (this.isAtHome()) {
+                if (die === 6) {
+                    return this._getFirstPositionOnPath();
+                } else {
+                    return null;
+                }
+            }
             var newPosition = this.getNextPositionOnPath(this.getPosition(), die);
             if (newPosition) return newPosition;
             return null;
@@ -160,7 +166,7 @@
         this._pawns = pawns;
         this._path = path;
         this.getPawn = function (pawnId) {
-            return this._pawns[pawnId];
+            return this._getPawn(pawnId);
         };
 
         this.isAnyPawnsOnTheBoard = function() {
@@ -215,7 +221,7 @@
     describe('Unit: Player', function () {
         describe('#getPawn(pawnId)', function() {
             it('returns the pawn', function () {
-                var player = new Player(['a', 'b']);
+                var player = new Player(['a', 'b'], null);
                 expect(player.getPawn(1)).toEqual('b');
             });
         });
@@ -247,7 +253,7 @@
         })
 
         describe('#getMovablePawns(die)', function() {
-            describe('when all pawns are at home and you get less than 6', function() {
+            it('when all pawns are at home and you get less than 6', function() {
                 var path = [1, 2, 3, 4, 5];
                 var pawn1 = new Pawn(0, path);
                 var pawn2 = new Pawn(0, path);
@@ -256,7 +262,7 @@
                 expect(player.getMovablePawns(5)).toEqual([]);
             });
 
-            describe('when all pawns are at home and you get less than 6', function() {
+            it('when all pawns are at home and you get less than 6', function() {
                 var path = [1, 2, 3, 4, 5];
                 var pawn1 = new Pawn(0, path);
                 var pawn2 = new Pawn(0, path);
@@ -265,7 +271,7 @@
                 expect(player.getMovablePawns(6)).toEqual([0, 1]);
             });
 
-            describe('when a pawn is not at home and you get less than 6', function() {
+            it('when a pawn is not at home and you get less than 6', function() {
                 var path = [1, 2, 3, 4, 5];
                 var pawn1 = new Pawn(0, path);
                 var pawn2 = new Pawn(0, path);
@@ -274,7 +280,7 @@
                 expect(player.getMovablePawns(2)).toEqual([0]);
             });
 
-            describe('when a pawn is not at home and you get 6', function() {
+            it('when a pawn is not at home and you get 6', function() {
                 var path = [1, 2, 3, 4, 5, 6, 7, 8];
                 var pawn1 = new Pawn(0, path);
                 var pawn2 = new Pawn(0, path);
@@ -283,13 +289,13 @@
                 expect(player.getMovablePawns(6)).toEqual([0, 1]);
             });
 
-            describe('when a pawn is at the exit and gets too large a number', function() {
+            it('when a pawn is at the exit and gets too large a number', function() {
                 var path = [1, 2, 3, 4, 5, 6, 7, 8];
                 var pawn1 = new Pawn(0, path);
                 var pawn2 = new Pawn(0, path);
                 pawn1.setPosition(4);
                 var player = new Player([pawn1, pawn2], path);
-                expect(player.getMovablePawns(5)).toEqual([1]);
+                expect(player.getMovablePawns(5)).toEqual([]);
             });
         });
     });
@@ -311,7 +317,6 @@
                         pawns.push(new Pawn(board.homes[pawnId], paths));
                     }
                     this._players[playerId] = new Player(pawns, paths);
-                    log('x');
                 }
             };
             this._generatePlayersFromBoard(this._board);
