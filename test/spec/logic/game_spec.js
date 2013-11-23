@@ -18,6 +18,10 @@
         ]
     };
 
+    var smallBoardDescription = {
+
+    };
+
     var SequentialThrowGenerator = function (sequence) {
         this._sequence = sequence;
         this._index = 0;
@@ -44,7 +48,7 @@
 
     var RandomThrowGenerator = function () {
         this.generate = function () {
-            return Math.random() * (6 - 1) + 1;
+            return Math.round(Math.random() * (6 - 1) + 1);
         }
     };
 
@@ -89,7 +93,6 @@
         };
 
         this.getNextPosition = function(die) {
-
             if (this.isAtHome()) {
                 if (die === 6) {
                     return this._getFirstPositionOnPath();
@@ -97,8 +100,10 @@
                     return null;
                 }
             }
+
             var newPosition = this.getNextPositionOnPath(this.getPosition(), die);
-            if (newPosition) return newPosition;
+
+            if (typeof newPosition === 'number') return newPosition;
             return null;
         }
 
@@ -169,6 +174,10 @@
             return this._getPawn(pawnId);
         };
 
+        this.isMovablePawnsExist = function(die) {
+            return this.getMovablePawns(die).length > 0;
+        };
+
         this.isAnyPawnsOnTheBoard = function() {
             for (var i = 0; i < this._pawns.length; i++) {
                 if (this._getPawn(i).isOnTheBoard()) {
@@ -198,7 +207,6 @@
                 pawnNextPositions[i] = pawn.getNextPosition(die);
             };
 
-
             for (var i = 0; i < this._pawns.length; i++) {
                 var pawn = this._getPawn(i);
                 var pawnPosition = pawn.getPosition();
@@ -209,8 +217,7 @@
 
             var result = [];
             for (var i = 0; i < this._pawns.length; i++) {
-
-                if (pawnNextPositions[i]) {
+                if (typeof pawnNextPositions[i] === 'number') {
                     result.push(i);
                 }
             }
@@ -307,14 +314,16 @@
         initialize: function (options) {
             this._board = options.board;
             this._currentPlayerId = 0;
+
             this._dieThrowGenerator = options.dieThrowGenerator || new RandomThrowGenerator();
             this._generatePlayersFromBoard = function (board) {
                 this._players = {};
                 for (var playerId = 0; playerId < 4; playerId++) {
                     var paths = board.paths[playerId];
+                    var homes = board.homes[playerId];
                     var pawns = [];
                     for (var pawnId = 0; pawnId < 4; pawnId++) {
-                        pawns.push(new Pawn(board.homes[pawnId], paths));
+                        pawns.push(new Pawn(homes[pawnId], paths));
                     }
                     this._players[playerId] = new Player(pawns, paths);
                 }
@@ -327,8 +336,13 @@
 
             this.throwDie = function () {
                 var value = this._dieThrowGenerator.generate();
+
                 this._incrementDieThrowCount();
-                this._changePlayerIfNeeded();
+                this._setPlayedAfterDieThrow(false);
+                if (!this._getCurrentPlayer().isMovablePawnsExist(value)) {
+                    this._changePlayerIfNeeded(value);
+                }
+                this.trigger('die:thrown', value);
                 return value;
             };
 
@@ -356,14 +370,29 @@
                 this._dieThrowCount = 0;
             };
 
-            this._shouldChangePlayer = function() {
-                if (this._getDieThrowCount() >= 3 && this._getCurrentPlayer().isAllPawnsAreAtHome()) {
-                    return true;
-                }
+            this._isPlayedAfterDieThrow = function() {
+                return !!this._playedAfterDieThrow || false;
             };
 
-            this._changePlayerIfNeeded = function() {
-                if (this._shouldChangePlayer()) {
+            this._setPlayedAfterDieThrow = function(value) {
+                this._playedAfterDieThrow = value;
+            };
+
+            this._shouldChangePlayer = function(die) {
+                var currentPlayer = this._getCurrentPlayer();
+                if (die === 6) {
+                    return false;
+                };
+                if (currentPlayer.isAllPawnsAreAtHome()) {
+                    return this._getDieThrowCount() >= 3;
+                } else {
+                    return  this._isPlayedAfterDieThrow() || !currentPlayer.isMovablePawnsExist(die);
+                }
+                return false;
+            };
+
+            this._changePlayerIfNeeded = function(die) {
+                if (this._shouldChangePlayer(die)) {
                     this._currentPlayerId = (this._currentPlayerId + 1) % this._getPlayersCount();
                     this._resetDieThrowCount();
                 }
@@ -376,7 +405,10 @@
                 pawn.moveBy(die);
                 var newPosition = pawn.getPosition();
 
-                this._changePlayerIfNeeded();
+                this._setPlayedAfterDieThrow(true);
+                this._resetDieThrowCount();
+
+                this._changePlayerIfNeeded(die);
 
                 this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
             };
