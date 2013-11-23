@@ -23,16 +23,15 @@ define([
       this.game = options.game;
       this.board = options.board;
 
-      this.listenTo(this.game, 'player:move', this.movePawnToPoint, this);
+      this.listenTo(this.game, 'player:move', function(event) {
+        this.movePawnToPoint(event.playerId, event.pawnId, event.pointId);
+      }, this);
 
-      this.render();
-      window.b = this;
-    },
-
-    render: function() {
       this.addPointsToBoard();
       this.addPawnsToBoard();
-      return this;
+      this.addHomeBoxes();
+      // window.b = this;
+      // window.g = this.game;
     },
 
     addPointsToBoard: function() {
@@ -60,6 +59,16 @@ define([
           };
           this.setPawnToPoint(i, j, home[j]);
         }
+      }
+    },
+
+    addHomeBoxes: function() {
+      if (!this.board.homeBoxes) {
+        return;
+      }
+
+      for (var i = 0; i < this.board.homeBoxes.length; i++) {
+        this.$el.append($('<div>').addClass('home-box home-box-' + i).css(this.board.style.homeBox).css(this.board.homeBoxes[i]));
       }
     },
 
