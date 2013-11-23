@@ -4,8 +4,9 @@ define([
   'jquery',
   'lodash',
   'backbone',
+  'app',
   'views/game/point'
-], function($, _, Backbone, PointView) {
+], function($, _, Backbone, app, PointView) {
   'use strict';
 
   var GameBoardView = Backbone.View.extend({
@@ -17,11 +18,13 @@ define([
       []
     ],
     points: [],
+    players: ['1', '2', '3', '4'],
 
     initialize: function(options) {
       options = options || {};
       this.game = options.game;
       this.board = options.board;
+      this.players = app.currentGame ? app.currentGame.players : this.players;
 
       this.listenTo(this.game, 'player:move', function(event) {
         this.movePawnToPoint(event.playerId, event.pawnId, event.pointId);
@@ -68,7 +71,12 @@ define([
       }
 
       for (var i = 0; i < this.board.homeBoxes.length; i++) {
-        this.$el.append($('<div>').addClass('home-box home-box-' + i).css(this.board.style.homeBox).css(this.board.homeBoxes[i]));
+        this.$el.append($('<div>')
+          .addClass('home-box home-box-' + i)
+          .css(this.board.style.homeBox)
+          .css(this.board.homeBoxes[i])
+          .css('color', this.board.colors[i].player)
+          .html(this.players[i].substring(0, 1)));
       }
     },
 

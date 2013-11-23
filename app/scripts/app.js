@@ -14,6 +14,7 @@ define(function() {
         var newView = view.render();
         if (newView) {
           $('#main').html(newView.el);
+          newView.trigger('ready');
         }
 
         //scroll to top on every screen change
