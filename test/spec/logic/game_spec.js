@@ -24,7 +24,7 @@
       [1, 2, 3, 4, 5, 6, 7, 104, 105, 106, 107],
       [2, 3, 4, 5, 6, 7, 8, 108, 109, 110, 111],
       [3, 4, 5, 6, 7, 8, 9, 112, 113, 114, 115]
-     ],
+    ],
     "homes": [
       [201, 202, 203, 204],
       [205, 206, 207, 208],
@@ -352,11 +352,14 @@
 
         this._incrementDieThrowCount();
         this._setPlayedAfterDieThrow(false);
-        if (!this._getCurrentPlayer().isMovablePawnsExist(value)) {
+        this._currentDieValue = value;
+        var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
+        var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
+        this.trigger('die:thrown', { value: value, movablePawns: movablePawns});
+
+        if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
         }
-        this._currentDieValue = value;
-        this.trigger('die:thrown', value);
         return value;
       };
 
