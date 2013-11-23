@@ -7,6 +7,39 @@
 
 
 .board-chooser {
+  .yes-btn {
+    width: 90%;
+  }
+  .board-photo {
+    // width: 305px;
+    height: 305px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 20px;
+  }
+
+  .chooser-buttons {
+    position: absolute;
+    top: 106px;
+    width: 100%;
+    font-size: 200%;
+    div {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    .previous-slide {
+      padding-right: 30px;
+      padding-left: 10px;
+      float: left;
+    }
+
+    .next-slide {
+      float: right;
+      padding-left: 30px;
+      padding-right: 10px;
+    }
+  }
 }
 
 .player-chooser {
