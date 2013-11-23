@@ -20,15 +20,20 @@ define([
     template: JST['app/scripts/templates/game/main.hbs'],
 
     board: null,
+    game: null,
 
     initialize: function(options) {
       this.board = options.board;
+      this.game = options.game;
     },
 
     render: function() {
       this.$el.html(this.template());
 
-      var boardView = new BoardView(this.board.toJSON());
+      var boardView = new BoardView({
+        game: this.game,
+        board: this.board.toJSON()
+      });
       var zoomView = new ZoomView({
         board: boardView
       });

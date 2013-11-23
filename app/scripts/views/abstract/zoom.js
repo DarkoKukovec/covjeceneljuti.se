@@ -11,6 +11,8 @@ define([
     className: 'zoom-view',
     boardView: null,
 
+    game: null,
+
     initialize: function(options) {
       this.listenTo(Backbone, 'resize', this.updateBoardDimensions, this);
       this.boardView = options.board;

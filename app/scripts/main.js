@@ -40,14 +40,22 @@ require([
   'gshake',
   'routes/init',
   'utils/handlebars-helper'
-], function (
-    Backbone
-  ) {
+], function(
+  Backbone
+) {
+
+  // if (window.location.hash !== '') {
+  //   window.location.hash = '';
+  // }
   $(document).gShake(function() {
     Backbone.trigger('shake');
   });
   $(window).on('resize', function() {
     Backbone.trigger('resize');
   });
+
+  // $(window).on('beforeunload', function() {
+  //   return 'You have attempted to leave this page.';
+  // });
   Backbone.history.start();
 });

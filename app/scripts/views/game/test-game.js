@@ -26,8 +26,11 @@ define([
       return this;
     },
 
-    createBoard: function(board) {
-      this.boardView = new GameBoardView(board);
+    createBoard: function(board, game) {
+      this.boardView = new GameBoardView({
+        board: board,
+        game: game
+      });
       this.$boardContainer.html(this.boardView.el);
       this.updateBoardDimensions();
     },
