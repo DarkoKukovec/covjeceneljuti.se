@@ -1,12 +1,12 @@
 /*global define*/
 
 define([
-  'jquery',
+  'app',
   'backbone',
   'views/menu/main',
   'routes/game'
 ], function (
-  $,
+  app,
   Backbone,
   MainMenuView,
   GameRouter
@@ -25,10 +25,12 @@ define([
     },
 
     index: function() {
+      var me = this;
       var view = new MainMenuView();
-      view.render();
-      $('body').html(view.el);
-      console.log('first view!');
+      app.switchView(view);
+      view.on('navigate', function(route) {
+        me.navigate(route, {trigger: true});
+      });
     }
 
   });

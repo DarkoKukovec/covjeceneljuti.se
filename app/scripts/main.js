@@ -36,11 +36,11 @@ require.config({
 
 require([
   'backbone',
-  'routes/menu',
-  'gshake'
+  'gshake',
+  'routes/init',
+  'utils/handlebars-helper'
 ], function (
-    Backbone,
-    MainMenu
+    Backbone
   ) {
   $(document).gShake(function() {
     Backbone.trigger('shake');
@@ -48,6 +48,5 @@ require([
   $(window).on('resize', function() {
     Backbone.trigger('resize');
   });
-  new MainMenu();
   Backbone.history.start();
 });
