@@ -19,7 +19,7 @@ define([
   }];
 
   var MenuBoardChooserView = Backbone.View.extend({
-    className: 'board-chooser',
+    className: 'board-chooser pure-u-1',
     template: JST['app/scripts/templates/menu/board-chooser.hbs'],
     slideNum: 0,
     events: {

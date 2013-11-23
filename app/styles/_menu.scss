@@ -1,9 +1,50 @@
 .menu {
   .item {
-    width: 100%;
+    width: 90%;
+    margin: 10px;
   }
 }
 
 
 .board-chooser {
+}
+
+.player-chooser {
+  .player-input {
+    margin: 10px;
+  }
+
+  .player-number {
+    height: 45px;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+
+    .player-number-inner {
+      width: 97%;
+    }
+
+    select {
+      width: 100%;
+      -webkit-appearance: listbox;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: none;
+      color: transparent;
+      background: transparent;
+    }
+  }
+
+  .player-name {
+    width: 90%;
+    text-align: center;
+  }
+
+  .start-game-btn {
+    width: 90%;
+  }
 }

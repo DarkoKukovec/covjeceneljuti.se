@@ -8,6 +8,7 @@ define([
   'use strict';
 
   var MenuPlayerChooserView = Backbone.View.extend({
+    className: 'player-chooser',
     template: JST['app/scripts/templates/menu/player-chooser.hbs'],
     newPlayerInputTemplate: JST['app/scripts/templates/menu/new-player-input.hbs'],
     events: {
@@ -26,7 +27,7 @@ define([
     },
 
     getPlayerNumber: function() {
-      return this.$('.player-number select').val();
+      return this.$('.player-number select').val() ;
     },
 
     onPlayerNumberChange: function() {
@@ -42,7 +43,7 @@ define([
         //remove items
         this.$('.player-input:gt('+ (this.currentPlayerNumber + change - 1) +')').remove();
       }
-
+      this.$('.player-number-inner').text('Players:' + number);
       this.currentPlayerNumber = number;
     },
 
