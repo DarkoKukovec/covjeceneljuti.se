@@ -1,4 +1,10 @@
 @import "compass";
+@import 'compass/css3/';
+
+
+@import "core";
+@import "buttons";
+@import "dice";
 
 html {
   color: gray;

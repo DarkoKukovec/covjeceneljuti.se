@@ -3,17 +3,25 @@
 define([
   'jquery',
   'backbone',
-  'views/menu/main'
+  'views/menu/main',
+  'routes/game'
 ], function (
   $,
   Backbone,
-  MainMenuView
+  MainMenuView,
+  GameRouter
   ) {
   'use strict';
 
   var MenuRouter = Backbone.Router.extend({
     routes: {
       '': 'index'
+    },
+
+    routers: {},
+
+    initialize: function() {
+      this.routers.game = new GameRouter();
     },
 
     index: function() {

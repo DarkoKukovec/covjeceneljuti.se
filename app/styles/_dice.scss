@@ -1,0 +1,149 @@
+.cube-container {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+
+  -webkit-perspective:800px;
+  -webkit-perspective-origin: 50% 200px;
+  -moz-perspective:800px;
+  -moz-perspective-origin: 50% 200px;
+}
+.button-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+}
+
+.shakeable {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 20px;
+  text-align: center;
+  padding: 15px;
+}
+
+.cube-wrapper {
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -100px;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+}
+
+.cube {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  -webkit-transition: -webkit-transform 0.15s linear;
+  -webkit-transform-style: preserve-3d;
+  -moz-transition: -moz-transform 0.15s linear;
+  -moz-transform-style: preserve-3d;
+  transition: transform 0.15s linear;
+  transform-style: preserve-3d;
+
+  .face {
+    position: absolute;
+    height: 156px;
+    width: 156px;
+    padding: 20px;
+    background-color: LemonChiffon;
+    border: 2px solid #000;
+    border-radius: 10px;
+  }
+  .one  {
+    -webkit-transform: rotateX(90deg) translateZ(100px);
+    -moz-transform: rotateX(90deg) translateZ(100px);
+  }
+  .two {
+    -webkit-transform: translateZ(100px);
+    -moz-transform: translateZ(100px);
+  }
+  .three {
+    -webkit-transform: rotateY(90deg) translateZ(100px);
+    -moz-transform: rotateY(90deg) translateZ(100px);
+  }
+  .four {
+    -webkit-transform: rotateY(-90deg) translateZ(100px);
+    -moz-transform: rotateY(-90deg) translateZ(100px);
+  }
+  .five {
+    -webkit-transform: rotateY(180deg) translateZ(100px);
+    -moz-transform: rotateY(180deg) translateZ(100px);
+  }
+  .six {
+    -webkit-transform: rotateX(-90deg) translateZ(100px) rotate(180deg);
+    -moz-transform: rotateX(-90deg) translateZ(100px) rotate(180deg);
+  }
+  .onedot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    top:65px;
+    left:85px;
+  }
+  .tldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    top:10px;
+    left:20px;
+  }
+  .trdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    top:10px;
+    right:20px;
+  }
+  .bldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    bottom:10px;
+    left:20px;
+  }
+  .brdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    bottom:10px;
+    right:20px;
+  }
+  .mldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    top:65px;
+    left:20px;
+  }
+  .mrdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color:Black;
+    position:absolute;
+    top:65px;
+    right:20px;
+  }
+}
