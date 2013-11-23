@@ -1,21 +1,27 @@
 .cube-container {
   position: absolute;
-  top: 50px;
+  top: 70px;
   left: 0;
   right: 0;
-  bottom: 50px;
+  bottom: 70px;
 
   -webkit-perspective:800px;
   -webkit-perspective-origin: 50% 200px;
   -moz-perspective:800px;
   -moz-perspective-origin: 50% 200px;
 }
+
 .button-container {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 50px;
+  padding: 10px;
+}
+.throw-button {
+  width: 100%;
+  text-align: center;
 }
 
 .shakeable {
@@ -24,9 +30,11 @@
   left: 0;
   right: 0;
   top: 0;
-  height: 20px;
+  height: 30px;
+  font-size: 24px;
   text-align: center;
-  padding: 15px;
+  padding: 20px;
+  font-weight: 300;
 }
 
 .cube-wrapper {
