@@ -1,0 +1,87 @@
+.menu {
+  .item {
+    width: 90%;
+    margin: 10px;
+  }
+}
+
+
+.board-chooser {
+  .yes-btn {
+    width: 90%;
+  }
+  .board-photo {
+    // width: 305px;
+    height: 305px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 20px;
+  }
+
+  .chooser-buttons {
+    position: absolute;
+    top: 106px;
+    width: 100%;
+    font-size: 200%;
+    div {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    .previous-slide {
+      padding-right: 30px;
+      padding-left: 10px;
+      float: left;
+    }
+
+    .next-slide {
+      float: right;
+      padding-left: 30px;
+      padding-right: 10px;
+    }
+  }
+}
+
+.player-chooser {
+  .player-input {
+    margin: 10px;
+  }
+
+  .player-number {
+    height: 45px;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+
+    select {
+      width: 100%;
+      -webkit-appearance: listbox;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: none;
+      color: transparent;
+      background: transparent;
+    }
+  }
+
+  .player-name {
+    width: 90%;
+    text-align: center;
+  }
+
+  .start-game-btn {
+    width: 90%;
+  }
+}
+
+.player-input-fields {
+  padding: 30px 0;
+}
+
+.player-input {
+  margin: 5px auto;
+}
