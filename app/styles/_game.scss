@@ -117,3 +117,31 @@
     }
   }
 }
+
+.next-message {
+  color: #000;
+  text-align: center;
+  padding: 20px;
+  font-size: 24px;
+}
+.next-color {
+  margin: 10px auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  opacity: 0.5;
+  background-color: red;
+}
+.next-name {
+  color: #000;
+  text-align: center;
+  padding: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+.next-waiting {
+  color: #777;
+  text-align: center;
+  padding: 20px;
+  font-size: 22px;
+}

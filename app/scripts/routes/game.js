@@ -4,19 +4,22 @@ define([
   'jquery',
   'backbone',
   'views/game/main',
-  'views/game/dice'
+  'views/game/dice',
+  'views/game/next-player'
 ], function (
   $,
   Backbone,
   GameMainView,
-  DiceView
+  DiceView,
+  NextPlayerView
   ) {
   'use strict';
 
   var GameRouter = Backbone.Router.extend({
     routes: {
       'game': 'index',
-      'game/dice': 'dice'
+      'game/dice': 'dice',
+      'game/next': 'nextPlayer'
     },
 
     index: function() {
@@ -27,6 +30,12 @@ define([
 
     dice: function() {
       var view = new DiceView();
+      view.render();
+      $('body').html(view.el);
+    },
+
+    nextPlayer: function() {
+      var view = new NextPlayerView();
       view.render();
       $('body').html(view.el);
     }

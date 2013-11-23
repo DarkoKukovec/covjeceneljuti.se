@@ -19,7 +19,10 @@ define([
     yAngle: 0,
     prop: null,
 
+    thrown: false,
+
     initialize: function() {
+      window.d = this;
       this.listenTo(Backbone, 'shake', this.onDiceThrow, this);
       this.listenTo(Backbone, 'resize', this.resize, this);
 
@@ -56,14 +59,19 @@ define([
         this.$('.shakeable').show();
       }
 
+      var animationEnd = $.proxy(this.onAnimationEnd, this);
       this.resize();
       this.$('.cube')
-        .on('transitionend', this.onAnimationEnd)
-        .on('webkitTransitionEnd', this.onAnimationEnd)
-        .on('oTransitionEnd', this.onAnimationEnd);
+        .on('transitionend', animationEnd)
+        .on('webkitTransitionEnd', animationEnd)
+        .on('oTransitionEnd', animationEnd);
     },
 
     onDiceThrow: function() {
+      if (this.thrown) {
+        return;
+      }
+      this.thrown = true;
       var result = this.getDiceNumber();
       Backbone.trigger('dice:result', result);
       this.animateDice(result);
@@ -107,13 +115,14 @@ define([
     },
 
     onAnimationEnd: function() {
+      this.thrown = false;
       Backbone.trigger('animation:end');
     },
 
     resize: function() {
-      var s = Math.min($(window).width(), $(window).height() - 100) * 0.5;
+      var size = Math.min($(window).width(), $(window).height() - 100) * 0.5;
       this.$('.cube-wrapper').css({
-        'transform': 'scale(' + (s / 200) + ')'
+        'transform': 'scale(' + (size / 200) + ')'
       });
     }
   });
