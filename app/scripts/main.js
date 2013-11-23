@@ -30,11 +30,10 @@ require.config({
 
 require([
   'backbone',
-  'routes/menu'
+  'routes/init'
 ], function (
     Backbone,
     MainMenu
   ) {
-  new MainMenu();
   Backbone.history.start();
 });
