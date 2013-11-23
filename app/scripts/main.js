@@ -30,7 +30,8 @@ require.config({
     'requirejs-text': '../bower_components/requirejs-text/text',
     requirejs: '../bower_components/requirejs/require',
     'handlebars.runtime': '../bower_components/handlebars/handlebars.runtime',
-    gshake: 'vendor/gShake'
+    gshake: 'vendor/gShake',
+    hammer: 'vendor/hammer'
   }
 });
 
