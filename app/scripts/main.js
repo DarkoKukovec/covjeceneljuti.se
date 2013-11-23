@@ -49,5 +49,9 @@ require([
   $(window).on('resize', function() {
     Backbone.trigger('resize');
   });
+
+  // $(window).on('beforeunload', function() {
+  //   return 'You have attempted to leave this page.';
+  // });
   Backbone.history.start();
 });
