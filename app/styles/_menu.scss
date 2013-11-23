@@ -5,6 +5,22 @@
   }
 }
 
+.head {
+  padding: 30px 20px 20px 20px;
+
+  .head-1 {
+    font-size: 320%;
+  }
+  .head-2 {
+    font-size: 320%;
+  }
+  .head-3 {
+    font-weight: 500;
+    font-size: 90px;
+    margin-top: -30px;
+  }
+}
+
 
 .board-chooser {
   .yes-btn {
@@ -16,17 +32,22 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 20px;
+    margin: -10px 40px 0 40px;
+  }
+  .board-description {
+    margin: 10px auto 20px auto;
+    font-weight: 400;
   }
 
   .chooser-buttons {
     position: absolute;
-    top: 106px;
+    top: 158px;
     width: 100%;
     font-size: 200%;
     div {
       padding-top: 30px;
       padding-bottom: 30px;
+      font-weight: 300;
     }
     .previous-slide {
       padding-right: 30px;
