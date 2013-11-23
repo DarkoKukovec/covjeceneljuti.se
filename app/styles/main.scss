@@ -1,14 +1,10 @@
 @import "compass";
-<<<<<<< HEAD
+@import "compass/layout/stretching";
 @import "core";
 @import "buttons";
 @import "game";
 @import "dice";
 @import "menu";
-=======
-@import "compass/layout/stretching";
-@import "game";
->>>>>>> feature/board
 
 html {
   height: 100%;

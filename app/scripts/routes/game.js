@@ -3,13 +3,13 @@
 define([
   'jquery',
   'backbone',
-  'views/game/main',
+  'views/game/test-game',
   'views/game/dice',
   'views/game/next-player'
 ], function(
   $,
   Backbone,
-  GameMainView,
+  TestGameView,
   DiceView,
   NextPlayerView
 ) {
@@ -19,11 +19,12 @@ define([
     routes: {
       'game': 'index',
       'game/dice': 'dice',
-      'game/next': 'nextPlayer'
+      'game/next': 'nextPlayer',
+      'game/board': 'board'
     },
 
     index: function() {
-      var view = new GameMainView();
+      var view = new TestGameView();
       view.render();
       $('body').html(view.el);
     },
@@ -41,7 +42,7 @@ define([
     },
 
     board: function() {
-      var gameView = new GameMainView();
+      var gameView = new TestGameView();
       $('body').html(gameView.render().el);
       $.ajax('boards/1.json', {
         success: function(response) {
