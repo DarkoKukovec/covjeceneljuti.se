@@ -169,6 +169,7 @@
     background-color: #fff;
     @include border-radius(50%);
     @include transition(all 200ms);
+    z-index: 100;
   }
 
   .home-box {
@@ -176,5 +177,6 @@
     @include display-box();
     @include box-pack(center);
     @include box-align(center);
+    z-index: 1;
   }
 }

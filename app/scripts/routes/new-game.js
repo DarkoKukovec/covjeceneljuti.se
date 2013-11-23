@@ -16,7 +16,8 @@ define([
   var NewGameRouter = Backbone.Router.extend({
     routes: {
       'new-game': 'main',
-      'player-chooser': 'playerChooser'
+      'player-chooser': 'playerChooser',
+      'game-start': 'gameStart'
     },
 
     main: function() {
@@ -44,7 +45,12 @@ define([
           me.navigate('game-start', {trigger: true});
         });
       });
+    },
+
+    gameStart: function() {
+
     }
+    
   });
 
   return NewGameRouter;

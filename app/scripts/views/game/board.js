@@ -33,8 +33,8 @@ define([
       this.addPointsToBoard();
       this.addPawnsToBoard();
       this.addHomeBoxes();
-      // window.b = this;
-      // window.g = this.game;
+      window.b = this;
+      window.g = this.game;
     },
 
     addPointsToBoard: function() {
@@ -81,7 +81,7 @@ define([
     },
 
     onPawnClick: function(playerIndex, pawnIndex, point) {
-      // this.movePawnForward(playerIndex, pawnIndex, 42);
+      this.movePawnForward(playerIndex, pawnIndex, 10);
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 
