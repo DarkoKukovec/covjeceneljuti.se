@@ -3,20 +3,15 @@
 define([
   'lodash',
   'backbone',
-  'templates'
-], function (_, Backbone, JST) {
+  'templates',
+  'collections/boards'
+], function (
+  _,
+  Backbone,
+  JST,
+  BoardsCollection
+  ) {
   'use strict';
-
-  var slideData = [{
-    id: 1,
-    about: 'Standard board. 1-4 players',
-    img: ''
-  },
-  {
-    id: 2,
-    about: 'Tesla board. 1-3 players.',
-    img: ''
-  }];
 
   var MenuBoardChooserView = Backbone.View.extend({
     className: 'board-chooser',
@@ -28,28 +23,36 @@ define([
       'click .yes-btn': 'onChoose'
     },
 
+    boards: null,
+
     render: function() {
-      this.$el.html(this.template());
-      this.renderCurrentSlide();
+      var me = this;
+      this.boards = new BoardsCollection();
+      this.boards.fetch({
+        success: function() {
+          me.$el.html(me.template());
+          me.renderCurrentSlide();
+        }
+      });
       return this;
     },
 
     onNextSlide: function() {
       this.slideNum++;
-      this.slideNum = this.slideNum >= slideData.length ? 0: this.slideNum;
+      this.slideNum = this.slideNum >= this.boards.length ? 0: this.slideNum;
       this.renderCurrentSlide();
     },
 
     onPreviousSlide: function() {
       this.slideNum--;
-      this.slideNum = this.slideNum < 0 ? slideData.length-1: this.slideNum;
+      this.slideNum = this.slideNum < 0 ? this.boards.length-1: this.slideNum;
       this.renderCurrentSlide();
     },
 
     getSlideData: function() {
       var slideNum = this.slideNum || 0;
       var data = {};
-      _.extend(data, slideData[slideNum]);
+      _.extend(data, this.boards.at(slideNum).toJSON());
       return data;
     },
 
@@ -60,7 +63,7 @@ define([
     },
     onChoose: function() {
       var data = this.getSlideData();
-      this.trigger('board:choosen', data.id);
+      this.trigger('board:choosen', this.boards.get(data.id));
     }
   });
 
