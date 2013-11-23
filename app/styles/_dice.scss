@@ -1,3 +1,4 @@
+
 .cube-container {
   position: absolute;
   top: 70px;
@@ -31,10 +32,6 @@
   right: 0;
   top: 0;
   height: 30px;
-  font-size: 24px;
-  text-align: center;
-  padding: 20px;
-  font-weight: 300;
 }
 
 .cube-wrapper {
@@ -60,11 +57,13 @@
 
   .face {
     position: absolute;
-    height: 156px;
-    width: 156px;
+    height: 158px;
+    width: 158px;
     padding: 20px;
-    background-color: LemonChiffon;
-    border: 2px solid #000;
+    background-color: #9e4e4d;
+    @include filter-gradient(#9e4e4d, #9b3030, horizontal);
+    @include background-image(radial-gradient(center, ellipse cover,  #9e4e4d 0%,#9b3030 100%));
+    border: 1px solid #000;
     border-radius: 10px;
   }
   .one  {
@@ -95,7 +94,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     top:65px;
     left:85px;
@@ -104,7 +103,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     top:10px;
     left:20px;
@@ -113,7 +112,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     top:10px;
     right:20px;
@@ -122,7 +121,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     bottom:10px;
     left:20px;
@@ -131,7 +130,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     bottom:10px;
     right:20px;
@@ -140,7 +139,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     top:65px;
     left:20px;
@@ -149,7 +148,7 @@
     width:30px;
     height:30px;
     border-radius:30px;
-    background-color:Black;
+    background-color: #fff;
     position:absolute;
     top:65px;
     right:20px;

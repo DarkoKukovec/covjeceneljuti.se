@@ -12,7 +12,8 @@
   left: 0;
   right: 0;
   height: 50px;
-  background-color: #aaa;
+  background-color: #dbb885;
+  border-top: 1px solid #BFA074;
 
   .player-color {
     border: 1px solid #000;
@@ -33,18 +34,20 @@
   .player-dice {
     position: relative;
     border: 1px solid #000;
-    width: 29px;
-    height: 29px;
+    width: 30px;
+    height: 30px;
     float: right;
     margin: -25px 9px 9px 9px;
     border-radius: 3px;
-    background-color: #fff;
+    background-color: #9e4e4d;
+    @include filter-gradient(#9e4e4d, #9b3030, horizontal);
+    @include background-image(radial-gradient(center, ellipse cover,  #9e4e4d 0%,#9b3030 100%));
 
     .dot {
       position: absolute;
-      background-color: #000;
-      width: 5px;
-      height: 5px;
+      background-color: #fff;
+      width: 4px;
+      height: 4px;
       border-radius: 100%;
     }
 
@@ -54,22 +57,22 @@
     }
     .dot-tc {
       top: 5px;
-      left: 12px;
+      left: 13px;
     }
     .dot-tr {
       top: 5px;
       right: 5px;
     }
     .dot-cl {
-      top: 12px;
+      top: 13px;
       left: 5px;
     }
     .dot-cc {
-      top: 12px;
-      left: 12px;
+      top: 13px;
+      left: 13px;
     }
     .dot-cr {
-      top: 12px;
+      top: 13px;
       right: 5px;
     }
     .dot-bl {
@@ -78,7 +81,7 @@
     }
     .dot-bc {
       bottom: 5px;
-      left: 12px;
+      left: 13px;
     }
     .dot-br {
       bottom: 5px;
@@ -119,10 +122,10 @@
 }
 
 .next-message {
-  color: #000;
   text-align: center;
   padding: 20px;
   font-size: 24px;
+  font-weight: 400;
 }
 .next-color {
   margin: 10px auto;
@@ -131,16 +134,17 @@
   border-radius: 100%;
   opacity: 0.5;
   background-color: red;
+  border: 1px solid #000;
+  box-shadow: 0 0 29px #000;
 }
 .next-name {
-  color: #000;
   text-align: center;
   padding: 20px;
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 500;
 }
 .next-waiting {
-  color: #777;
+  opacity: 0.7;
   text-align: center;
   padding: 20px;
   font-size: 22px;
@@ -149,7 +153,7 @@
 .game {
   // position: relative;
   @include stretch(0,0,0,0);
-  
+
   .board-container {
     @include stretch(0,0,0,0);
     @include display-box();

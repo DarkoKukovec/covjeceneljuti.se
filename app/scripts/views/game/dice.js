@@ -8,6 +8,7 @@ define([
   'use strict';
 
   var MenuMenuView = Backbone.View.extend({
+    className: 'dice-view',
     template: JST['app/scripts/templates/game/dice.hbs'],
 
     events: {
