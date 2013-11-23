@@ -18,8 +18,13 @@ define([
     ],
     points: [],
 
-    initialize: function(board) {
-      this.board = board;
+    initialize: function(options) {
+      options = options || {};
+      this.game = options.game;
+      this.board = options.board;
+
+      this.listenTo(this.game, 'player:move', this.movePawnToPoint, this);
+
       this.render();
       window.b = this;
     },

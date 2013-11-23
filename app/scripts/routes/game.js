@@ -5,13 +5,15 @@ define([
   'backbone',
   'views/game/test-game',
   'views/game/dice',
-  'views/game/next-player'
+  'views/game/next-player',
+  'logic/game'
 ], function(
   $,
   Backbone,
   TestGameView,
   DiceView,
-  NextPlayerView
+  NextPlayerView,
+  GameLogic
 ) {
   'use strict';
 
@@ -20,7 +22,8 @@ define([
       'game': 'index',
       'game/dice': 'dice',
       'game/next': 'nextPlayer',
-      'game/board/:name': 'board'
+      'game/board/:name': 'board',
+      'game/test': 'test'
     },
 
     index: function() {
@@ -47,6 +50,20 @@ define([
       $.ajax('boards/' + name + '.json', {
         success: function(response) {
           gameView.createBoard(response);
+        }
+      });
+    },
+
+    test: function() {
+      var game;
+      var gameView = new TestGameView();
+      $('body').html(gameView.render().el);
+      $.ajax('boards/standard.json', {
+        success: function(response) {
+          game = GameLogic.create({
+            board: response
+          });
+          gameView.createBoard(response, game);
         }
       });
     }
