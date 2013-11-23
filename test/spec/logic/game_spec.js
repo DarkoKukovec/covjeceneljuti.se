@@ -24,7 +24,7 @@
       [1, 2, 3, 4, 5, 6, 7, 104, 105, 106, 107],
       [2, 3, 4, 5, 6, 7, 8, 108, 109, 110, 111],
       [3, 4, 5, 6, 7, 8, 9, 112, 113, 114, 115]
-     ],
+    ],
     "homes": [
       [201, 202, 203, 204],
       [205, 206, 207, 208],
@@ -49,9 +49,17 @@
       if (externalOptions.throws) {
         options.dieThrowGenerator = new SequentialThrowGenerator(externalOptions.throws);
       }
-      ;
     }
-    ;
+    return Game.create(options);
+  };
+
+  var generateSmallGame = function (externalOptions) {
+    var options = {board: smallBoardDescription};
+    if (externalOptions) {
+      if (externalOptions.throws) {
+        options.dieThrowGenerator = new SequentialThrowGenerator(externalOptions.throws);
+      }
+    }
     return Game.create(options);
   };
   /* END test helpers */
@@ -76,6 +84,11 @@
     this._homePosition = homePosition;
     this._position = homePosition;
     this._path = path;
+
+    this.moveToHome = function () {
+      this._position = this._homePosition;
+    };
+
     this.isAtHome = function () {
       return this._homePosition === this._position;
     };
@@ -157,6 +170,17 @@
       });
     });
 
+    describe('#moveToHome()', function () {
+      it('moves the pawn to it\'s home position', function () {
+        var pawn = new Pawn(41);
+        expect(pawn.getPosition()).toEqual(41);
+        pawn.setPosition(1);
+        expect(pawn.getPosition()).toEqual(1);
+        pawn.moveToHome();
+        expect(pawn.getPosition()).toEqual(41);
+      });
+    });
+
     describe('#isAtTheFinish()', function () {
       it('returns a boolean', function () {
         var pawn = new Pawn(0, [1, 2, 3, 4, 5, 6]);
@@ -195,8 +219,17 @@
           return true;
         }
       }
-      ;
       return false;
+    };
+
+    this.isAllPawnsAreAtFinish = function() {
+      for (var i = 0; i < this._pawns.length; i++) {
+        var atTheFinish = this._getPawn(i).isAtTheFinish();
+        if (!atTheFinish) {
+          return false;
+        }
+      }
+      return true;
     };
 
     this.isAllPawnsAreAtHome = function () {
@@ -352,10 +385,14 @@
 
         this._incrementDieThrowCount();
         this._setPlayedAfterDieThrow(false);
-        if (!this._getCurrentPlayer().isMovablePawnsExist(value)) {
+        this._currentDieValue = value;
+        var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
+        var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
+        this.trigger('die:thrown', { value: value, movablePawns: movablePawns});
+
+        if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
         }
-        this.trigger('die:thrown', value);
         return value;
       };
 
@@ -412,25 +449,75 @@
         }
       };
 
-      this.playMove = function (pawnId, die) {
+      this._getPlayerIdAndPawnIdAtSamePositionAs = function (pawn) {
+        for (var playerId = 0; playerId < 4; playerId++) {
+          for (var pawnId = 0; pawnId < 4; pawnId++) {
+            var otherPawn = this._getPlayer(playerId).getPawn(pawnId);
+            if (otherPawn !== pawn) {
+              if (otherPawn.getPosition() === pawn.getPosition()) {
+                return { playerId: playerId, pawnId: pawnId, pawn: otherPawn };
+              }
+            }
+          }
+        }
+        return null;
+      };
+
+      this._checkForEatenPawns = function(pawn) {
+        var eatenPawnInfo = this._getPlayerIdAndPawnIdAtSamePositionAs(pawn);
+        if (eatenPawnInfo) {
+          eatenPawnInfo.pawn.moveToHome();
+          this.trigger('pawn:eaten', { playerId: eatenPawnInfo.playerId, pawnId: eatenPawnInfo.pawnId, pointId: eatenPawnInfo.pawn.getPosition()});
+        }
+      };
+
+      this._checkIfFinished = function(playerId) {
+        var player = this._getPlayer(playerId);
+        var isFinished = player.isAllPawnsAreAtFinish();
+        if (isFinished) {
+          this.trigger('player:finished', { playerId: playerId});
+        }
+      };
+
+      this.playMove = function (pawnId) {
+        var die = this._currentDieValue;
         var playerId = this.getCurrentPlayerId();
         var player = this._getCurrentPlayer();
         var pawn = player.getPawn(pawnId);
+
         pawn.moveBy(die);
         var newPosition = pawn.getPosition();
-
+        this._checkForEatenPawns(pawn);
         this._setPlayedAfterDieThrow(true);
         this._resetDieThrowCount();
+
+        this._checkIfFinished(playerId);
 
         this._changePlayerIfNeeded(die);
 
         this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
+
       };
       this.getMovablePawns = function (die) {
         return this._getCurrentPlayer().getMovablePawns(die);
       };
 
+
+      this._logState= function() {
+        var state = {};
+        for (var i = 0; i < 4; i++) {
+          state[i] = [];
+          var player = this._getPlayer(i);
+          for (var j = 0; j < 4; j++) {
+            var pawn = player.getPawn(j);
+            state[i].push(pawn.getPosition());
+          }
+        }
+        console.log(state);
+      };
     }
+
+
   });
 
   Game.create = function (options) {
@@ -439,7 +526,41 @@
 
   describe('Stories: Game', function () {
     it('should play a game, player 1 wins', function () {
+      //[0, 1, 2, 3, 4, 5, 6, 100, 101, 102, 103]
+      var emptyThrows = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+      var throws = [6, 6, 4].concat(emptyThrows).concat([6, 6, 3]).concat(emptyThrows).concat([6, 6, 2]).concat(emptyThrows).concat([6, 6, 1]);
+      var game = generateSmallGame({throws: throws});
 
+      var playForPlayer0 = function(pawnId) {
+        for (var i = 0; i < 3; i++) {
+          game.throwDie();
+          game.playMove(pawnId);
+
+        }
+      };
+
+      var playForOtherPlayers = function() {
+        for (var i = 0; i < 9; i++) {
+          game.throwDie();
+        }
+      };
+
+      playForPlayer0(0);
+      playForOtherPlayers();
+      playForPlayer0(1);
+      playForOtherPlayers();
+      playForPlayer0(2);
+      playForOtherPlayers();
+
+      game.throwDie();
+      game.playMove(3);
+      game.throwDie();
+      game.playMove(3);
+      game.throwDie();
+      spyOn(game, 'trigger');
+
+      game.playMove(3);
+      expect(game.trigger).toHaveBeenCalledWith('player:finished', { playerId: 0 });
 
     });
 
@@ -458,11 +579,25 @@
       var game = generateDefaultGame({throws: [6, 1]});
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 6);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 1);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(1);
+    });
+
+    it('should eat another users pawns', function () {
+      var game = generateSmallGame({throws: [6, 5, 6, 4]});
+      game.throwDie();
+      game.playMove(0);
+      game.throwDie();
+      game.playMove(0);
+      game.throwDie();
+      game.playMove(0);
+      game.throwDie();
+      spyOn(game, 'trigger');
+      game.playMove(0);
+      expect(game.trigger).toHaveBeenCalledWith('pawn:eaten', { playerId: 0, pawnId: 0, pointId: 201});
     });
 
     it('should put your pawn on the starting position if it is entering the board', function () {
@@ -470,7 +605,7 @@
       spyOn(game, 'trigger');
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 6);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(0);
       expect(game.trigger).wasCalledWith('player:move', {playerId: 0, pawnId: 0, pointId: 23});
     });
