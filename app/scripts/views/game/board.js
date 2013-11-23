@@ -4,63 +4,141 @@ define([
   'jquery',
   'lodash',
   'backbone',
-  'templates'
-], function($, _, Backbone) {
+  'views/game/point'
+], function($, _, Backbone, PointView) {
   'use strict';
 
   var GameBoardView = Backbone.View.extend({
     className: 'board',
+    pawns: [
+      [],
+      [],
+      [],
+      []
+    ],
+    points: [],
 
     initialize: function(board) {
       this.board = board;
       this.render();
+      window.b = this;
     },
 
     render: function() {
       this.$el.html();
       this.addPointsToBoard();
+      this.addPawnsToBoard();
       return this;
     },
 
     addPointsToBoard: function() {
-
       _.forOwn(this.board.points, function(point, pointId) {
-        // console.log('Adding point ' + pointId + ' to ' + point.left + ' - ' + point.top);
-        this.$el.append(this.createPoint(pointId, point));
+        var pointView = new PointView({
+          board: this.board,
+          point: point,
+          pointId: pointId
+        });
+        this.points[pointId] = pointView;
+        this.listenTo(pointView, 'point:click', this.onPointClick, this);
+        this.listenTo(pointView, 'pawn:click', this.onPawnClick, this);
+        this.$el.append(pointView.el);
       }, this);
+      this.$points = this.$('.point');
     },
 
-    createPoint: function(pointId, point) {
-      var id = parseInt(pointId, 10);
-      var $point = $('<div>')
-        .addClass('point')
-        .attr('data-id', pointId)
-        .css({
-          left: point.left + '%',
-          top: point.top + '%'
-        })
-        .css(this.board.style.point);
-
-      for (var i = 0; i < this.board.paths.length; i++) {
-        var path = this.board.paths[i];
+    addPawnsToBoard: function() {
+      for (var i = 0; i < this.board.homes.length; i++) {
         var home = this.board.homes[i];
-        var color = this.board.colors[i];
-        var pathFirst = path[0];
-        var pathLasts = path.slice(path.length - 4, path.length);
-        // debugger
-        if (pathFirst === id) {
-          $point.css('background-color', color.start);
-          $point.addClass('point-first');
-        } else if (pathLasts.indexOf(id) !== -1) {
-          $point.css('background-color', color.end);
-          $point.addClass('point-end');
-        } else if (home.indexOf(id) !== -1) {
-          $point.css('background-color', color.home);
-          $point.addClass('point-home');
+        for (var j = 0; j < home.length; j++) {
+          this.pawns[i][j] = {
+            point: this.points[home[j]],
+            pointIndex: home[j]
+          };
+          this.setPawnToPoint(i, j, home[j]);
         }
       }
+    },
 
-      return $point;
+    onPawnClick: function(playerIndex, pawnIndex, point) {
+      this.movePawnForward(playerIndex, pawnIndex, 3);
+      this.trigger('pawn:click', playerIndex, pawnIndex, point);
+    },
+
+    onPointClick: function(point) {
+      this.trigger('point:click', point);
+    },
+
+    movePawnForward: function(playerIndex, pawnIndex, dice) {
+      var pawn = this.pawns[playerIndex][pawnIndex];
+      var path = this.board.paths[playerIndex];
+      var pawnPathIndex = path.indexOf(pawn.pointIndex);
+
+      if (pawnPathIndex < 0) {
+        this.setPawnToPoint(playerIndex, pawnIndex, path[0]);
+        this.pawnPathIndex = 0;
+      }
+
+      var pointPathIndex = pawnPathIndex + dice;
+
+      if (pawnPathIndex === -1 || pointPathIndex === -1 || pointPathIndex >= path.length) {
+        console.log('Cant move forward');
+        return;
+      }
+
+      this.movePawnToPoint(playerIndex, pawnIndex, path[pawnPathIndex + dice]);
+    },
+
+    movePawnToPoint: function(playerIndex, pawnIndex, pointIndex) {
+      var pawn = this.pawns[playerIndex][pawnIndex];
+      var path = this.board.paths[playerIndex];
+      var pawnPathIndex = path.indexOf(pawn.pointIndex);
+      var pointPathIndex = path.indexOf(pointIndex);
+
+      // if (pawnPathIndex === -1 || pointPathIndex === -1 || pawnPathIndex > pointPathIndex || !this.points[pointIndex].canAddPawn(playerIndex, pawnIndex)) {
+      //   console.log('Invalid move: ', playerIndex, pawnIndex, pointIndex, pawnPathIndex, pointPathIndex);
+      //   return;
+      // }
+
+      // eat = this.points[pointIndex].canEatPawn(playerIndex);
+      // if (eat) {
+      //   console.log('Will eat pawn');
+      // }
+
+      this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
+    },
+
+    animatePawnMove: function(playerIndex, pawnIndex, currPointIndex, endPointIndex) {
+      currPointIndex++;
+      var pointIndex = this.board.paths[playerIndex][currPointIndex];
+
+      this.setPawnToPoint(playerIndex, pawnIndex, pointIndex);
+
+      if (currPointIndex < endPointIndex) {
+        setTimeout(_.bind(this.animatePawnMove, this, playerIndex, pawnIndex, currPointIndex, endPointIndex), 300);
+      }
+    },
+
+    setPawnToPoint: function(playerIndex, pawnIndex, pointIndex) {
+      var newPoint = this.points[pointIndex];
+      var pawn = this.pawns[playerIndex][pawnIndex];
+
+      if (pawn.point && pawn.pointIndex !== pointIndex) {
+        pawn.point.removePawn();
+      }
+
+      newPoint.addPawn(playerIndex, pawnIndex);
+
+      pawn.pointIndex = pointIndex;
+      pawn.point = newPoint;
+    },
+
+    getEmptyHomePoint: function(playerIndex) {
+      var home = this.board.homes[playerIndex];
+      for (var i = 0; i < home.length; i++) {
+        if (!this.points[home[i]].hasPawn()) {
+          return this.points[home[i]];
+        }
+      }
     },
 
     getRatio: function() {

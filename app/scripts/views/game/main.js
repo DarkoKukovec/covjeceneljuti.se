@@ -17,7 +17,7 @@ define([
     template: JST['app/scripts/templates/game/main.hbs'],
 
     initialize: function() {
-
+      this.listenTo(Backbone, 'resize', this.onWindowResize, this);
     },
 
     render: function() {
@@ -29,15 +29,18 @@ define([
     createBoard: function(board) {
       this.boardView = new GameBoardView(board);
       this.$boardContainer.html(this.boardView.el);
-
       this.updateBoardDimensions();
+    },
 
-      $(window).on('resize', _.bind(function() {
-        this.updateBoardDimensions();
-      }, this));
+    onWindowResize: function() {
+      this.updateBoardDimensions();
     },
 
     updateBoardDimensions: function() {
+      if (!this.boardView) {
+        return;
+      }
+
       var bcWidth = this.$boardContainer.width();
       var bcHeight = this.$boardContainer.height();
       var bcRatio = bcHeight / bcWidth;
