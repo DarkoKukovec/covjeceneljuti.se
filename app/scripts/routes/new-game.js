@@ -24,22 +24,25 @@ define([
       var me = this;
       var boardChooser = new BoardChooser();
       app.switchView(boardChooser);
-      boardChooser.on('board:choosen', function(boardId) {
-        me.choosenBoard = boardId;
+      boardChooser.on('board:choosen', function(board) {
+        me.choosenBoard = board;
         me.navigate('player-chooser', {trigger: true});
       });
     },
 
     playerChooser: function() {
       var me = this;
-      var playerChooser = new PlayerChooser();
-      app.switchView(playerChooser);
-      playerChooser.on('game:start', function(playerData) {
-        app.currentGame = {
-          board: app.choosenBoard,
-          players: playerData
-        };
-        me.navigate('game-start', {trigger: true});
+      this.choosenBoard.fetch().done(function(r) {
+        var playerNumber = r.homes.length;
+        var playerChooser = new PlayerChooser({playerNum: playerNumber});
+        app.switchView(playerChooser);
+        playerChooser.on('game:start', function(playerData) {
+          app.currentGame = {
+            board: me.choosenBoard,
+            players: playerData
+          };
+          me.navigate('game-start', {trigger: true});
+        });
       });
     }
   });

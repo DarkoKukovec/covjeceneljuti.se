@@ -16,9 +16,13 @@ define([
       'click .start-game-btn': 'onStartGameClick'
     },
 
+    initialize: function(options) {
+      this.options = options;
+    },
+
     render: function() {
       var data = {
-        playerNum: 4
+        playerNum: this.options.playerNum
       };
       this.$el.html(this.template(data));
       this.currentPlayerNumber = 0;
