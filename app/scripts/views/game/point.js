@@ -33,6 +33,8 @@ define([
         top: this.position.top
       });
 
+      this.$el.attr('data-id', this.pointId);
+
       for (var i = 0; i < this.board.paths.length; i++) {
         var path = this.board.paths[i];
         var home = this.board.homes[i];

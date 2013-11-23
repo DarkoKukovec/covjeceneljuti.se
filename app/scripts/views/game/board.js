@@ -18,17 +18,20 @@ define([
     ],
     points: [],
 
-    initialize: function(board) {
-      this.board = board;
-      this.render();
-      window.b = this;
-    },
+    initialize: function(options) {
+      options = options || {};
+      this.game = options.game;
+      this.board = options.board;
 
-    render: function() {
-      this.$el.html();
+      this.listenTo(this.game, 'player:move', function(event) {
+        this.movePawnToPoint(event.playerId, event.pawnId, event.pointId);
+      }, this);
+
       this.addPointsToBoard();
       this.addPawnsToBoard();
-      return this;
+      this.addHomeBoxes();
+      // window.b = this;
+      // window.g = this.game;
     },
 
     addPointsToBoard: function() {
@@ -59,8 +62,18 @@ define([
       }
     },
 
+    addHomeBoxes: function() {
+      if (!this.board.homeBoxes) {
+        return;
+      }
+
+      for (var i = 0; i < this.board.homeBoxes.length; i++) {
+        this.$el.append($('<div>').addClass('home-box home-box-' + i).css(this.board.style.homeBox).css(this.board.homeBoxes[i]));
+      }
+    },
+
     onPawnClick: function(playerIndex, pawnIndex, point) {
-      this.movePawnForward(playerIndex, pawnIndex, 3);
+      // this.movePawnForward(playerIndex, pawnIndex, 42);
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 
