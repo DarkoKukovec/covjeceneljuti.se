@@ -355,6 +355,7 @@
         if (!this._getCurrentPlayer().isMovablePawnsExist(value)) {
           this._changePlayerIfNeeded(value);
         }
+        this._currentDieValue = value;
         this.trigger('die:thrown', value);
         return value;
       };
@@ -412,7 +413,8 @@
         }
       };
 
-      this.playMove = function (pawnId, die) {
+      this.playMove = function (pawnId) {
+        var die = this._currentDieValue;
         var playerId = this.getCurrentPlayerId();
         var player = this._getCurrentPlayer();
         var pawn = player.getPawn(pawnId);
@@ -458,10 +460,10 @@
       var game = generateDefaultGame({throws: [6, 1]});
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 6);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 1);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(1);
     });
 
@@ -470,7 +472,7 @@
       spyOn(game, 'trigger');
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
-      game.playMove(0, 6);
+      game.playMove(0);
       expect(game.getCurrentPlayerId()).toEqual(0);
       expect(game.trigger).wasCalledWith('player:move', {playerId: 0, pawnId: 0, pointId: 23});
     });
