@@ -222,6 +222,16 @@
       return false;
     };
 
+    this.isAllPawnsAreAtFinish = function() {
+      for (var i = 0; i < this._pawns.length; i++) {
+        var atTheFinish = this._getPawn(i).isAtTheFinish();
+        if (!atTheFinish) {
+          return false;
+        }
+      }
+      return true;
+    };
+
     this.isAllPawnsAreAtHome = function () {
       for (var i = 0; i < this._pawns.length; i++) {
         if (!this._getPawn(i).isAtHome()) {
@@ -461,6 +471,14 @@
         }
       };
 
+      this._checkIfFinished = function(playerId) {
+        var player = this._getPlayer(playerId);
+        var isFinished = player.isAllPawnsAreAtFinish();
+        if (isFinished) {
+          this.trigger('player:finished', { playerId: playerId});
+        }
+      };
+
       this.playMove = function (pawnId) {
         var die = this._currentDieValue;
         var playerId = this.getCurrentPlayerId();
@@ -472,6 +490,8 @@
         this._checkForEatenPawns(pawn);
         this._setPlayedAfterDieThrow(true);
         this._resetDieThrowCount();
+
+        this._checkIfFinished(playerId);
 
         this._changePlayerIfNeeded(die);
 
@@ -506,7 +526,41 @@
 
   describe('Stories: Game', function () {
     it('should play a game, player 1 wins', function () {
+      //[0, 1, 2, 3, 4, 5, 6, 100, 101, 102, 103]
+      var emptyThrows = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+      var throws = [6, 6, 4].concat(emptyThrows).concat([6, 6, 3]).concat(emptyThrows).concat([6, 6, 2]).concat(emptyThrows).concat([6, 6, 1]);
+      var game = generateSmallGame({throws: throws});
 
+      var playForPlayer0 = function(pawnId) {
+        for (var i = 0; i < 3; i++) {
+          game.throwDie();
+          game.playMove(pawnId);
+
+        }
+      };
+
+      var playForOtherPlayers = function() {
+        for (var i = 0; i < 9; i++) {
+          game.throwDie();
+        }
+      };
+
+      playForPlayer0(0);
+      playForOtherPlayers();
+      playForPlayer0(1);
+      playForOtherPlayers();
+      playForPlayer0(2);
+      playForOtherPlayers();
+
+      game.throwDie();
+      game.playMove(3);
+      game.throwDie();
+      game.playMove(3);
+      game.throwDie();
+      spyOn(game, 'trigger');
+
+      game.playMove(3);
+      expect(game.trigger).toHaveBeenCalledWith('player:finished', { playerId: 0 });
 
     });
 
