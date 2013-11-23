@@ -25,7 +25,6 @@ define([
     },
 
     render: function() {
-      this.$el.html();
       this.addPointsToBoard();
       this.addPawnsToBoard();
       return this;

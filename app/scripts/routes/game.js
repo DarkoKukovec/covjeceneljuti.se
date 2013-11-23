@@ -20,7 +20,7 @@ define([
       'game': 'index',
       'game/dice': 'dice',
       'game/next': 'nextPlayer',
-      'game/board': 'board'
+      'game/board/:name': 'board'
     },
 
     index: function() {
@@ -41,10 +41,10 @@ define([
       $('body').html(view.el);
     },
 
-    board: function() {
+    board: function(name) {
       var gameView = new TestGameView();
       $('body').html(gameView.render().el);
-      $.ajax('boards/1.json', {
+      $.ajax('boards/' + name + '.json', {
         success: function(response) {
           gameView.createBoard(response);
         }

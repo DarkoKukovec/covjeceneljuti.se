@@ -1,9 +1,9 @@
 .board-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 50px;
+  @include stretch(0,0,50px,0);
+  @include display-box();
+  @include box-pack(center);
+  @include box-align(center);
+  padding: 1%;
 }
 
 .player {
@@ -148,15 +148,7 @@
 
 .game {
   // position: relative;
-  @include stretch(0,0,0,0);
-  
-  .board-container {
-    @include stretch(0,0,0,0);
-    @include display-box();
-    @include box-pack(center);
-    @include box-align(center);
-    padding: 1%;
-  }
+  // @include stretch(0,0,0,0);
 }
 
 .board {
