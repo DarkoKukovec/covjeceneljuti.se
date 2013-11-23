@@ -6,13 +6,13 @@ define([
   'views/game/main',
   'views/game/dice',
   'views/game/next-player'
-], function (
+], function(
   $,
   Backbone,
   GameMainView,
   DiceView,
   NextPlayerView
-  ) {
+) {
   'use strict';
 
   var GameRouter = Backbone.Router.extend({
@@ -38,6 +38,16 @@ define([
       var view = new NextPlayerView();
       view.render();
       $('body').html(view.el);
+    },
+
+    board: function() {
+      var gameView = new GameMainView();
+      $('body').html(gameView.render().el);
+      $.ajax('boards/1.json', {
+        success: function(response) {
+          gameView.createBoard(response);
+        }
+      });
     }
 
   });

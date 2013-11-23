@@ -5,17 +5,18 @@ define([
   'backbone',
   'views/menu/main',
   'routes/game'
-], function (
+], function(
   app,
   Backbone,
   MainMenuView,
   GameRouter
-  ) {
+) {
   'use strict';
 
   var MenuRouter = Backbone.Router.extend({
     routes: {
-      '': 'index'
+      '': 'index',
+      'board': 'board'
     },
 
     routers: {},
@@ -29,7 +30,9 @@ define([
       var view = new MainMenuView();
       app.switchView(view);
       view.on('navigate', function(route) {
-        me.navigate(route, {trigger: true});
+        me.navigate(route, {
+          trigger: true
+        });
       });
     }
 
