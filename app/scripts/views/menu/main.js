@@ -22,7 +22,7 @@ define([
   }];
 
   var MenuMenuView = Backbone.View.extend({
-    template: JST['app/scripts/templates/menu/main.hbs'],
+  template: JST['app/scripts/templates/menu/main.hbs'],
 
     render: function() {
       var me = this;
