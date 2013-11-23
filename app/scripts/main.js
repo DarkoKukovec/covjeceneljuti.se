@@ -40,14 +40,13 @@ require([
   'gshake',
   'routes/init',
   'utils/handlebars-helper'
-], function (
-    Backbone
-  ) {
+], function(
+  Backbone
+) {
 
-  if (window.location.hash !== '') {
-    window.location.hash = '';
-  }
-
+  // if (window.location.hash !== '') {
+  //   window.location.hash = '';
+  // }
   $(document).gShake(function() {
     Backbone.trigger('shake');
   });

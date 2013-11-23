@@ -173,5 +173,8 @@
 
   .home-box {
     position: absolute;
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
   }
 }

@@ -18,20 +18,20 @@
     },
 
     "4": {
-      "left": "80%",
-      "top": "2%"
+      "left": "77%",
+      "top": "7%"
     },
     "5": {
-      "left": "90%",
-      "top": "2%"
+      "left": "88%",
+      "top": "7%"
     },
     "6": {
-      "left": "80%",
-      "top": "12%"
+      "left": "77%",
+      "top": "18%"
     },
     "7": {
-      "left": "90%",
-      "top": "12%"
+      "left": "88%",
+      "top": "18%"
     },
 
     "8": {
@@ -317,10 +317,11 @@
       "background-color": "#fff"
     },
     "homeBox": {
-      "width": "25%",
-      "height": "25%",
+      "width": "20%",
+      "height": "20%",
       "border": "1px solid #666",
-      "border-radius": "10px"
+      "border-radius": "10px",
+      "font-size": "220%"
     }
   },
   "paths": [
@@ -338,6 +339,15 @@
   "homeBoxes": [{
     "top": "5%",
     "left": "5%"
+  }, {
+    "top": "75%",
+    "left": "5%"
+  }, {
+    "top": "5%",
+    "left": "75%"
+  }, {
+    "top": "75%",
+    "left": "75%"
   }],
   "colors": [{
     "title": "Red",
