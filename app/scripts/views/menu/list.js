@@ -14,7 +14,7 @@ define([
   'use strict';
 
   var MenuListView = List.extend({
-    className: 'group-list',
+    className: 'menu',
     singleItem: MenuItem
   });
 
