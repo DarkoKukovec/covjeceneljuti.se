@@ -1,9 +1,9 @@
-define(['lodash', 'backbone'], function (_, Backbone) {
-    var Pawn = function (homePosition, path) {
+define(['lodash', 'backbone'], function(_, Backbone) {
+    var Pawn = function(homePosition, path) {
         this._homePosition = homePosition;
         this._position = homePosition;
         this._path = path;
-        this.isAtHome = function () {
+        this.isAtHome = function() {
             return this._homePosition === this._position;
         };
 
@@ -61,10 +61,10 @@ define(['lodash', 'backbone'], function (_, Backbone) {
 
     };
 
-    var Player = function (pawns, path) {
+    var Player = function(pawns, path) {
         this._pawns = pawns;
         this._path = path;
-        this.getPawn = function (pawnId) {
+        this.getPawn = function(pawnId) {
             return this._getPawn(pawnId);
         };
 
@@ -119,17 +119,17 @@ define(['lodash', 'backbone'], function (_, Backbone) {
         };
     };
 
-    var Game = function () {
+    var Game = function() {
         this.initialize.apply(this, arguments);
     };
 
     _.extend(Game.prototype, Backbone.Events, {
-        initialize: function (options) {
+        initialize: function(options) {
             this._board = options.board;
             this._currentPlayerId = 0;
 
             this._dieThrowGenerator = options.dieThrowGenerator || new RandomThrowGenerator();
-            this._generatePlayersFromBoard = function (board) {
+            this._generatePlayersFromBoard = function(board) {
                 this._players = {};
                 for (var playerId = 0; playerId < 4; playerId++) {
                     var paths = board.paths[playerId];
@@ -143,11 +143,11 @@ define(['lodash', 'backbone'], function (_, Backbone) {
             };
             this._generatePlayersFromBoard(this._board);
 
-            this.getCurrentPlayerId = function () {
+            this.getCurrentPlayerId = function() {
                 return this._currentPlayerId;
             };
 
-            this.throwDie = function () {
+            this.throwDie = function() {
                 var value = this._dieThrowGenerator.generate();
 
                 this._incrementDieThrowCount();
@@ -159,11 +159,11 @@ define(['lodash', 'backbone'], function (_, Backbone) {
                 return value;
             };
 
-            this._getPlayer = function (playerId) {
+            this._getPlayer = function(playerId) {
                 return this._players[playerId];
             };
 
-            this._getCurrentPlayer = function () {
+            this._getCurrentPlayer = function() {
                 return this._getPlayer(this.getCurrentPlayerId());
             };
 
@@ -199,7 +199,7 @@ define(['lodash', 'backbone'], function (_, Backbone) {
                 if (currentPlayer.isAllPawnsAreAtHome()) {
                     return this._getDieThrowCount() >= 3;
                 } else {
-                    return  this._isPlayedAfterDieThrow() || !currentPlayer.isMovablePawnsExist(die);
+                    return this._isPlayedAfterDieThrow() || !currentPlayer.isMovablePawnsExist(die);
                 }
                 return false;
             };
@@ -211,7 +211,7 @@ define(['lodash', 'backbone'], function (_, Backbone) {
                 }
             };
 
-            this.playMove = function (pawnId, die) {
+            this.playMove = function(pawnId, die) {
                 var playerId = this.getCurrentPlayerId();
                 var player = this._getCurrentPlayer();
                 var pawn = player.getPawn(pawnId);
@@ -223,7 +223,11 @@ define(['lodash', 'backbone'], function (_, Backbone) {
 
                 this._changePlayerIfNeeded(die);
 
-                this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
+                this.trigger('player:move', {
+                    playerId: playerId,
+                    pawnId: pawnId,
+                    pointId: newPosition
+                });
             };
             this.getMovablePawns = function(die) {
                 return this._getCurrentPlayer().getMovablePawns(die);
@@ -232,7 +236,7 @@ define(['lodash', 'backbone'], function (_, Backbone) {
         }
     });
 
-    Game.create = function (options) {
+    Game.create = function(options) {
         return new Game(options);
     };
 
