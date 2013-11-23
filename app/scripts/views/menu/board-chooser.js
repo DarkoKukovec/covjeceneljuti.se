@@ -8,10 +8,12 @@ define([
   'use strict';
 
   var slideData = [{
+    id: 1,
     about: 'Standard board. 1-4 players',
     img: ''
   },
   {
+    id: 2,
     about: 'Tesla board. 1-3 players.',
     img: ''
   }];
@@ -22,7 +24,8 @@ define([
     slideNum: 0,
     events: {
       'click .next-slide': 'onNextSlide',
-      'click .previous-slide': 'onPreviousSlide'
+      'click .previous-slide': 'onPreviousSlide',
+      'click .yes-btn': 'onChoose'
     },
 
     render: function() {
@@ -55,6 +58,10 @@ define([
       this.$('.board-photo').css({'background-image': 'url(' + data.img + ')'});
       this.$('.board-description').html(data.about);
     },
+    onChoose: function() {
+      var data = this.getSlideData();
+      this.trigger('board:choosen', data.id);
+    }
   });
 
   return MenuBoardChooserView;
