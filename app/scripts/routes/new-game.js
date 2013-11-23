@@ -1,9 +1,12 @@
 /*global define*/
 
 define([
-  'jquery',
-  'backbone'
-], function ($, Backbone) {
+  'backbone',
+  'views/menu/board-chooser'
+], function (
+  Backbone,
+  BoardChooser
+  ) {
   'use strict';
 
   var NewGameRouter = Backbone.Router.extend({
@@ -12,7 +15,10 @@ define([
     },
 
     main: function() {
-      console.log('new game view');
+      //first show board chooser
+      var boardChooser = new BoardChooser();
+      boardChooser.render();
+      $('#main').html(boardChooser.el);
     }
   });
 
