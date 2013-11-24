@@ -177,7 +177,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
         var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
-        var result = { value: value, movablePawns: movablePawns};
+        var result = { playerId: this.getCurrentPlayerId(), value: value, movablePawns: movablePawns};
         this.trigger('die:thrown', result);
 
         if (!movablePawnsExist) {
