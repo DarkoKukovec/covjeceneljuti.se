@@ -31,9 +31,6 @@ define([
         board: board,
         game: game
       });
-      this.listenTo(this.boardView, 'dice:throw', function() {
-        game.throwDie();
-      }, this);
       this.$boardContainer.html(this.boardView.el);
       this.updateBoardDimensions();
     },

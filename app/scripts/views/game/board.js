@@ -35,10 +35,15 @@ define([
       this.listenTo(this.game, 'player:change', this.onGamePlayerChange, this);
       this.listenTo(this.game, 'die:awaitingThrow', this.onGameDieAvaitingThrow, this);
 
+      this.$el.css(this.board.style.board);
+
       this.addPointsToBoard();
       this.addPawnsToBoard();
       this.addHomeBoxes();
       this.addCurrentPlayerBox();
+
+      window.g = this.game;
+      window.b = this;
     },
 
     addPointsToBoard: function() {
