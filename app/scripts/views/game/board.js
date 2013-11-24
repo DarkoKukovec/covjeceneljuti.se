@@ -112,7 +112,8 @@ define([
     },
 
     showPossibleMove: function(dice, move) {
-
+      console.log('Showing move');
+      console.log(move);
     },
 
     movePawnForward: function(playerIndex, pawnIndex, dice) {
