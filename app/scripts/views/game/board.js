@@ -113,6 +113,8 @@ define([
       // this.movePawnForward(playerIndex, pawnIndex, 10);
       // this.trigger('pawn:click', pawnPlayerId, pawnId, point);
 
+      console.log('Pawn click', pawnPlayerId, pawnId);
+
       pawnPlayerId = parseInt(pawnPlayerId, 10);
       pawnId = parseInt(pawnId, 10);
 
@@ -120,7 +122,6 @@ define([
       var playerId = parseInt(this.game.getCurrentPlayerId(), 10);
       var dieValue = this.game.getCurrentDieValue();
 
-      console.log('Pawn click', playerId, dieValue, possibleMoves);
 
       if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId) || !this.game.isValidMove(playerId, pawnId)) {
         return;
