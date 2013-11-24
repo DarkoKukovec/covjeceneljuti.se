@@ -84,7 +84,7 @@ define([
       }
       this.$('.throw-button, .shakeable, .waiting').hide();
       this.thrown = true;
-      this.result = this.game.throwDie().value;
+      this.result = this.getDiceNumber();
       this.trigger('dice:result', this.result);
       this.animateDice(this.result);
     },
