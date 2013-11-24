@@ -26,7 +26,7 @@ define([
       options = options || {};
       this.game = options.game;
       this.board = options.board;
-      this.players = app.currentGame ? app.currentGame.players : this.players;
+      this.players = app.currentGame ? _.pluck(app.currentGame.players, 'name') : this.players;
 
       this.listenTo(this.game, 'player:move', this.onGamePlayerMove, this);
       this.listenTo(this.game, 'die:thrown', this.onGameDieThrow, this);
@@ -77,6 +77,9 @@ define([
       }
 
       for (var i = 0; i < this.board.homeBoxes.length; i++) {
+        if (!this.players[i]) {
+          break;
+        }
         this.$el.append($('<div>')
           .addClass('home-box home-box-' + i)
           .css(this.board.style.homeBox)
@@ -138,7 +141,7 @@ define([
       }
 
       this.$currentPlayerBox.html(this.players[playerId].substring(0, 1) + ' - ' + diceValue);
-      this.$currentPlayerBox.css('color', this.board.colors[playerId].player);
+      this.$currentPlayerBox.css('background-color', this.board.colors[playerId].player);
     },
 
 
