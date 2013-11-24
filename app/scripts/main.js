@@ -50,7 +50,7 @@ require([
   Backbone,
   FastClick
 ) {
-  FastClick.attach(document.body);
+  // FastClick.attach(document.body);
 
   if (window.location.hash !== '') {
     window.location.hash = '';
@@ -62,8 +62,8 @@ require([
     Backbone.trigger('resize');
   });
 
-  // $(window).on('beforeunload', function() {
-  //   return 'You have attempted to leave this page.';
-  // });
+  $(window).on('beforeunload', function() {
+    return 'You have attempted to leave this page.';
+  });
   Backbone.history.start();
 });
