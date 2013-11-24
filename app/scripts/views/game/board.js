@@ -19,8 +19,6 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
-    // movablePawns: {},
-    // movablePlayer: -1,
 
     initialize: function(options) {
       options = options || {};
@@ -231,7 +229,6 @@ define([
       } else {
         this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
       }
-
     },
 
     animatePawnMove: function(playerIndex, pawnIndex, currPointIndex, endPointIndex) {
@@ -252,7 +249,6 @@ define([
 
       if (pawn.point && pawn.pointIndex !== pointIndex && !dontRemoveLast) {
         pawn.point.removePawn();
-        // console.log('removing last');
       }
 
       this.triggerMoveEnd = triggerMoveEnd || false;
