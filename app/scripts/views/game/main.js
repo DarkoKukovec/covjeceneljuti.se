@@ -43,7 +43,7 @@ define([
       });
       boardView.on('dice:throw', function() {
         me.trigger('dice:throw');
-      });
+      }, this);
       boardView.on('pawn:eat', function(callback, scope) {
         if (!app.sraz) {
           callback.call(scope, true);

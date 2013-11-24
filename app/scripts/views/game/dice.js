@@ -90,7 +90,8 @@ define([
     },
 
     getDiceNumber: function() {
-      return Math.floor(Math.random() * 6) + 1;
+      // return Math.floor(Math.random() * 6) + 1;
+      return 6;
     },
 
     rotateCube: function(moves) {
