@@ -41,8 +41,8 @@ define([
         game: this.game,
         board: this.board.toJSON()
       });
-      boardView.on('board:animation:end', function() {
-        me.trigger('board:animation:end');
+      boardView.on('dice:throw', function() {
+        me.trigger('dice:throw');
       });
       boardView.on('pawn:eat', function(callback, scope) {
         if (!app.sraz) {

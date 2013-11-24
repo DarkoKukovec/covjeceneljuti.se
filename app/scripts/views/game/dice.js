@@ -33,7 +33,7 @@ define([
       this.listenTo(Backbone, 'resize', this.resize, this);
       this.listenTo(Backbone, 'dice:throw', this.animateDice, this); // network game
 
-      var props = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' '),
+      var props = 'transform webkitTransform mozTransform oTransform msTransform'.split(' '),
         el = document.createElement('div');
 
       for (var i = 0, l = props.length; i < l; i++) {
@@ -54,7 +54,6 @@ define([
         5: [2, 2],
         6: [1]
       };
-      console.log(finalValue);
       this.rotateCube(baseTurn.concat(turns[finalValue]));
     },
 
@@ -75,7 +74,7 @@ define([
           .on('oTransitionEnd', animationEnd);
       } else {
         this.$('.throw-button, .shakeable').fadeOut();
-        this.$('.waiting').show(); // TODO: Add waiting
+        this.$('.waiting').show();
       }
     },
 
@@ -85,7 +84,7 @@ define([
       }
       this.$('.throw-button, .shakeable, .waiting').hide();
       this.thrown = true;
-      this.result = this.game.throwDie().value;
+      this.result = this.getDiceNumber();
       this.trigger('dice:result', this.result);
       this.animateDice(this.result);
     },

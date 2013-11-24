@@ -19,8 +19,6 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
-    // movablePawns: {},
-    // movablePlayer: -1,
 
     initialize: function(options) {
       options = options || {};
@@ -35,13 +33,15 @@ define([
       this.listenTo(this.game, 'player:change', this.onGamePlayerChange, this);
       this.listenTo(this.game, 'die:awaitingThrow', this.onGameDieAvaitingThrow, this);
 
+      this.$el.css(this.board.style.board);
+
       this.addPointsToBoard();
       this.addPawnsToBoard();
       this.addHomeBoxes();
       this.addCurrentPlayerBox();
 
-      window.b = this;
       window.g = this.game;
+      window.b = this;
     },
 
     addPointsToBoard: function() {
@@ -102,17 +102,10 @@ define([
         .css(this.board.currentPlayerBox)
         .html('');
       this.$el.append(this.$currentPlayerBox);
-      // this.$currentPlayerBox.on('click', _.bind(this.onCurrentPlayerBoxClick, this));
     },
 
     onPointTransitionEnd: function() {
       this.checkIfMoveEnd();
-    },
-
-    // TODO: Remove this
-    onCurrentPlayerBoxClick: function() {
-      this.game.throwDie();
-      // this.trigger('dice:throw');
     },
 
     onPawnClick: function(pawnPlayerId, pawnId) {
@@ -236,7 +229,6 @@ define([
       } else {
         this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
       }
-
     },
 
     animatePawnMove: function(playerIndex, pawnIndex, currPointIndex, endPointIndex) {
@@ -257,7 +249,6 @@ define([
 
       if (pawn.point && pawn.pointIndex !== pointIndex && !dontRemoveLast) {
         pawn.point.removePawn();
-        // console.log('removing last');
       }
 
       this.triggerMoveEnd = triggerMoveEnd || false;
