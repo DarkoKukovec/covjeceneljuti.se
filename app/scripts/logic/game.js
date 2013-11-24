@@ -80,7 +80,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
     };
 
     this.isMovablePawnsExist = function (die) {
-      return this.getMovablePawns(die).length > 0;
+      return this.getMovablePawns(die) !== {};
     };
 
     this.isAnyPawnsOnTheBoard = function () {
@@ -131,10 +131,10 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         }
       }
 
-      var result = [];
+      var result = {};
       for (var i = 0; i < this._pawns.length; i++) {
         if (typeof pawnNextPositions[i] === 'number') {
-          result.push(i);
+          result[i] = this._getPawn(i).getNextPosition(die);
         }
       }
       return result;
