@@ -83,7 +83,7 @@ define([
         return;
       }
       this.thrown = true;
-      var result = this.game.throwDie();
+      var result = this.game.throwDie().value;
       this.trigger('dice:result', result);
       this.animateDice(result);
     },
@@ -126,8 +126,11 @@ define([
     },
 
     onAnimationEnd: function() {
-      this.thrown = false;
-      this.trigger('animation:end');
+      var me = this;
+      setTimeout(function() {
+        me.thrown = false;
+        me.trigger('animation:end');
+      }, 1000);
     },
 
     resize: function() {

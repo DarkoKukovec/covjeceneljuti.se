@@ -27,7 +27,9 @@ define([
     initialize: function(options) {
       this.board = options.board;
       this.game = options.game;
+      debugger
       this.listenTo(this.game, 'die:thrown', this.onThrowDie, this);
+      // this.game.on('die:thrown', this.onThrowDie, this);
     },
 
     onThrowDie: function(object) {
@@ -35,11 +37,15 @@ define([
     },
 
     render: function() {
+      var me = this;
       this.$el.html(this.template());
 
       var boardView = new BoardView({
         game: this.game,
         board: this.board.toJSON()
+      });
+      boardView.on('board:animation:end', function() {
+        me.trigger('board:animation:end');
       });
       var zoomView = new ZoomView({
         board: boardView
