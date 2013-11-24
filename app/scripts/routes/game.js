@@ -93,7 +93,6 @@ define([
           finalWin: false
         });
       } else if (this.playerFinishCount === app.currentGame.players.length - 1) {
-        this.playerName = app.currentGame.players[playerId].name;
         view = new WinView({
           winnerName: this.playerName,
           finalWin: true
