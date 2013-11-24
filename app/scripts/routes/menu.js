@@ -43,12 +43,12 @@ define([
     },
 
     theStory: function() {
-      var view = new HelpScreenView();
+      var view = new StoryView();
       app.switchView(view);
     },
 
     help: function() {
-      var view = new StoryView();
+      var view = new HelpScreenView();
       app.switchView(view);
     }
 
