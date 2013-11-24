@@ -95,6 +95,7 @@ define([
         $('.overlay').hide();
         view.remove();
         me.diceEvents = true;
+        me.game.throwDice(me.diceResult);
       });
       view.render();
       $('.overlay').html(view.el).show();
