@@ -37,11 +37,15 @@ define([
     },
 
     render: function() {
+      var me = this;
       this.$el.html(this.template());
 
       var boardView = new BoardView({
         game: this.game,
         board: this.board.toJSON()
+      });
+      boardView.on('board:animation:end', function() {
+        me.trigger('board:animation:end');
       });
       var zoomView = new ZoomView({
         board: boardView

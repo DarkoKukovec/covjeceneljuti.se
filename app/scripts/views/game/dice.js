@@ -126,8 +126,11 @@ define([
     },
 
     onAnimationEnd: function() {
-      this.thrown = false;
-      this.trigger('animation:end');
+      var me = this;
+      setTimeout(function() {
+        me.thrown = false;
+        me.trigger('animation:end');
+      }, 1000);
     },
 
     resize: function() {
