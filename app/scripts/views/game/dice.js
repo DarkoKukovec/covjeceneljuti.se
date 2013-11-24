@@ -23,6 +23,7 @@ define([
     thrown: false,
     localPlayer: false,
     game: null,
+    result: null,
 
     initialize: function(options) {
       this.localPlayer = options.local;
@@ -73,7 +74,7 @@ define([
           .on('webkitTransitionEnd', animationEnd)
           .on('oTransitionEnd', animationEnd);
       } else {
-        this.$('.throw-button').hide();
+        this.$('.throw-button, .shakeable').fadeOut();
         this.$('.waiting').show(); // TODO: Add waiting
       }
     },
@@ -82,10 +83,11 @@ define([
       if (this.thrown || !this.localPlayer) {
         return;
       }
+      this.$('.throw-button, .shakeable, .waiting').hide();
       this.thrown = true;
-      var result = this.game.throwDie().value;
-      this.trigger('dice:result', result);
-      this.animateDice(result);
+      this.result = this.game.throwDie().value;
+      this.trigger('dice:result', this.result);
+      this.animateDice(this.result);
     },
 
     getDiceNumber: function() {
@@ -126,8 +128,13 @@ define([
     },
 
     onAnimationEnd: function() {
-      this.thrown = false;
-      this.trigger('animation:end');
+      var me = this;
+      this.$('.thrown-value').text(this.result);
+      this.$('.thrown').show();
+      setTimeout(function() {
+        me.thrown = false;
+        me.trigger('animation:end');
+      }, 1000);
     },
 
     resize: function() {

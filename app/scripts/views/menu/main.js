@@ -17,12 +17,15 @@ define([
     type: 'new-game',
     title: 'New game'
   }, {
-    type: 'about',
-    title: 'About'
+    type: 'the-story',
+    title: 'The Story'
+  }, {
+    type: 'help',
+    title: 'Help'
   }];
 
   var MenuMenuView = Backbone.View.extend({
-  template: JST['app/scripts/templates/menu/main.hbs'],
+    template: JST['app/scripts/templates/menu/main.hbs'],
 
     render: function() {
       var me = this;

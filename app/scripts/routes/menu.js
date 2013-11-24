@@ -4,11 +4,15 @@ define([
   'app',
   'backbone',
   'views/menu/main',
+  'views/help-screen',
+  'views/story',
   'routes/game'
 ], function(
   app,
   Backbone,
   MainMenuView,
+  HelpScreenView,
+  StoryView,
   GameRouter
 ) {
   'use strict';
@@ -16,7 +20,9 @@ define([
   var MenuRouter = Backbone.Router.extend({
     routes: {
       '': 'index',
-      'board': 'board'
+      'board': 'board',
+      'the-story': 'theStory',
+      'help': 'help'
     },
 
     routers: {},
@@ -34,6 +40,16 @@ define([
           trigger: true
         });
       });
+    },
+
+    theStory: function() {
+      var view = new HelpScreenView();
+      app.switchView(view);
+    },
+
+    help: function() {
+      var view = new StoryView();
+      app.switchView(view);
     }
 
   });

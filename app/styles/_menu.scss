@@ -90,8 +90,18 @@
   }
 
   .player-name {
+    margin-left: 50px;
     width: 90%;
     text-align: center;
+  }
+
+  .player-color {
+    width: 30px;
+    height: 30px;
+    float: left;
+    opacity: 0.5;
+    margin: 10px -40px -40px 5px;
+    border-radius: 3px;
   }
 
   .start-game-btn {

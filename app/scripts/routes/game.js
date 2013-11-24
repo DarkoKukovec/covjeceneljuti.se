@@ -32,13 +32,15 @@ define([
 
     diceResult: null,
     game: null,
+    currentPlayer: null,
+    gameView: null,
 
     index: function() {
       var board = app.currentGame.board;
       this.game = GameLogic.create({
         board: board.toJSON()
       });
-      var view = new GameView({
+      this.gameView = new GameView({
         game: this.game,
         board: board
       });
@@ -56,12 +58,21 @@ define([
       }
       app.currentGame.players = players;
 
-      view.render();
-      app.switchView(view);
+      this.gameView.render();
+      app.switchView(this.gameView);
 
-      view.setPlayer(this.game.getCurrentPlayerId());
+      this.move();
+    },
 
-      this.nextPlayer(this.game.getCurrentPlayerId());
+    move: function() {
+      var newPlayer = this.game.getCurrentPlayerId();
+      if (newPlayer !== this.currentPlayer) {
+        this.currentPlayer = newPlayer;
+        this.gameView.setPlayer(this.currentPlayer);
+        this.nextPlayer(this.currentPlayer);
+      } else {
+        this.dice(this.currentPlayer);
+      }
     },
 
     dice: function(playerId) {
