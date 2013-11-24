@@ -123,7 +123,7 @@ define([
 
       console.log('Pawn click', playerId, dieValue, possibleMoves);
 
-      if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId)) {
+      if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId) || !this.game.isValidMove(playerId, pawnId)) {
         return;
       }
 
@@ -145,12 +145,14 @@ define([
       this.movePawnToPoint(e.playerId, e.pawnId, e.pointId);
     },
 
-    onGamePlayerFinished: function(playerId) {
-      console.log('Player finished', playerId);
+    onGamePlayerFinished: function(e) {
+      console.log('Player finished', e.playerId);
+      this.trigger('board:player:finish', e);
     },
 
-    onGamePawnEaten: function(playerId, pawnId, pointId) {
-      console.log('Pawn eaten', playerId, pawnId, pointId);
+    onGamePawnEaten: function(e) {
+      console.log('Pawn eaten', e.playerId, e.pawnId, e.pointId);
+      this.setPawnToPoint(e.playerId, e.pawnId, e.pointId);
     },
 
     onPointClick: function(point) {
@@ -176,10 +178,6 @@ define([
       this.lastMovaplePlayer = playerId;
 
       _.forOwn(movablePawns, function(value, key) {
-        // var path = this.getPathBetweenPoints(this.pawns[key].pointIndex, value);
-        // for (var i = 0; i < path.length; i++) {
-        //   this.points[path[i]].setPossibleMove(playerId);
-        // }
         this.pawns[playerId][key].point.setPossibleMove(playerId);
         this.points[value].setPossibleMove(playerId);
       }, this);
