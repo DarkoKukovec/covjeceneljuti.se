@@ -486,9 +486,19 @@
         return this._currentDieValue;
       };
 
+      this.isValidMove = function(playerId, pawnId) {
+        if (this._isPlayedAfterDieThrow()) {
+          return false;
+        }
+        if (playerId === this.getCurrentPlayerId()) {
+          return !!this.getMovablePawns()[pawnId];
+        }
+        return false;
+      };
+
       this.getMovablePawns = function() {
         return this._getCurrentPlayer().getMovablePawns(this.getCurrentDieValue());
-      }
+      };
 
       this.playMove = function (pawnId) {
         var die = this.getCurrentDieValue();
@@ -619,6 +629,41 @@
   });
 
   describe('Unit tests: Game', function () {
+    describe('#isValidMove', function() {
+      it('returns if the move is valid', function() {
+        var game = generateDefaultGame({throws: [5, 6, 6, 1]});
+        game.throwDie();
+        for (var playerId = 0; playerId < 4; playerId++) {
+          for (var pawnId = 0; pawnId < 4; pawnId++) {
+            expect(game.isValidMove(playerId, pawnId)).toBe(false);
+          }
+        }
+
+        game.throwDie();
+        for (var playerId = 0; playerId < 4; playerId++) {
+          for (var pawnId = 0; pawnId < 4; pawnId++) {
+            expect(game.isValidMove(playerId, pawnId)).toBe(playerId === 0);
+          }
+        }
+
+        game.playMove(0, 0);
+        expect(game.isValidMove(0, 0)).toBe(false);
+        game.throwDie();
+        for (var playerId = 0; playerId < 4; playerId++) {
+          for (var pawnId = 0; pawnId < 4; pawnId++) {
+            expect(game.isValidMove(playerId, pawnId)).toBe(playerId === 0 && pawnId === 0);
+          }
+        }
+        game.playMove(0, 0);
+        game.throwDie();
+        for (var playerId = 0; playerId < 4; playerId++) {
+          for (var pawnId = 0; pawnId < 4; pawnId++) {
+            expect(game.isValidMove(playerId, pawnId)).toBe(playerId === 0 && pawnId === 0);
+          }
+        }
+      });
+    });
+
     describe('#throwDie', function () {
       it('returns a number', function () {
         var game = generateDefaultGame();

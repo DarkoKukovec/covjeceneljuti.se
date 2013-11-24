@@ -1,0 +1,18 @@
+.winning-screen {
+  .winning-photo {
+    margin-top: 10px;
+    height: 250px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    // margin: -10px 40px 0 40px;
+    background-image: url(../assets/white-pawn-icon.png);
+  }
+  .topcoat-button {
+    width: 90%;
+    margin: 5px;
+  }
+  .winner-text {
+    margin: 10px 0;
+  }
+}

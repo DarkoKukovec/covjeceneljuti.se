@@ -31,7 +31,6 @@ define([
     template: JST['app/scripts/templates/menu/main.hbs'],
 
     render: function() {
-      var me = this;
       this.$el.html(this.template());
 
       var menuItems = new Backbone.Collection(menuItemsArray);
@@ -43,7 +42,7 @@ define([
       menuItems.trigger('reset');
 
       this.listenTo(menuView, 'click:item', function(model) {
-        me.trigger('navigate', model.get('type'));
+        Backbone.trigger('navigate', model.get('type'));
       });
 
       this.$el.append(menuView.el);

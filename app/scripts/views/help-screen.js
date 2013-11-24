@@ -12,6 +12,7 @@ JST
   'use strict';
 
   var HelpScreenView = Backbone.View.extend({
+    className: 'help-screen',
     template: JST['app/scripts/templates/help-screen.hbs'],
     render: function() {
       this.$el.html(this.template());
