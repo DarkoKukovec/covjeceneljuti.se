@@ -8,6 +8,7 @@ define([
   'views/game/dice',
   'views/game/next-player',
   'views/game/test-game',
+  'views/game/sraz',
   'collections/boards',
   'logic/game'
 ], function(
@@ -18,6 +19,7 @@ define([
   DiceView,
   NextPlayerView,
   TestGameView,
+  SrazView,
   BoardCollection,
   GameLogic
 ) {
@@ -44,6 +46,8 @@ define([
         game: this.game,
         board: board
       });
+      this.gameView.on('pawn:eat', this.goSraz, this);
+      this.gameView.on('dice:throw', this.move, this);
 
       window.game = this.game;
 
@@ -60,8 +64,6 @@ define([
 
       this.gameView.render();
       app.switchView(this.gameView);
-
-      this.move();
     },
 
     move: function() {
@@ -109,6 +111,17 @@ define([
       $('.overlay').html(view.el).show();
     },
 
+    goSraz: function(callback, scope) {
+      var view = new SrazView();
+      view.render();
+      $('.overlay').html(view.el).show();
+      view.on('answer', function(correct) {
+        $('.overlay').hide();
+        view.remove();
+        callback.call(scope, correct);
+      });
+    },
+
     board: function(name) {
       var gameView = new TestGameView();
       $('body').html(gameView.render().el);
@@ -122,14 +135,27 @@ define([
     test: function() {
       var game;
       var gameView = new TestGameView();
+
+      var SequentialThrowGenerator = function(sequence) {
+        this._sequence = sequence;
+        this._index = 0;
+
+        this.generate = function() {
+          this._index += 1;
+          return this._sequence[this._index - 1];
+        };
+      };
+
       app.currentGame = {
         players: ['Ivan', 'Pero', 'Luka', 'Marko']
       };
       $('body').html(gameView.render().el);
       $.ajax('boards/standard.json', {
         success: function(response) {
+          window.throws = [6, 6, 6, 1, 6, 3];
           game = GameLogic.create({
-            board: response
+            board: response,
+            dieThrowGenerator: new SequentialThrowGenerator(window.throws)
           });
           gameView.createBoard(response, game);
         }

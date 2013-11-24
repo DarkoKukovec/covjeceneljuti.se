@@ -373,9 +373,9 @@
   }, {
     "title": "Green",
     "start": "#dfd",
-    "home": "#0f0",
-    "end": "#0f0",
-    "player": "#0f0"
+    "home": "#0a0",
+    "end": "#0a0",
+    "player": "#0a0"
   }, {
     "title": "Blue",
     "start": "#ddf",
@@ -385,8 +385,8 @@
   }, {
     "title": "Yellow",
     "start": "#ffd",
-    "home": "#ff0",
-    "end": "#ff0",
-    "player": "#ff0"
+    "home": "#dd0",
+    "end": "#dd0",
+    "player": "#dd0"
   }]
 }

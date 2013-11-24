@@ -78,7 +78,7 @@
 
 .board {
   position: relative;
-  background-color: #f1f1f1;
+  background-image: url(assets/wood.jpg);
   overflow: hidden;
 
   .point {
@@ -98,6 +98,8 @@
     @include box-pack(center);
     @include box-align(center);
     z-index: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 1px #000;
   }
 
   .current-player-box {
@@ -107,6 +109,8 @@
     @include box-align(center);
     z-index: 1;
     @include transition(all 200ms);
+    color: #fff;
+    text-shadow: 0 1px 1px #000;
   }
 }
 
@@ -124,4 +128,26 @@
   bottom: 0;
   z-index: 250;
   display: none;
+}
+
+.correct {
+  display: none;
+  color: #0f0;
+}
+.wrong {
+  display: none;
+  color: #f00;
+}
+
+.answer-button {
+  display: block;
+  width: auto;
+  margin: 10px;
+
+  &.choosen-answer {
+    color: #f00;
+  }
+  &.correct-answer {
+    color: #0f0;
+  }
 }
