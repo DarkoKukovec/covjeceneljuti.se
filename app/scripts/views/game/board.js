@@ -26,13 +26,15 @@ define([
       this.board = options.board;
       this.players = app.currentGame ? app.currentGame.players : this.players;
 
-      this.listenTo(this.game, 'player:move', function(event) {
-        this.movePawnToPoint(event.playerId, event.pawnId, event.pointId);
-      }, this);
+      this.listenTo(this.game, 'player:move', this.onGamePlayerMove, this);
+      this.listenTo(this.game, 'die:thrown', this.onGameDieThrow, this);
+      this.listenTo(this.game, 'pawn:eaten', this.onGamePawnEaten, this);
+      this.listenTo(this.game, 'player:finished', this.onGamePlayerFinished, this);
 
       this.addPointsToBoard();
       this.addPawnsToBoard();
       this.addHomeBoxes();
+
       window.b = this;
       window.g = this.game;
     },
@@ -85,8 +87,32 @@ define([
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 
+    onGameDieThrow: function(e) {
+      console.log('Die throw', e.value, e.movablePawns);
+      for (var i = 0; i < e.movablePawns.length; i++) {
+        this.showPossibleMove(e.value, e.movablePawns[i]);
+      }
+    },
+
+    onGamePlayerMove: function(e) {
+      console.log('Player move', e.playerId, e.pawnId, e.pointId);
+      this.movePawnToPoint(e.playerId, e.pawnId, e.pointId);
+    },
+
+    onGamePlayerFinished: function(playerId) {
+      console.log('Player finished', playerId);
+    },
+
+    onGamePawnEaten: function(playerId, pawnId, pointId) {
+      console.log('Pawn eaten', playerId, pawnId, pointId);
+    },
+
     onPointClick: function(point) {
       this.trigger('point:click', point);
+    },
+
+    showPossibleMove: function(dice, move) {
+
     },
 
     movePawnForward: function(playerIndex, pawnIndex, dice) {
@@ -115,15 +141,10 @@ define([
       var pawnPathIndex = path.indexOf(pawn.pointIndex);
       var pointPathIndex = path.indexOf(pointIndex);
 
-      // if (pawnPathIndex === -1 || pointPathIndex === -1 || pawnPathIndex > pointPathIndex || !this.points[pointIndex].canAddPawn(playerIndex, pawnIndex)) {
-      //   console.log('Invalid move: ', playerIndex, pawnIndex, pointIndex, pawnPathIndex, pointPathIndex);
-      //   return;
-      // }
-
-      // eat = this.points[pointIndex].canEatPawn(playerIndex);
-      // if (eat) {
-      //   console.log('Will eat pawn');
-      // }
+      if (pawnPathIndex === -1 || pointPathIndex === -1 || pawnPathIndex > pointPathIndex) {
+        console.log('Invalid move: ', playerIndex, pawnIndex, pointIndex, pawnPathIndex, pointPathIndex);
+        return;
+      }
 
       this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
     },
