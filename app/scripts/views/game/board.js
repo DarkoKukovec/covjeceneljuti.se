@@ -81,7 +81,7 @@ define([
     },
 
     onPawnClick: function(playerIndex, pawnIndex, point) {
-      this.movePawnForward(playerIndex, pawnIndex, 10);
+      // this.movePawnForward(playerIndex, pawnIndex, 10);
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 

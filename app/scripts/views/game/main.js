@@ -1,12 +1,14 @@
 /*global define*/
 
 define([
+  'app',
   'lodash',
   'backbone',
   'templates',
   'views/game/board',
   'views/abstract/zoom'
 ], function(
+  app,
   _,
   Backbone,
   JST,
@@ -25,6 +27,11 @@ define([
     initialize: function(options) {
       this.board = options.board;
       this.game = options.game;
+      this.listenTo(this.game, 'die:thrown', this.onThrowDie, this);
+    },
+
+    onThrowDie: function(object) {
+      console.log(object);
     },
 
     render: function() {
@@ -44,6 +51,12 @@ define([
       });
 
       return this;
+    },
+
+    setPlayer: function(playerId) {
+      var player = app.currentGame.players[playerId];
+      this.$('.player-name').text(player.name);
+      this.$('.player-color').css('background-color', player.color);
     }
   });
 

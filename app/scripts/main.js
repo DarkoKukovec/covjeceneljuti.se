@@ -20,6 +20,9 @@ require.config({
       deps: [
         'jquery'
       ]
+    },
+    hammer: {
+      deps: ['jquery']
     }
   },
   paths: {
@@ -41,20 +44,21 @@ require([
   'fastclick',
   'gshake',
   'routes/init',
-  'utils/handlebars-helper'
-], function (
-    Backbone,
-    FastClick
-  ) {
+  'utils/handlebars-helper',
+  'hammer'
+], function(
+  Backbone,
+  FastClick
+) {
 
   FastClick.attach(document.body);
-  if (window.location.hash !== '') {
-    window.location.hash = '';
-  }
-
   // if (window.location.hash !== '') {
   //   window.location.hash = '';
   // }
+
+  if (window.location.hash !== '') {
+    window.location.hash = '';
+  }
   $(document).gShake(function() {
     Backbone.trigger('shake');
   });

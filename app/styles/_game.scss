@@ -43,95 +43,6 @@
     overflow: hidden;
     height: 18px;
   }
-
-  .player-dice {
-    position: relative;
-    border: 1px solid #000;
-    width: 30px;
-    height: 30px;
-    float: right;
-    margin: -25px 9px 9px 9px;
-    border-radius: 3px;
-    background-color: #9e4e4d;
-    @include filter-gradient(#9e4e4d, #9b3030, horizontal);
-    @include background-image(radial-gradient(center, ellipse cover,  #9e4e4d 0%,#9b3030 100%));
-
-    .dot {
-      position: absolute;
-      background-color: #fff;
-      width: 4px;
-      height: 4px;
-      border-radius: 100%;
-    }
-
-    .dot-tl {
-      top: 5px;
-      left: 5px;
-    }
-    .dot-tc {
-      top: 5px;
-      left: 13px;
-    }
-    .dot-tr {
-      top: 5px;
-      right: 5px;
-    }
-    .dot-cl {
-      top: 13px;
-      left: 5px;
-    }
-    .dot-cc {
-      top: 13px;
-      left: 13px;
-    }
-    .dot-cr {
-      top: 13px;
-      right: 5px;
-    }
-    .dot-bl {
-      bottom: 5px;
-      left: 5px;
-    }
-    .dot-bc {
-      bottom: 5px;
-      left: 13px;
-    }
-    .dot-br {
-      bottom: 5px;
-      right: 5px;
-    }
-
-    &.num-1 {
-      .dot-tl, .dot-tc, .dot-tr, .dot-cl, .dot-cr, .dot-bl, .dot-bc, .dot-br {
-        display: none;
-      }
-    }
-    &.num-2 {
-      .dot-tc, .dot-tr, .dot-cl, .dot-cc, .dot-cr, .dot-bl, .dot-bc {
-        display: none;
-      }
-    }
-    &.num-3 {
-      .dot-tc, .dot-tr, .dot-cl, .dot-cr, .dot-bl, .dot-bc {
-        display: none;
-      }
-    }
-    &.num-4 {
-      .dot-tc, .dot-cl, .dot-cc, .dot-cr, .dot-bc {
-        display: none;
-      }
-    }
-    &.num-5 {
-      .dot-tc, .dot-cl, .dot-cr, .dot-bc {
-        display: none;
-      }
-    }
-    &.num-6 {
-      .dot-tc, .dot-cc, .dot-bc {
-        display: none;
-      }
-    }
-  }
 }
 
 .next-message {
@@ -191,4 +102,20 @@
     @include box-align(center);
     z-index: 1;
   }
+}
+
+.next-button {
+  margin: 0 20px;
+  display: block;
+  width: auto;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 250;
+  display: none;
 }
