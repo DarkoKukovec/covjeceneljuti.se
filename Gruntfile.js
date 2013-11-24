@@ -195,7 +195,7 @@ module.exports = function (grunt) {
 
       usemin: {
         html: ['<%= yeoman.dist %>/{,*/}*.html'],
-        css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+        css: ['<%= yeoman.dist %>/styles/{,*/}*.css', '<%= yeoman.dist %>/bower/{,*/}*.css'],
         options: {
           dirs: ['<%= yeoman.dist %>']
         }
@@ -257,6 +257,7 @@ module.exports = function (grunt) {
             cwd: '<%= yeoman.app %>',
             dest: '<%= yeoman.dist %>',
             src: [
+              'boards/*',
               'images/{,*/}*.{webp,gif}',
               'styles/fonts/{,*/}*.*'
             ]
