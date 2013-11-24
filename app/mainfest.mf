@@ -1,0 +1,17 @@
+CACHE MANIFEST
+# 2010-06-18:v2
+
+# Explicitly cached 'master entries'.
+CACHE:
+/favicon.ico
+index.html
+/styles/17925b9a.main.css.css
+/bower_components/requirejs/require.js
+/scripts/15e96dc9.main.js
+/boards/1.jpg
+/boards/list.json
+/boards/1.json
+
+# Resources that require the user to be online.
+NETWORK:
+*

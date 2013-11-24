@@ -34,6 +34,17 @@
   height: 30px;
 }
 
+.thrown-value {
+  font-size: 48px;
+  font-weight: 500;
+  margin-top: -40px;
+  display: block;
+}
+
+.waiting, .thrown {
+  display: none;
+}
+
 .cube-wrapper {
   top: 50%;
   left: 50%;
