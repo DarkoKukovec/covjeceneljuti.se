@@ -48,8 +48,6 @@ define([
       this.gameView.on('pawn:eat', this.goSraz, this);
       this.gameView.on('dice:throw', this.move, this);
 
-      window.game = this.game;
-
       var players = [];
       for (var i = 0; i < app.currentGame.players.length; i++) {
         var name = app.currentGame.players[i];
@@ -63,6 +61,8 @@ define([
 
       this.gameView.render();
       app.switchView(this.gameView);
+
+      this.game.start();
     },
 
     move: function() {
