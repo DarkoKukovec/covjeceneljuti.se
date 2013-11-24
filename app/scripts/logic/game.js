@@ -276,9 +276,19 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         return this._currentDieValue;
       };
 
+      this.isValidMove = function(playerId, pawnId) {
+        if (this._isPlayedAfterDieThrow()) {
+          return false;
+        }
+        if (playerId === this.getCurrentPlayerId()) {
+          return !!this.getMovablePawns()[pawnId];
+        }
+        return false;
+      };
+
       this.getMovablePawns = function() {
         return this._getCurrentPlayer().getMovablePawns(this.getCurrentDieValue());
-      }
+      };
 
       this.playMove = function (pawnId) {
         var die = this.getCurrentDieValue();
