@@ -9,3 +9,4 @@ _SpecRunner.html
 .grunt
 app/styles/main.css
 .idea
+.DS_Store

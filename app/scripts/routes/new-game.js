@@ -37,7 +37,8 @@ define([
       this.choosenBoard.fetch().done(function(r) {
         var playerNumber = r.homes.length;
         var playerChooser = new PlayerChooser({
-          playerNum: playerNumber
+          playerNum: playerNumber,
+          board: me.choosenBoard
         });
         app.switchView(playerChooser);
         playerChooser.on('game:start', function(playerData) {

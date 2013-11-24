@@ -21,11 +21,16 @@ define([
     prop: null,
 
     thrown: false,
+    localPlayer: false,
+    game: null,
 
-    initialize: function() {
+    initialize: function(options) {
+      this.localPlayer = options.local;
+      this.game = options.game;
       window.d = this;
       this.listenTo(Backbone, 'shake', this.onDiceThrow, this);
       this.listenTo(Backbone, 'resize', this.resize, this);
+      this.listenTo(Backbone, 'dice:throw', this.animateDice, this); // network game
 
       var props = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' '),
         el = document.createElement('div');
@@ -56,25 +61,30 @@ define([
       this.$el.html(this.template());
       this.cubeEl = this.$('.cube').get(0);
       this.cubeEl.style[this.prop] = 'rotateX(0deg) rotateY(0deg)';
-      if (('ondevicemotion' in window)) {
-        this.$('.shakeable').show();
-      }
 
-      var animationEnd = $.proxy(this.onAnimationEnd, this);
-      this.resize();
-      this.$('.cube')
-        .on('transitionend', animationEnd)
-        .on('webkitTransitionEnd', animationEnd)
-        .on('oTransitionEnd', animationEnd);
+      if (this.localPlayer) {
+        if (('ondevicemotion' in window)) {
+          this.$('.shakeable').show();
+        }
+        var animationEnd = $.proxy(this.onAnimationEnd, this);
+        this.resize();
+        this.$('.cube')
+          .on('transitionend', animationEnd)
+          .on('webkitTransitionEnd', animationEnd)
+          .on('oTransitionEnd', animationEnd);
+      } else {
+        this.$('.throw-button').hide();
+        this.$('.waiting').show(); // TODO: Add waiting
+      }
     },
 
     onDiceThrow: function() {
-      if (this.thrown) {
+      if (this.thrown || !this.localPlayer) {
         return;
       }
       this.thrown = true;
-      var result = this.getDiceNumber();
-      Backbone.trigger('dice:result', result);
+      var result = this.game.throwDie().value;
+      this.trigger('dice:result', result);
       this.animateDice(result);
     },
 
@@ -116,8 +126,11 @@ define([
     },
 
     onAnimationEnd: function() {
-      this.thrown = false;
-      Backbone.trigger('animation:end');
+      var me = this;
+      setTimeout(function() {
+        me.thrown = false;
+        me.trigger('animation:end');
+      }, 1000);
     },
 
     resize: function() {

@@ -80,7 +80,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
     };
 
     this.isMovablePawnsExist = function (die) {
-      return this.getMovablePawns(die).length > 0;
+      return Object.keys(this.getMovablePawns(die)).length !== 0;
     };
 
     this.isAnyPawnsOnTheBoard = function () {
@@ -92,7 +92,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       return false;
     };
 
-    this.isAllPawnsAreAtFinish = function() {
+    this.isAllPawnsAreAtFinish = function () {
       for (var i = 0; i < this._pawns.length; i++) {
         var atTheFinish = this._getPawn(i).isAtTheFinish();
         if (!atTheFinish) {
@@ -131,10 +131,10 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         }
       }
 
-      var result = [];
+      var result = {};
       for (var i = 0; i < this._pawns.length; i++) {
         if (typeof pawnNextPositions[i] === 'number') {
-          result.push(i);
+          result[i] = this._getPawn(i).getNextPosition(die);
         }
       }
       return result;
@@ -177,12 +177,13 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
         var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
-        this.trigger('die:thrown', { value: value, movablePawns: movablePawns});
+        var result = { playerId: this.getCurrentPlayerId(), value: value, movablePawns: movablePawns};
+        this.trigger('die:thrown', result);
 
         if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
         }
-        return value;
+        return result;
       };
 
       this._getPlayer = function (playerId) {
@@ -252,7 +253,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         return null;
       };
 
-      this._checkForEatenPawns = function(pawn) {
+      this._checkForEatenPawns = function (pawn) {
         var eatenPawnInfo = this._getPlayerIdAndPawnIdAtSamePositionAs(pawn);
         if (eatenPawnInfo) {
           eatenPawnInfo.pawn.moveToHome();
@@ -260,7 +261,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         }
       };
 
-      this._checkIfFinished = function(playerId) {
+      this._checkIfFinished = function (playerId) {
         var player = this._getPlayer(playerId);
         var isFinished = player.isAllPawnsAreAtFinish();
         if (isFinished) {
@@ -292,7 +293,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       };
 
 
-      this._logState= function() {
+      this._logState = function () {
         var state = {};
         for (var i = 0; i < 4; i++) {
           state[i] = [];

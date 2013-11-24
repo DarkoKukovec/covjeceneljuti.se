@@ -26,5 +26,7 @@ define(function() {
       }
     };
 
+    window.app = app;
+
     return app;
   });

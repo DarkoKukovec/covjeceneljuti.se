@@ -26,36 +26,87 @@ define([
   var GameRouter = Backbone.Router.extend({
     routes: {
       'game': 'index',
-      'game/dice': 'dice',
-      'game/next': 'nextPlayer',
       'game/board/:name': 'board',
       'game/test': 'test'
     },
 
+    diceResult: null,
+    game: null,
+    currentPlayer: null,
+    gameView: null,
+
     index: function() {
       var board = app.currentGame.board;
-      var game = GameLogic.create({
+      this.game = GameLogic.create({
         board: board.toJSON()
       });
-      var view = new GameView({
-        game: game,
+      this.gameView = new GameView({
+        game: this.game,
         board: board
       });
 
-      view.render();
-      app.switchView(view);
+      window.game = this.game;
+
+      var players = [];
+      for (var i = 0; i < app.currentGame.players.length; i++) {
+        var name = app.currentGame.players[i];
+        players.push({
+          id: i,
+          name: name,
+          color: board.get('colors')[i].player
+        });
+      }
+      app.currentGame.players = players;
+
+      this.gameView.render();
+      app.switchView(this.gameView);
+
+      this.move();
     },
 
-    dice: function() {
-      var view = new DiceView();
-      view.render();
-      $('body').html(view.el);
+    move: function() {
+      var newPlayer = this.game.getCurrentPlayerId();
+      if (newPlayer !== this.currentPlayer) {
+        this.currentPlayer = newPlayer;
+        this.gameView.setPlayer(this.currentPlayer);
+        this.nextPlayer(this.currentPlayer);
+      } else {
+        this.dice(this.currentPlayer);
+      }
     },
 
-    nextPlayer: function() {
-      var view = new NextPlayerView();
+    dice: function(playerId) {
+      var me = this;
+      var view = new DiceView({
+        // TODO: promjeniti ovo za network game
+        local: true,
+        game: this.game
+      });
+      view.on('dice:result', function(result) {
+        me.diceResult = result;
+      });
+      view.on('animation:end', function() {
+        $('.overlay').hide();
+        view.remove();
+      });
       view.render();
-      $('body').html(view.el);
+      $('.overlay').html(view.el).show();
+    },
+
+    nextPlayer: function(playerId) {
+      var me = this;
+      var view = new NextPlayerView({
+        // TODO: promjeniti ovo za network game
+        player: app.currentGame.players[playerId],
+        local: true
+      });
+      view.on('game:continue', function() {
+        $('.overlay').hide();
+        view.remove();
+        me.dice(playerId);
+      });
+      view.render();
+      $('.overlay').html(view.el).show();
     },
 
     board: function(name) {

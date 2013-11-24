@@ -1,10 +1,11 @@
 /*global define*/
 
 define([
+  'app',
   'lodash',
   'backbone',
   'templates'
-], function (_, Backbone, JST) {
+], function (app, _, Backbone, JST) {
   'use strict';
 
   var MenuPlayerChooserView = Backbone.View.extend({
@@ -37,11 +38,15 @@ define([
     onPlayerNumberChange: function() {
       var number = parseInt(this.getPlayerNumber(), 10);
       var change = number - this.currentPlayerNumber;
+      var board = this.options.board;
 
       if (change > 0) {
         //add items
         for (var i = 0; i < change; i++) {
-          this.$('.player-input-fields').append(this.newPlayerInputTemplate({num: this.currentPlayerNumber+i+1}));
+          this.$('.player-input-fields').append(this.newPlayerInputTemplate({
+            num: this.currentPlayerNumber + i + 1,
+            color: board.get('colors')[this.currentPlayerNumber + i].player
+          }));
         }
       } else if (change < 0) {
         //remove items
@@ -53,8 +58,11 @@ define([
 
     getPlayerData: function() {
       var data = [];
+      var index = 1;
       this.$('.player-name').each(function() {
-        data.push($(this).val());
+        var name = $(this).val() || 'Player ' + index;
+        data.push(name);
+        index++;
       });
       return data;
     },

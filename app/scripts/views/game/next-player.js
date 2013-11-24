@@ -15,18 +15,20 @@ define([
     template: JST['app/scripts/templates/game/next-player.hbs'],
 
     localPlayer: true,
+    player: null,
 
     events: {
       'touchend .next-button': 'onButtonTap'
     },
 
-    initialize: function(isLocal) {
+    initialize: function(options) {
       this.listenTo(Backbone, 'player:continue', this.onPlayerContinue, this);
-      this.localPlayer = isLocal;
+      this.localPlayer = options.local;
+      this.player = options.player;
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template(this.player));
       if (this.localPlayer) {
         this.$('.next-waiting').hide();
       } else {
@@ -45,7 +47,7 @@ define([
     },
 
     continueGame: function() {
-      Backbone.trigger('game:continue');
+      this.trigger('game:continue');
       this.remove();
     }
   });
