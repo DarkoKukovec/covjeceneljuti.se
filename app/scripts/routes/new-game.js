@@ -16,12 +16,14 @@ define([
   var NewGameRouter = Backbone.Router.extend({
     routes: {
       'new-game': 'main',
+      'sraz-game': 'sraz',
       'player-chooser': 'playerChooser'
     },
 
     main: function() {
       //first show board chooser
       var me = this;
+      app.sraz = false;
       var boardChooser = new BoardChooser();
       app.switchView(boardChooser);
       boardChooser.on('board:choosen', function(board) {
@@ -30,6 +32,11 @@ define([
           trigger: true
         });
       });
+    },
+
+    sraz: function() {
+      this.main();
+      app.sraz = true;
     },
 
     playerChooser: function() {

@@ -44,6 +44,13 @@ define([
       boardView.on('board:animation:end', function() {
         me.trigger('board:animation:end');
       });
+      boardView.on('pawn:eat', function(callback, scope) {
+        if (!app.sraz) {
+          callback.call(scope, true);
+        } else {
+          this.trigger('pawn:eat', callback, scope);
+        }
+      });
       var zoomView = new ZoomView({
         board: boardView
       });

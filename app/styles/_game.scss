@@ -125,3 +125,25 @@
   z-index: 250;
   display: none;
 }
+
+.correct {
+  display: none;
+  color: #0f0;
+}
+.wrong {
+  display: none;
+  color: #f00;
+}
+
+.answer-button {
+  display: block;
+  width: auto;
+  margin: 10px;
+
+  &.choosen-answer {
+    color: #f00;
+  }
+  &.correct-answer {
+    color: #0f0;
+  }
+}

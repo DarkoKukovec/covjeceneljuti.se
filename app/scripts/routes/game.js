@@ -8,6 +8,7 @@ define([
   'views/game/dice',
   'views/game/next-player',
   'views/game/test-game',
+  'views/game/sraz',
   'collections/boards',
   'logic/game'
 ], function(
@@ -18,6 +19,7 @@ define([
   DiceView,
   NextPlayerView,
   TestGameView,
+  SrazView,
   BoardCollection,
   GameLogic
 ) {
@@ -44,6 +46,7 @@ define([
         game: this.game,
         board: board
       });
+      this.gameView.on('pawn:eat', this.goSraz, this);
 
       window.game = this.game;
 
@@ -61,7 +64,8 @@ define([
       this.gameView.render();
       app.switchView(this.gameView);
 
-      this.move();
+      this.goSraz(function(){}, this);
+      // this.move();
     },
 
     move: function() {
@@ -107,6 +111,17 @@ define([
       });
       view.render();
       $('.overlay').html(view.el).show();
+    },
+
+    goSraz: function(callback, scope) {
+      var view = new SrazView();
+      view.render();
+      $('.overlay').html(view.el).show();
+      view.on('answer', function(correct) {
+        $('.overlay').hide();
+        view.remove();
+        callback.call(scope, correct);
+      });
     },
 
     board: function(name) {
