@@ -51,13 +51,11 @@ require([
   FastClick
 ) {
   FastClick.attach(document.body);
-  // if (window.location.hash !== '') {
-  //   window.location.hash = '';
-  // }
 
-  // if (window.location.hash !== '') {
-  //   window.location.hash = '';
-  // }
+  if (window.location.hash !== '') {
+    window.location.hash = '';
+  }
+
   $(document).gShake(function() {
     Backbone.trigger('shake');
   });
