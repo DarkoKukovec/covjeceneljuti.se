@@ -9,22 +9,36 @@ define([
 
   var WinView = Backbone.View.extend({
     className: 'winning-screen',
-    template: JST['app/scripts/templates/win.hbs'],
+    templateFinalWin: JST['app/scripts/templates/final-win.hbs'],
+    templateWin: JST['app/scripts/templates/win.hbs'],
+
     events: {
       'click .action-button': 'onButtonClick'
     },
 
     initialize: function(options) {
-      this.options = options || {winnerName: 'Player'};
+      this.options = options || {
+        winnerName: 'Player',
+        finalWin: false
+      };
     },
 
     render: function() {
-      this.$el.html(this.template({name: this.options.winnerName}));
+      var template = this.templateWin;
+      if (this.options.finalWin) {
+        template = this.templateFinalWin;
+      }
+      this.$el.html(template({name: this.options.winnerName}));
       return this;
     },
 
     onButtonClick: function(e) {
-      Backbone.trigger('navigate', $(e.target).data('action'));
+      var action = $(e.target).data('action');
+      if (action === 'continue-game') {
+        this.trigger('continue');
+      } else {
+        Backbone.trigger('navigate', action);
+      }
     }
   });
 
