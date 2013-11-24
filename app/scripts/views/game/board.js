@@ -136,7 +136,7 @@ define([
     onGamePlayerChange: function(e) {
       console.log('On game player change');
       this.updateCurrentPlayerBox(e.playerId);
-      this.trigger('dice:throw');
+      // this.trigger('player:change');
     },
 
     onGameDieThrow: function(e) {
