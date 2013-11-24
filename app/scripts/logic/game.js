@@ -195,7 +195,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       };
 
       this._getPlayersCount = function () {
-        return 4;
+        return this._players.length;
       }
 
       this._getDieThrowCount = function () {
@@ -240,7 +240,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       };
 
       this._getPlayerIdAndPawnIdAtSamePositionAs = function (pawn) {
-        for (var playerId = 0; playerId < 4; playerId++) {
+        for (var playerId = 0; playerId < this._getPlayersCount(); playerId++) {
           for (var pawnId = 0; pawnId < 4; pawnId++) {
             var otherPawn = this._getPlayer(playerId).getPawn(pawnId);
             if (otherPawn !== pawn) {
@@ -295,7 +295,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
 
       this._logState = function () {
         var state = {};
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < this._getPlayersCount(); i++) {
           state[i] = [];
           var player = this._getPlayer(i);
           for (var j = 0; j < 4; j++) {
