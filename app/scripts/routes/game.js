@@ -35,6 +35,7 @@ define([
     game: null,
     currentPlayer: null,
     gameView: null,
+    diceEvents: true,
 
     index: function() {
       var board = app.currentGame.board;
@@ -77,6 +78,10 @@ define([
     },
 
     dice: function() {
+      if (!this.diceEvents) {
+        return;
+      }
+      this.diceEvents = false;
       var me = this;
       var view = new DiceView({
         // TODO: promjeniti ovo za network game
@@ -89,6 +94,7 @@ define([
       view.on('animation:end', function() {
         $('.overlay').hide();
         view.remove();
+        me.diceEvents = true;
       });
       view.render();
       $('.overlay').html(view.el).show();
