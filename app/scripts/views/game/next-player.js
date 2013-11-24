@@ -18,7 +18,7 @@ define([
     player: null,
 
     events: {
-      'touchend .next-button': 'onButtonTap'
+      'click .next-button': 'onButtonTap'
     },
 
     initialize: function(options) {

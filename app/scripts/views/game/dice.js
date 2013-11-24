@@ -12,7 +12,7 @@ define([
     template: JST['app/scripts/templates/game/dice.hbs'],
 
     events: {
-      'touchend .throw-button': 'onDiceThrow'
+      'click .throw-button': 'onDiceThrow'
     },
 
     cubeEl: null,
