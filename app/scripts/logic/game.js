@@ -316,7 +316,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         this._checkIfFinished(playerId);
 
         this._changePlayerIfNeeded(die);
-
+        this._triggerDieWaitingThrow();
         this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
 
       };
