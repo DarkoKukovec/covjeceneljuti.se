@@ -19,7 +19,7 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
-    throwTimeout: 1200,
+    throwTimeout: 0,
 
     initialize: function(options) {
       options = options || {};
@@ -120,7 +120,7 @@ define([
       var playerId = parseInt(this.game.getCurrentPlayerId(), 10);
       var dieValue = this.game.getCurrentDieValue();
 
-      // console.log('Pawn click', playerId, dieValue, possibleMoves);
+      console.log('Pawn click', playerId, dieValue, possibleMoves);
 
       if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId) || !this.game.isValidMove(playerId, pawnId)) {
         return;
