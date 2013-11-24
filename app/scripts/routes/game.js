@@ -61,7 +61,7 @@ define([
       }
       app.currentGame.players = players;
 
-      this.gameView.render();
+      // this.gameView.render();
       app.switchView(this.gameView);
 
       this.game.start();
@@ -168,7 +168,8 @@ define([
           window.throws = [6, 6, 6, 1, 6, 3];
           game = GameLogic.create({
             board: response,
-            dieThrowGenerator: new SequentialThrowGenerator(window.throws)
+            dieThrowGenerator: new SequentialThrowGenerator(window.throws),
+            playerCount: app.currentGame.players.length
           });
           gameView.createBoard(response, game);
           game.start();
