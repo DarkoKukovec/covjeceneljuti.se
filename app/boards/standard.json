@@ -316,6 +316,7 @@
       "width": "5%",
       "height": "5%",
       "border": "1px solid #000",
+      "border-color": "#000",
       "border-radius": "50%",
       "background-color": "#fff"
     },
@@ -325,6 +326,13 @@
       "border": "1px solid #666",
       "border-radius": "10px",
       "font-size": "220%"
+    },
+    "currentPlayerBox": {
+      "width": "10%",
+      "height": "10%",
+      "border": "1px solid #000",
+      "border-radius": "10px",
+      "font-size": "140%"
     }
   },
   "paths": [
@@ -352,6 +360,10 @@
     "top": "75%",
     "left": "5%"
   }],
+  "currentPlayerBox": {
+    "top": "45%",
+    "left": "45%"
+  },
   "colors": [{
     "title": "Red",
     "start": "#fdd",
