@@ -184,8 +184,17 @@ define(['lodash', 'backbone'], function(_, Backbone) {
 
         if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
+          this._triggerDieWaitingThrow();
         }
         return result;
+      };
+
+      this.start = function () {
+        this._triggerDieWaitingThrow();
+      };
+
+      this._triggerDieWaitingThrow = function () {
+        this.trigger('die:awaitingThrow');
       };
 
       this._getPlayer = function (playerId) {
@@ -276,7 +285,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         return this._currentDieValue;
       };
 
-      this.isValidMove = function(playerId, pawnId) {
+      this.isValidMove = function (playerId, pawnId) {
         if (this._isPlayedAfterDieThrow()) {
           return false;
         }
@@ -286,7 +295,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         return false;
       };
 
-      this.getMovablePawns = function() {
+      this.getMovablePawns = function () {
         return this._getCurrentPlayer().getMovablePawns(this.getCurrentDieValue());
       };
 

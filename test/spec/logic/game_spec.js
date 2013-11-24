@@ -394,8 +394,17 @@
 
         if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
+          this._triggerDieWaitingThrow();
         }
         return result;
+      };
+
+      this.start = function () {
+        this._triggerDieWaitingThrow();
+      };
+
+      this._triggerDieWaitingThrow = function () {
+        this.trigger('die:awaitingThrow');
       };
 
       this._getPlayer = function (playerId) {
@@ -486,7 +495,7 @@
         return this._currentDieValue;
       };
 
-      this.isValidMove = function(playerId, pawnId) {
+      this.isValidMove = function (playerId, pawnId) {
         if (this._isPlayedAfterDieThrow()) {
           return false;
         }
@@ -496,7 +505,7 @@
         return false;
       };
 
-      this.getMovablePawns = function() {
+      this.getMovablePawns = function () {
         return this._getCurrentPlayer().getMovablePawns(this.getCurrentDieValue());
       };
 
@@ -629,8 +638,8 @@
   });
 
   describe('Unit tests: Game', function () {
-    describe('#isValidMove', function() {
-      it('returns if the move is valid', function() {
+    describe('#isValidMove', function () {
+      it('returns if the move is valid', function () {
         var game = generateDefaultGame({throws: [5, 6, 6, 1]});
         game.throwDie();
         for (var playerId = 0; playerId < 4; playerId++) {
@@ -691,5 +700,12 @@
     });
   });
 
-
+  describe('#start()', function () {
+    it('should trigger die:awaitingThrow', function () {
+      var game = generateDefaultGame({throws: [5]});
+      spyOn(game, 'trigger');
+      game.start();
+      expect(game.trigger).toHaveBeenCalledWith('die:awaitingThrow');
+    });
+  });
 })();
