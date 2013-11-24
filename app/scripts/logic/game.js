@@ -196,8 +196,8 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         }
       };
 
-      this._triggerDieWaitingThrow = function () {
-        this.trigger('die:awaitingThrow');
+      this._triggerDieWaitingThrow = function (options) {
+        this.trigger('die:awaitingThrow', options);
       };
 
       this._getPlayer = function (playerId) {
@@ -316,7 +316,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         this._checkIfFinished(playerId);
 
         this._changePlayerIfNeeded(die);
-        this._triggerDieWaitingThrow();
+        this._triggerDieWaitingThrow({playedMove: true});
         this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
 
       };
