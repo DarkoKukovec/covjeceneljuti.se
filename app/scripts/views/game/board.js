@@ -19,7 +19,7 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
-    throwTimeout: 0,
+    throwTimeout: 1200,
 
     initialize: function(options) {
       options = options || {};
@@ -33,6 +33,8 @@ define([
       this.listenTo(this.game, 'player:finished', this.onGamePlayerFinished, this);
       this.listenTo(this.game, 'player:change', this.onGamePlayerChange, this);
       this.listenTo(this.game, 'die:awaitingThrow', this.onGameDieAvaitingThrow, this);
+
+      this.listenTo(this, 'board:animation:end', this.onAnimationEnd, this);
 
       this.$el.css(this.board.style.board);
 
@@ -162,9 +164,19 @@ define([
 
     onGameDieAvaitingThrow: function() {
       console.log('Triggering dice throw');
+
+      if (this.animationStart) {
+        this.triggerDiceThrowFlag = true;
+      } else {
+        this.triggerDiceThrow();
+      }
+    },
+
+    triggerDiceThrow: function() {
       setTimeout(_.bind(function() {
         this.trigger('dice:throw');
       }, this), this.throwTimeout);
+      this.triggerDiceThrowFlag = false;
     },
 
 
@@ -231,6 +243,7 @@ define([
         // return;
         this.setPawnToPoint(playerIndex, pawnIndex, pointIndex, true);
       } else {
+        this.animationStart = true;
         this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
       }
     },
@@ -274,6 +287,13 @@ define([
       if (this.eatenPawn) {
         this.setPawnToPoint(this.eatenPawn.playerId, this.eatenPawn.pawnId, this.eatenPawn.pointId, true, true);
         this.eatenPawn = undefined;
+      }
+    },
+
+    onAnimationEnd: function() {
+      this.animationStart = false;
+      if (this.triggerDiceThrowFlag) {
+        this.triggerDiceThrow();
       }
     },
 
