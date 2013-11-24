@@ -388,12 +388,13 @@
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
         var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
-        this.trigger('die:thrown', { value: value, movablePawns: movablePawns});
+        var result = { value: value, movablePawns: movablePawns};
+        this.trigger('die:thrown', result);
 
         if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
         }
-        return value;
+        return result;
       };
 
       this._getPlayer = function (playerId) {
@@ -567,7 +568,7 @@
     it('should give you three chances to throw a 6 to exit home', function () {
       var game = generateDefaultGame({throws: [1, 1, 1]});
       expect(game.getCurrentPlayerId()).toBe(0);
-      expect(game.throwDie()).toBe(1);
+      expect(game.throwDie()).toEqual({ value: 1, movablePawns: [] });
       expect(game.getCurrentPlayerId()).toBe(0);
       game.throwDie();
       expect(game.getCurrentPlayerId()).toBe(0);
