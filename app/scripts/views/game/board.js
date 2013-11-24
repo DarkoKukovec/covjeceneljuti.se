@@ -39,9 +39,6 @@ define([
       this.addPawnsToBoard();
       this.addHomeBoxes();
       this.addCurrentPlayerBox();
-
-      window.b = this;
-      window.g = this.game;
     },
 
     addPointsToBoard: function() {
@@ -102,17 +99,10 @@ define([
         .css(this.board.currentPlayerBox)
         .html('');
       this.$el.append(this.$currentPlayerBox);
-      // this.$currentPlayerBox.on('click', _.bind(this.onCurrentPlayerBoxClick, this));
     },
 
     onPointTransitionEnd: function() {
       this.checkIfMoveEnd();
-    },
-
-    // TODO: Remove this
-    onCurrentPlayerBoxClick: function() {
-      this.game.throwDie();
-      // this.trigger('dice:throw');
     },
 
     onPawnClick: function(pawnPlayerId, pawnId) {
