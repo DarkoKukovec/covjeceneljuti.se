@@ -17,9 +17,9 @@ define([
     type: 'new-game',
     title: 'New game'
   }, {
-    type: 'sraz-game',
-    title: 'Sraz game'
-  }, {
+  //   type: 'sraz-game',
+  //   title: 'Sraz game'
+  // }, {
     type: 'the-story',
     title: 'The Story'
   }, {

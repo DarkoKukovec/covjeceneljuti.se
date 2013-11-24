@@ -39,20 +39,20 @@ define([
       this.$el.html(this.boardView.el);
       var me = this;
 
-      this.$el.hammer({
-        prevent_default: true,
-        scale_treshold: 0,
-        drag_min_distance: 0
-      });
-      this.$el.bind('transformstart', function(e) {
-        me.onTransformStart.call(me, e);
-      });
-      this.$el.bind('transform', function(e) {
-        me.onTransform.call(me, e);
-      });
-      this.$el.bind('transformend', function(e) {
-        me.onTransformEnd.call(me, e);
-      });
+      // this.$el.hammer({
+      //   prevent_default: true,
+      //   scale_treshold: 0,
+      //   drag_min_distance: 0
+      // });
+      // this.$el.bind('transformstart', function(e) {
+      //   me.onTransformStart.call(me, e);
+      // });
+      // this.$el.bind('transform', function(e) {
+      //   me.onTransform.call(me, e);
+      // });
+      // this.$el.bind('transformend', function(e) {
+      //   me.onTransformEnd.call(me, e);
+      // });
 
       this.updateBoardDimensions();
 
