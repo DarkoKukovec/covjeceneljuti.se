@@ -9,6 +9,7 @@ define([
   'views/game/next-player',
   'views/game/test-game',
   'views/game/sraz',
+  'views/win',
   'collections/boards',
   'logic/game'
 ], function(
@@ -20,6 +21,7 @@ define([
   NextPlayerView,
   TestGameView,
   SrazView,
+  WinView,
   BoardCollection,
   GameLogic
 ) {
@@ -36,6 +38,7 @@ define([
     currentPlayer: null,
     gameView: null,
     diceEvents: true,
+    playerFinishCount: 0,
 
     index: function() {
       var board = app.currentGame.board;
@@ -49,6 +52,7 @@ define([
       });
       this.gameView.on('pawn:eat', this.goSraz, this);
       this.gameView.on('dice:throw', this.move, this);
+      this.gameView.on('player:finish', this.playerFinish, this);
 
       var players = [];
       for (var i = 0; i < app.currentGame.players.length; i++) {
@@ -76,6 +80,31 @@ define([
         this.nextPlayer(this.currentPlayer);
       } else {
         this.dice(this.currentPlayer);
+      }
+    },
+
+    playerFinish: function(playerId) {
+      this.playerFinishCount++;
+      var view;
+      if (this.playerFinishCount === 1) {
+        this.playerName = app.currentGame.players[playerId].name;
+        view = new WinView({
+          winnerName: this.playerName,
+          finalWin: false
+        });
+      } else if (this.playerFinishCount === app.currentGame.players.length - 1) {
+        this.playerName = app.currentGame.players[playerId].name;
+        view = new WinView({
+          winnerName: this.playerName,
+          finalWin: true
+        });
+      }
+      if (view) {
+        view.on('continue', function() {
+          view.remove();
+          $('.overlay').hide();
+        }, this);
+        $('.overlay').html(view.render().el).show();
       }
     },
 

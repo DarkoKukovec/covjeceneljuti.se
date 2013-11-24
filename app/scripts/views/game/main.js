@@ -44,6 +44,9 @@ define([
       boardView.on('dice:throw', function() {
         me.trigger('dice:throw');
       }, this);
+      boardView.on('board:player:finish', function(playerId) {
+        me.trigger('player:finish', playerId);
+      });
       boardView.on('pawn:eat', function(callback, scope) {
         if (!app.sraz) {
           callback.call(scope, true);

@@ -4,7 +4,7 @@ define([
   'lodash',
   'backbone',
   'templates'
-], function (_, Backbone, JST) {
+], function(_, Backbone, JST) {
   'use strict';
 
   var MenuMenuView = Backbone.View.extend({
@@ -90,8 +90,7 @@ define([
     },
 
     getDiceNumber: function() {
-      // return Math.floor(Math.random() * 6) + 1;
-      return 6;
+      return Math.floor(Math.random() * 6) + 1;
     },
 
     rotateCube: function(moves) {
@@ -107,24 +106,24 @@ define([
       var me = this;
       setTimeout(function() {
         switch (move) {
-        case 0: // left
-          me.yAngle -= 90;
-          break;
+          case 0: // left
+            me.yAngle -= 90;
+            break;
 
-        case 1: // up
-          me.xAngle += 90;
-          break;
+          case 1: // up
+            me.xAngle += 90;
+            break;
 
-        case 2: // right
-          me.yAngle += 90;
-          break;
+          case 2: // right
+            me.yAngle += 90;
+            break;
 
-        case 3: // down
-          me.xAngle -= 90;
-          break;
+          case 3: // down
+            me.xAngle -= 90;
+            break;
         }
         me.cubeEl.style[me.prop] = 'rotateX(' + me.xAngle + 'deg) rotateY(' + me.yAngle + 'deg)';
-      }, 100 * step);
+      }, 80 * step);
     },
 
     onAnimationEnd: function() {

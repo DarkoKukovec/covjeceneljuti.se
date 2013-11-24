@@ -19,7 +19,7 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
-    throwTimeout: 1200,
+    throwTimeout: 1000,
 
     initialize: function(options) {
       options = options || {};
@@ -150,7 +150,7 @@ define([
 
     onGamePlayerFinished: function(e) {
       console.log('Player finished', e.playerId);
-      this.trigger('board:player:finish', e);
+      this.trigger('board:player:finish', e.playerId);
     },
 
     onGamePawnEaten: function(e) {
@@ -162,10 +162,10 @@ define([
       this.trigger('point:click', point);
     },
 
-    onGameDieAvaitingThrow: function() {
+    onGameDieAvaitingThrow: function(e) {
       console.log('Triggering dice throw');
 
-      if (this.animationStart) {
+      if (this.animationStart || (e ? e.playedMove : false)) {
         this.triggerDiceThrowFlag = true;
       } else {
         this.triggerDiceThrow();

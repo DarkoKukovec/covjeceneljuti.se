@@ -59,11 +59,11 @@
   position: absolute;
   height: 200px;
   width: 200px;
-  -webkit-transition: -webkit-transform 0.15s linear;
+  -webkit-transition: -webkit-transform 0.12s linear;
   -webkit-transform-style: preserve-3d;
-  -moz-transition: -moz-transform 0.15s linear;
+  -moz-transition: -moz-transform 0.12s linear;
   -moz-transform-style: preserve-3d;
-  transition: transform 0.15s linear;
+  transition: transform 0.12s linear;
   transform-style: preserve-3d;
 
   .face {
