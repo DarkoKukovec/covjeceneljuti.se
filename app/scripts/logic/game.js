@@ -177,12 +177,13 @@ define(['lodash', 'backbone'], function(_, Backbone) {
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
         var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
-        this.trigger('die:thrown', { value: value, movablePawns: movablePawns});
+        var result = { value: value, movablePawns: movablePawns};
+        this.trigger('die:thrown', result);
 
         if (!movablePawnsExist) {
           this._changePlayerIfNeeded(value);
         }
-        return value;
+        return result;
       };
 
       this._getPlayer = function (playerId) {
