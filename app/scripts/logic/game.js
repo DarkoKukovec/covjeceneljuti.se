@@ -190,7 +190,10 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       };
 
       this.start = function () {
-        this._triggerDieWaitingThrow();
+        if (!this._started) {
+          this._started = true;
+          this._triggerDieWaitingThrow();
+        }
       };
 
       this._triggerDieWaitingThrow = function () {
