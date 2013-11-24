@@ -381,8 +381,8 @@
         return this._currentPlayerId;
       };
 
-      this.throwDie = function () {
-        var value = this._dieThrowGenerator.generate();
+      this.throwDie = function (wantedDieNumber) {
+        var value = wantedDieNumber || this._dieThrowGenerator.generate();
 
         this._incrementDieThrowCount();
         this._setPlayedAfterDieThrow(false);
