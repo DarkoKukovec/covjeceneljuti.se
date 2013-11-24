@@ -47,6 +47,7 @@ define([
         board: board
       });
       this.gameView.on('pawn:eat', this.goSraz, this);
+      this.gameView.on('dice:throw', this.move, this);
 
       window.game = this.game;
 
@@ -63,8 +64,6 @@ define([
 
       this.gameView.render();
       app.switchView(this.gameView);
-
-      this.move();
     },
 
     move: function() {
