@@ -53,8 +53,11 @@ define([
 
     getPlayerData: function() {
       var data = [];
+      var index = 1;
       this.$('.player-name').each(function() {
-        data.push($(this).val());
+        var name = $(this).val() || 'Player ' + index;
+        data.push(name);
+        index++;
       });
       return data;
     },
