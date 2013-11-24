@@ -32,23 +32,17 @@ define([
     },
 
     index: function() {
-      var me = this;
       var view = new MainMenuView();
       app.switchView(view);
-      view.on('navigate', function(route) {
-        me.navigate(route, {
-          trigger: true
-        });
-      });
     },
 
     theStory: function() {
-      var view = new HelpScreenView();
+      var view = new StoryView();
       app.switchView(view);
     },
 
     help: function() {
-      var view = new StoryView();
+      var view = new HelpScreenView();
       app.switchView(view);
     }
 
