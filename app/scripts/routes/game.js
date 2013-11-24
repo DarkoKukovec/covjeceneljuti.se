@@ -40,7 +40,8 @@ define([
     index: function() {
       var board = app.currentGame.board;
       this.game = GameLogic.create({
-        board: board.toJSON()
+        board: board.toJSON(),
+        playerCount: app.currentGame.players.length
       });
       this.gameView = new GameView({
         game: this.game,
@@ -68,6 +69,7 @@ define([
 
     move: function() {
       var newPlayer = this.game.getCurrentPlayerId();
+      console.log(newPlayer, this.currentPlayer);
       if (newPlayer !== this.currentPlayer) {
         this.currentPlayer = newPlayer;
         this.gameView.setPlayer(this.currentPlayer);
@@ -102,6 +104,10 @@ define([
     },
 
     nextPlayer: function(playerId) {
+      if (!this.diceEvents) {
+        return;
+      }
+      this.diceEvents = false;
       var me = this;
       var view = new NextPlayerView({
         // TODO: promjeniti ovo za network game
@@ -111,6 +117,7 @@ define([
       view.on('game:continue', function() {
         $('.overlay').hide();
         view.remove();
+        me.diceEvents = true;
         me.dice(playerId);
       });
       view.render();
