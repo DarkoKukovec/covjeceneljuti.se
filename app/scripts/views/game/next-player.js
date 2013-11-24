@@ -20,9 +20,9 @@ define([
       'touchend .next-button': 'onButtonTap'
     },
 
-    initialize: function(isLocal) {
+    initialize: function(options) {
       this.listenTo(Backbone, 'player:continue', this.onPlayerContinue, this);
-      this.localPlayer = isLocal;
+      this.localPlayer = options.local;
     },
 
     render: function() {
@@ -45,7 +45,7 @@ define([
     },
 
     continueGame: function() {
-      Backbone.trigger('game:continue');
+      this.trigger('game:continue');
       this.remove();
     }
   });
