@@ -64,8 +64,7 @@ define([
       this.gameView.render();
       app.switchView(this.gameView);
 
-      this.goSraz(function(){}, this);
-      // this.move();
+      this.move();
     },
 
     move: function() {
