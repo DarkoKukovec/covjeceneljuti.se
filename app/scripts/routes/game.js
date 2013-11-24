@@ -136,6 +136,17 @@ define([
     test: function() {
       var game;
       var gameView = new TestGameView();
+
+      var SequentialThrowGenerator = function(sequence) {
+        this._sequence = sequence;
+        this._index = 0;
+
+        this.generate = function() {
+          this._index += 1;
+          return this._sequence[this._index - 1];
+        };
+      };
+
       app.currentGame = {
         players: ['Ivan', 'Pero', 'Luka', 'Marko']
       };
@@ -143,7 +154,8 @@ define([
       $.ajax('boards/standard.json', {
         success: function(response) {
           game = GameLogic.create({
-            board: response
+            board: response,
+            dieThrowGenerator: new SequentialThrowGenerator([6, 6, 5, 6, 1, 2, 3])
           });
           gameView.createBoard(response, game);
         }
