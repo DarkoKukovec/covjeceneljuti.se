@@ -448,6 +448,7 @@
         if (this._shouldChangePlayer(die)) {
           this._currentPlayerId = (this._currentPlayerId + 1) % this._getPlayersCount();
           this._resetDieThrowCount();
+          this.trigger('player:change', { playerId: this._currentPlayerId });
         }
       };
 
