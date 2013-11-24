@@ -1,73 +1,4 @@
 {
-  "pointss": {
-    "0": {
-      "left": "2%",
-      "top": "2%"
-    },
-    "1": {
-      "left": "12%",
-      "top": "2%"
-    },
-    "2": {
-      "left": "2%",
-      "top": "12%"
-    },
-    "3": {
-      "left": "12%",
-      "top": "12%"
-    },
-
-    "4": {
-      "left": "80%",
-      "top": "2%"
-    },
-    "5": {
-      "left": "90%",
-      "top": "2%"
-    },
-    "6": {
-      "left": "80%",
-      "top": "12%"
-    },
-    "7": {
-      "left": "90%",
-      "top": "12%"
-    },
-
-    "8": {
-      "left": "2%",
-      "top": "80%"
-    },
-    "9": {
-      "left": "12%",
-      "top": "80%"
-    },
-    "10": {
-      "left": "2%",
-      "top": "90%"
-    },
-    "11": {
-      "left": "12%",
-      "top": "90%"
-    },
-
-    "12": {
-      "left": "80%",
-      "top": "80%"
-    },
-    "13": {
-      "left": "90%",
-      "top": "80%"
-    },
-    "14": {
-      "left": "80%",
-      "top": "90%"
-    },
-    "15": {
-      "left": "90%",
-      "top": "90%"
-    }
-  },
   "points": {
     "0": {
       "left": "5%",
@@ -304,15 +235,20 @@
   },
   "style": {
     "boardRatio": 1,
-    "board": {
-
-    },
+    "board": {},
     "point": {
       "width": "6%",
       "height": "6%",
       "border": "2px solid #000",
       "border-radius": "50%",
       "background-color": "#fff"
+    },
+    "currentPlayerBox": {
+      "width": "10%",
+      "height": "10%",
+      "border": "1px solid #000",
+      "border-radius": "10px",
+      "font-size": "140%"
     }
   },
   "paths": [
@@ -327,6 +263,10 @@
     [48, 49, 50, 51],
     [52, 53, 54, 55]
   ],
+  "currentPlayerBox": {
+    "top": "44%",
+    "left": "83%"
+  },
   "colors": [{
     "title": "Red",
     "start": "#fdd",
