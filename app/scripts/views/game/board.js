@@ -19,6 +19,7 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
+    throwTimeout: 1200,
 
     initialize: function(options) {
       options = options || {};
@@ -160,7 +161,9 @@ define([
 
     onGameDieAvaitingThrow: function() {
       console.log('Triggering dice throw');
-      this.trigger('dice:throw');
+      setTimeout(_.bind(function() {
+        this.trigger('dice:throw');
+      }, this), this.throwTimeout);
     },
 
 
