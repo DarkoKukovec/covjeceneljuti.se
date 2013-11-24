@@ -113,9 +113,9 @@ define([
       this.game.throwDie();
     },
 
-    onPawnClick: function(pawnPlayerId, pawnId, point) {
+    onPawnClick: function(pawnPlayerId, pawnId) {
       // this.movePawnForward(playerIndex, pawnIndex, 10);
-      this.trigger('pawn:click', pawnPlayerId, pawnId, point);
+      // this.trigger('pawn:click', pawnPlayerId, pawnId, point);
 
       pawnPlayerId = parseInt(pawnPlayerId, 10);
       pawnId = parseInt(pawnId, 10);
@@ -124,7 +124,7 @@ define([
       var playerId = parseInt(this.game.getCurrentPlayerId(), 10);
       var dieValue = this.game.getCurrentDieValue();
 
-      console.log('Pawn click', playerId, dieValue, possibleMoves);
+      // console.log('Pawn click', playerId, dieValue, possibleMoves);
 
       if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId) || !this.game.isValidMove(playerId, pawnId)) {
         return;
@@ -155,7 +155,7 @@ define([
 
     onGamePawnEaten: function(e) {
       console.log('Pawn eaten', e.playerId, e.pawnId, e.pointId);
-      this.setPawnToPoint(e.playerId, e.pawnId, e.pointId);
+      this.eatenPawn = e;
     },
 
     onPointClick: function(point) {
@@ -243,12 +243,13 @@ define([
       }
     },
 
-    setPawnToPoint: function(playerIndex, pawnIndex, pointIndex, triggerMoveEnd) {
+    setPawnToPoint: function(playerIndex, pawnIndex, pointIndex, triggerMoveEnd, dontRemoveLast) {
       var newPoint = this.points[pointIndex];
       var pawn = this.pawns[playerIndex][pawnIndex];
 
-      if (pawn.point && pawn.pointIndex !== pointIndex) {
+      if (pawn.point && pawn.pointIndex !== pointIndex && !dontRemoveLast) {
         pawn.point.removePawn();
+        console.log('removing last');
       }
 
       this.triggerMoveEnd = triggerMoveEnd || false;
@@ -262,6 +263,14 @@ define([
       if (this.triggerMoveEnd) {
         this.trigger('board:animation:end');
         this.triggerMoveEnd = false;
+        this.checkIfEaten();
+      }
+    },
+
+    checkIfEaten: function() {
+      if (this.eatenPawn) {
+        this.setPawnToPoint(this.eatenPawn.playerId, this.eatenPawn.pawnId, this.eatenPawn.pointId, true, true);
+        this.eatenPawn = undefined;
       }
     },
 

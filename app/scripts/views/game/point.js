@@ -108,9 +108,13 @@ define([
       this.updateStyle();
     },
 
-    removePawn: function() {
+    removePawn: function(playerId) {
       if (this.hasLastPawn()) {
-        this.setCurrPawn(this.lastPlayer, this.lastPawn);
+        if (playerId === this.lastPlayer) {
+          this.setCurrPawn(this.currPlayer, this.currPawn);
+        } else {
+          this.setCurrPawn(this.lastPlayer, this.lastPawn);
+        }
         this.clearLastPawn();
       } else {
         this.clearCurrPawn();

@@ -152,9 +152,10 @@ define([
       $('body').html(gameView.render().el);
       $.ajax('boards/standard.json', {
         success: function(response) {
+          window.throws = [6, 6, 6, 1, 6, 3];
           game = GameLogic.create({
             board: response,
-            dieThrowGenerator: new SequentialThrowGenerator([6, 6, 5, 6, 1, 2, 3])
+            dieThrowGenerator: new SequentialThrowGenerator(window.throws)
           });
           gameView.createBoard(response, game);
         }
