@@ -28,7 +28,6 @@ define([
   var GameRouter = Backbone.Router.extend({
     routes: {
       'game': 'index',
-      'game/board/:name': 'board',
       'game/test/:name': 'test'
     },
 
@@ -77,7 +76,7 @@ define([
       }
     },
 
-    dice: function(playerId) {
+    dice: function() {
       var me = this;
       var view = new DiceView({
         // TODO: promjeniti ovo za network game
@@ -122,44 +121,43 @@ define([
       });
     },
 
-    board: function(name) {
-      var gameView = new TestGameView();
-      $('body').html(gameView.render().el);
-      $.ajax('boards/' + name + '.json', {
-        success: function(response) {
-          gameView.createBoard(response);
-        }
-      });
-    },
-
     test: function(boardName) {
       boardName = boardName || 'standard';
       var game;
       var gameView = new TestGameView();
 
-      // var SequentialThrowGenerator = function(sequence) {
-      //   this._sequence = sequence;
-      //   this._index = 0;
+      var SequentialThrowGenerator = function(sequence) {
+        this._sequence = sequence;
+        this._index = 0;
 
-      //   this.generate = function() {
-      //     this._index += 1;
-      //     return this._sequence[this._index - 1];
-      //   };
-      // };
+        this.generate = function() {
+          this._index += 1;
+          return this._sequence[this._index - 1];
+        };
+      };
 
       app.currentGame = {
-        players: ['Ivan', 'Pero', 'Luka', 'Marko']
+        players: [{
+          name: 'Ivan'
+        }, {
+          name: 'Pero'
+        }, {
+          name: 'Luka'
+        }, {
+          name: 'Marko'
+        }]
       };
 
       $('body').html(gameView.render().el);
       $.ajax('boards/' + boardName + '.json', {
         success: function(response) {
-          // window.throws = [6, 6, 6, 1, 6, 3];
+          window.throws = [6, 6, 6, 1, 6, 3];
           game = GameLogic.create({
-            board: response
-            // dieThrowGenerator: new SequentialThrowGenerator(window.throws)
+            board: response,
+            dieThrowGenerator: new SequentialThrowGenerator(window.throws)
           });
           gameView.createBoard(response, game);
+          game.start();
         }
       });
     }

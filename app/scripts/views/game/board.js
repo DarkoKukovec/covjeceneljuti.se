@@ -251,7 +251,7 @@ define([
 
       if (pawn.point && pawn.pointIndex !== pointIndex && !dontRemoveLast) {
         pawn.point.removePawn();
-        console.log('removing last');
+        // console.log('removing last');
       }
 
       this.triggerMoveEnd = triggerMoveEnd || false;
