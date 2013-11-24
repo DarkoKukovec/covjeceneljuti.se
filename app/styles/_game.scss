@@ -99,6 +99,15 @@
     @include box-align(center);
     z-index: 1;
   }
+
+  .current-player-box {
+    position: absolute;
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
+    z-index: 1;
+    @include transition(all 200ms);
+  }
 }
 
 .next-button {

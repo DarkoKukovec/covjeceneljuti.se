@@ -19,6 +19,8 @@ define([
     ],
     points: [],
     players: ['1', '2', '3', '4'],
+    // movablePawns: {},
+    // movablePlayer: -1,
 
     initialize: function(options) {
       options = options || {};
@@ -34,6 +36,7 @@ define([
       this.addPointsToBoard();
       this.addPawnsToBoard();
       this.addHomeBoxes();
+      this.addCurrentPlayerBox();
 
       window.b = this;
       window.g = this.game;
@@ -49,6 +52,7 @@ define([
         this.points[pointId] = pointView;
         this.listenTo(pointView, 'point:click', this.onPointClick, this);
         this.listenTo(pointView, 'pawn:click', this.onPawnClick, this);
+        this.listenTo(pointView, 'transition:end', this.onPointTransitionEnd, this);
         this.$el.append(pointView.el);
       }, this);
       this.$points = this.$('.point');
@@ -82,16 +86,32 @@ define([
       }
     },
 
+    addCurrentPlayerBox: function() {
+      if (!this.board.currentPlayerBox) {
+        return;
+      }
+
+      this.$currentPlayerBox = $('<div>')
+        .addClass('current-player-box')
+        .css(this.board.style.currentPlayerBox || {})
+        .css(this.board.currentPlayerBox)
+        .html('');
+      this.$el.append(this.$currentPlayerBox);
+    },
+
+    onPointTransitionEnd: function() {
+      this.checkIfMoveEnd();
+    },
+
     onPawnClick: function(playerIndex, pawnIndex, point) {
-      // this.movePawnForward(playerIndex, pawnIndex, 10);
+      this.movePawnForward(playerIndex, pawnIndex, 10);
       this.trigger('pawn:click', playerIndex, pawnIndex, point);
     },
 
     onGameDieThrow: function(e) {
-      console.log('Die throw', e.value, e.movablePawns);
-      for (var i = 0; i < e.movablePawns.length; i++) {
-        this.showPossibleMove(e.value, e.movablePawns[i]);
-      }
+      console.log('Die throw', e.playerId, e.value, e.movablePawns);
+      this.showPossibleMoves(e.playerId, e.movablePawns);
+      this.updateCurrentPlayerBox(e.playerId, e.value);
     },
 
     onGamePlayerMove: function(e) {
@@ -111,10 +131,33 @@ define([
       this.trigger('point:click', point);
     },
 
-    showPossibleMove: function(dice, move) {
-      console.log('Showing move');
-      console.log(move);
+
+    updateCurrentPlayerBox: function(playerId, diceValue) {
+      if (!this.players[playerId]) {
+        return;
+      }
+
+      this.$currentPlayerBox.html(this.players[playerId].substring(0, 1) + ' - ' + diceValue);
+      this.$currentPlayerBox.css('color', this.board.colors[playerId].player);
     },
+
+
+
+    showPossibleMoves: function(playerId, movablePawns) {
+      _.forOwn(movablePawns, function(value, key) {
+        this.pawns[playerId][key].point.setPossibleMove();
+        this.points[value].setPossibleMove();
+      }, this);
+    },
+
+    clearPossibleMoves: function(playerId, movablePawns) {
+      _.forOwn(movablePawns, function(value, key) {
+        this.pawns[playerId][key].point.clearPossibleMove();
+        this.points[value].clearPossibleMove();
+      }, this);
+    },
+
+
 
     movePawnForward: function(playerIndex, pawnIndex, dice) {
       var pawn = this.pawns[playerIndex][pawnIndex];
@@ -153,15 +196,16 @@ define([
     animatePawnMove: function(playerIndex, pawnIndex, currPointIndex, endPointIndex) {
       currPointIndex++;
       var pointIndex = this.board.paths[playerIndex][currPointIndex];
+      var isLastMove = currPointIndex === endPointIndex;
 
-      this.setPawnToPoint(playerIndex, pawnIndex, pointIndex);
+      this.setPawnToPoint(playerIndex, pawnIndex, pointIndex, isLastMove);
 
-      if (currPointIndex < endPointIndex) {
+      if (!isLastMove) {
         setTimeout(_.bind(this.animatePawnMove, this, playerIndex, pawnIndex, currPointIndex, endPointIndex), 300);
       }
     },
 
-    setPawnToPoint: function(playerIndex, pawnIndex, pointIndex) {
+    setPawnToPoint: function(playerIndex, pawnIndex, pointIndex, triggerMoveEnd) {
       var newPoint = this.points[pointIndex];
       var pawn = this.pawns[playerIndex][pawnIndex];
 
@@ -169,10 +213,19 @@ define([
         pawn.point.removePawn();
       }
 
+      this.triggerMoveEnd = triggerMoveEnd || false;
       newPoint.addPawn(playerIndex, pawnIndex);
 
       pawn.pointIndex = pointIndex;
       pawn.point = newPoint;
+    },
+
+    checkIfMoveEnd: function() {
+      if (this.triggerMoveEnd) {
+        this.trigger('board:animation:end');
+        console.log('Move animation end');
+        this.triggerMoveEnd = false;
+      }
     },
 
     getEmptyHomePoint: function(playerIndex) {

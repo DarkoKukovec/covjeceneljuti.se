@@ -16,6 +16,8 @@ define([
     currPawn: -1,
     lastPlayer: -1,
     lastPawn: -1,
+    possibleMove: false,
+    possibleMovePlayer: -1,
 
     initialize: function(options) {
       options = options || {};
@@ -59,7 +61,13 @@ define([
         }
       }
 
+      this.$el.on('transitionend', _.bind(this.onTransitionEnd, this));
+
       this.setDefaultStyle();
+    },
+
+    onTransitionEnd: function() {
+      this.trigger('transition:end');
     },
 
     onClick: function() {
@@ -132,6 +140,36 @@ define([
         });
         this.setDefaultStyle();
       }
+    },
+
+    updatePossibleMoveStyle: function() {
+      if (this.hasPawn()) {
+        this.$el.addClass('possible-move');
+        if (this.possibleMove) {
+          this.$el.css('box-shadow', '0 0 15px 0 ' + this.board.colors[this.possibleMovePlayer].player);
+        } else {
+          this.$el.css('box-shadow', '');
+        }
+      } else {
+        this.$el.removeClass('possible-move');
+        if (this.possibleMove) {
+          this.$el.css('border-color', this.board.colors[this.possibleMovePlayer].player);
+        } else {
+          this.$el.css('border-color', this.board.style.point['border-color'] || '#666');
+        }
+      }
+    },
+
+    setPossibleMove: function(playerIndex) {
+      this.possibleMove = true;
+      this.possibleMovePlayer = playerIndex;
+      this.updatePossibleMoveStyle();
+    },
+
+    clearPossibleMove: function() {
+      this.possibleMove = false;
+      this.updatePossibleMoveStyle();
+      this.possibleMovePlayer = false;
     },
 
     hasPawn: function() {
