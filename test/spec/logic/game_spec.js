@@ -201,7 +201,6 @@
     });
   });
 
-
   var Player = function (pawns, path) {
     this._pawns = pawns;
     this._path = path;
@@ -246,6 +245,7 @@
     };
 
     this.getMovablePawns = function (die) {
+
       var pawnNextPositions = [];
       for (var i = 0; i < this._pawns.length; i++) {
         var pawn = this._getPawn(i);
@@ -260,6 +260,7 @@
           if (pawnNextPositions[j] == pawnPosition) pawnNextPositions[j] = null;
         }
       }
+
 
       var result = {};
       for (var i = 0; i < this._pawns.length; i++) {
@@ -387,7 +388,7 @@
         this._setPlayedAfterDieThrow(false);
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
-        var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
+        var movablePawns = this.getMovablePawns();
         var result = { playerId: this.getCurrentPlayerId(), value: value, movablePawns: movablePawns};
         this.trigger('die:thrown', result);
 
@@ -406,7 +407,7 @@
       };
 
       this._getPlayersCount = function () {
-        return 4;
+        return Object.keys(this._players).length;
       }
 
       this._getDieThrowCount = function () {
@@ -451,7 +452,7 @@
       };
 
       this._getPlayerIdAndPawnIdAtSamePositionAs = function (pawn) {
-        for (var playerId = 0; playerId < 4; playerId++) {
+        for (var playerId = 0; playerId < this._getPlayersCount(); playerId++) {
           for (var pawnId = 0; pawnId < 4; pawnId++) {
             var otherPawn = this._getPlayer(playerId).getPawn(pawnId);
             if (otherPawn !== pawn) {
@@ -480,12 +481,19 @@
         }
       };
 
+      this.getCurrentDieValue = function () {
+        return this._currentDieValue;
+      };
+
+      this.getMovablePawns = function() {
+        return this._getCurrentPlayer().getMovablePawns(this.getCurrentDieValue());
+      }
+
       this.playMove = function (pawnId) {
-        var die = this._currentDieValue;
+        var die = this.getCurrentDieValue();
         var playerId = this.getCurrentPlayerId();
         var player = this._getCurrentPlayer();
         var pawn = player.getPawn(pawnId);
-
         pawn.moveBy(die);
         var newPosition = pawn.getPosition();
         this._checkForEatenPawns(pawn);
@@ -499,14 +507,10 @@
         this.trigger('player:move', { playerId: playerId, pawnId: pawnId, pointId: newPosition});
 
       };
-      this.getMovablePawns = function (die) {
-        return this._getCurrentPlayer().getMovablePawns(die);
-      };
-
 
       this._logState = function () {
         var state = {};
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < this._getPlayersCount(); i++) {
           state[i] = [];
           var player = this._getPlayer(i);
           for (var j = 0; j < 4; j++) {
@@ -584,6 +588,7 @@
       expect(game.getCurrentPlayerId()).toEqual(0);
       game.throwDie();
       game.playMove(0);
+
       expect(game.getCurrentPlayerId()).toEqual(1);
     });
 
@@ -629,11 +634,12 @@
 
     describe('#getMovablePawns(die)', function () {
       it('should delegate that call to the player', function () {
-        var game = generateDefaultGame();
+        var game = generateDefaultGame({throws: [5]});
         var player = game._getCurrentPlayer();
 
+        game.throwDie();
         spyOn(player, 'getMovablePawns');
-        game.getMovablePawns(5);
+        game.getMovablePawns();
         expect(player.getMovablePawns).toHaveBeenCalledWith(5);
       });
     });
