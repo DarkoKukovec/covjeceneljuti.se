@@ -106,7 +106,6 @@
     @include box-pack(center);
     @include box-align(center);
     z-index: 1;
-    @include transition(all 200ms);
   }
 }
 

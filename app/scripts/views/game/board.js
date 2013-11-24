@@ -32,6 +32,7 @@ define([
       this.listenTo(this.game, 'die:thrown', this.onGameDieThrow, this);
       this.listenTo(this.game, 'pawn:eaten', this.onGamePawnEaten, this);
       this.listenTo(this.game, 'player:finished', this.onGamePlayerFinished, this);
+      this.listenTo(this.game, 'player:change', this.onGamePlayerChange, this);
 
       this.addPointsToBoard();
       this.addPawnsToBoard();
@@ -82,7 +83,7 @@ define([
           .css(this.board.style.homeBox)
           .css(this.board.homeBoxes[i])
           .css('color', this.board.colors[i].player)
-          .html(this.players[i].substring(0, 1)));
+          .html(this.getPlayerNameFirstLetter(i)));
       }
     },
 
@@ -97,19 +98,44 @@ define([
         .css(this.board.currentPlayerBox)
         .html('');
       this.$el.append(this.$currentPlayerBox);
+      this.$currentPlayerBox.on('click', _.bind(this.onCurrentPlayerBoxClick, this));
     },
 
     onPointTransitionEnd: function() {
       this.checkIfMoveEnd();
     },
 
-    onPawnClick: function(playerIndex, pawnIndex, point) {
-      this.movePawnForward(playerIndex, pawnIndex, 10);
-      this.trigger('pawn:click', playerIndex, pawnIndex, point);
+    // TODO: Remove this
+    onCurrentPlayerBoxClick: function() {
+      this.game.throwDie();
+    },
+
+    onPawnClick: function(pawnPlayerId, pawnId, point) {
+      // this.movePawnForward(playerIndex, pawnIndex, 10);
+      this.trigger('pawn:click', pawnPlayerId, pawnId, point);
+
+      pawnPlayerId = parseInt(pawnPlayerId, 10);
+      pawnId = parseInt(pawnId, 10);
+
+      var possibleMoves = this.game.getMovablePawns();
+      var playerId = parseInt(this.game.getCurrentPlayerId(), 10);
+      var dieValue = this.game.getCurrentDieValue();
+
+      console.log('Pawn click', playerId, dieValue, possibleMoves);
+
+      if (possibleMoves === undefined || playerId === undefined || dieValue === undefined || playerId !== pawnPlayerId || !possibleMoves.hasOwnProperty(pawnId)) {
+        return;
+      }
+
+      this.clearPossibleMoves();
+      this.game.playMove(pawnId);
+    },
+
+    onGamePlayerChange: function(e) {
+      this.updateCurrentPlayerBox(e.playerId);
     },
 
     onGameDieThrow: function(e) {
-      console.log('Die throw', e.playerId, e.value, e.movablePawns);
       this.showPossibleMoves(e.playerId, e.movablePawns);
       this.updateCurrentPlayerBox(e.playerId, e.value);
     },
@@ -137,22 +163,31 @@ define([
         return;
       }
 
-      this.$currentPlayerBox.html(this.players[playerId].substring(0, 1) + ' - ' + diceValue);
+      this.$currentPlayerBox.html(this.getPlayerNameFirstLetter(playerId) + (diceValue ? ' - ' + diceValue : ''));
       this.$currentPlayerBox.css('color', this.board.colors[playerId].player);
     },
 
 
 
     showPossibleMoves: function(playerId, movablePawns) {
+      this.clearPossibleMoves();
+
+      this.lastMovablePawns = movablePawns;
+      this.lastMovaplePlayer = playerId;
+
       _.forOwn(movablePawns, function(value, key) {
-        this.pawns[playerId][key].point.setPossibleMove();
-        this.points[value].setPossibleMove();
+        // var path = this.getPathBetweenPoints(this.pawns[key].pointIndex, value);
+        // for (var i = 0; i < path.length; i++) {
+        //   this.points[path[i]].setPossibleMove(playerId);
+        // }
+        this.pawns[playerId][key].point.setPossibleMove(playerId);
+        this.points[value].setPossibleMove(playerId);
       }, this);
     },
 
-    clearPossibleMoves: function(playerId, movablePawns) {
-      _.forOwn(movablePawns, function(value, key) {
-        this.pawns[playerId][key].point.clearPossibleMove();
+    clearPossibleMoves: function() {
+      _.forOwn(this.lastMovablePawns, function(value, key) {
+        this.pawns[this.lastMovaplePlayer][key].point.clearPossibleMove();
         this.points[value].clearPossibleMove();
       }, this);
     },
@@ -186,11 +221,13 @@ define([
       var pointPathIndex = path.indexOf(pointIndex);
 
       if (pawnPathIndex === -1 || pointPathIndex === -1 || pawnPathIndex > pointPathIndex) {
-        console.log('Invalid move: ', playerIndex, pawnIndex, pointIndex, pawnPathIndex, pointPathIndex);
-        return;
+        // console.log('Invalid move: ', playerIndex, pawnIndex, pointIndex, pawnPathIndex, pointPathIndex);
+        // return;
+        this.setPawnToPoint(playerIndex, pawnIndex, pointIndex, true);
+      } else {
+        this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
       }
 
-      this.animatePawnMove(playerIndex, pawnIndex, pawnPathIndex, pointPathIndex);
     },
 
     animatePawnMove: function(playerIndex, pawnIndex, currPointIndex, endPointIndex) {
@@ -223,7 +260,6 @@ define([
     checkIfMoveEnd: function() {
       if (this.triggerMoveEnd) {
         this.trigger('board:animation:end');
-        console.log('Move animation end');
         this.triggerMoveEnd = false;
       }
     },
@@ -235,6 +271,27 @@ define([
           return this.points[home[i]];
         }
       }
+    },
+
+    getPlayerNameFirstLetter: function(playerId) {
+      return this.players[playerId] ? this.players[playerId].substring(0, 1) : '';
+    },
+
+    getPathBetweenPoints: function(playerId, startPointId, endPointId) {
+      var result = [];
+      var path = this.board.paths[playerId];
+      var startIndex = path.indexOf(startPointId);
+      var endIndex = path.indexOf(endPointId);
+
+      if (startIndex < 0 || endIndex < 0 || startIndex > endIndex) {
+        result.push(startPointId);
+      } else {
+        for (var i = startIndex; i < endIndex; i++) {
+          result.push(path[i]);
+        }
+      }
+
+      return result;
     },
 
     getRatio: function() {

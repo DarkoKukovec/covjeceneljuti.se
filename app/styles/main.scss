@@ -7,6 +7,13 @@
 @import "dice";
 @import "menu";
 
+* {
+  -webkit-user-drag: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
 
 html {
   height: 100%;

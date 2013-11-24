@@ -144,32 +144,41 @@ define([
 
     updatePossibleMoveStyle: function() {
       if (this.hasPawn()) {
-        this.$el.addClass('possible-move');
-        if (this.possibleMove) {
-          this.$el.css('box-shadow', '0 0 15px 0 ' + this.board.colors[this.possibleMovePlayer].player);
-        } else {
-          this.$el.css('box-shadow', '');
-        }
+        if (this.possibleMove) {} else {}
       } else {
-        this.$el.removeClass('possible-move');
-        if (this.possibleMove) {
-          this.$el.css('border-color', this.board.colors[this.possibleMovePlayer].player);
-        } else {
-          this.$el.css('border-color', this.board.style.point['border-color'] || '#666');
-        }
+        if (this.possibleMove) {} else {}
       }
     },
 
     setPossibleMove: function(playerIndex) {
       this.possibleMove = true;
       this.possibleMovePlayer = playerIndex;
+
+      this.$el.addClass('possible-move');
+      if (this.hasPawn()) {
+        this.$el.css('box-shadow', '0 0 15px 0 ' + this.board.colors[this.possibleMovePlayer].player);
+      } else {
+        this.$el.css('border-color', this.board.colors[this.possibleMovePlayer].player);
+      }
       this.updatePossibleMoveStyle();
     },
 
     clearPossibleMove: function() {
-      this.possibleMove = false;
+      this.$el.removeClass('possible-move');
+      this.$el.css({
+        'box-shadow': '',
+        'border-color': this.board.style.point['border-color'] || '#000'
+      });
+      // // if (this.hasPawn()) {
+      // this.$el.css('box-shadow', '');
+      // // } else {
+      // this.$el.css('border-color', );
+      // }
+
       this.updatePossibleMoveStyle();
-      this.possibleMovePlayer = false;
+
+      this.possibleMove = false;
+      this.possibleMovePlayer = -1;
     },
 
     hasPawn: function() {
