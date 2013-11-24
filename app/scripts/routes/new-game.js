@@ -26,9 +26,7 @@ define([
       app.switchView(boardChooser);
       boardChooser.on('board:choosen', function(board) {
         me.choosenBoard = board;
-        me.navigate('player-chooser', {
-          trigger: true
-        });
+        Backbone.trigger('navigate', 'player-chooser');
       });
     },
 
@@ -46,9 +44,7 @@ define([
             board: me.choosenBoard,
             players: playerData
           };
-          me.navigate('game', {
-            trigger: true
-          });
+          Backbone.trigger('navigate', 'game');
         });
       });
     }

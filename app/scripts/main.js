@@ -50,7 +50,6 @@ require([
   Backbone,
   FastClick
 ) {
-
   FastClick.attach(document.body);
   // if (window.location.hash !== '') {
   //   window.location.hash = '';

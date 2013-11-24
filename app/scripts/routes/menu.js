@@ -32,14 +32,8 @@ define([
     },
 
     index: function() {
-      var me = this;
       var view = new MainMenuView();
       app.switchView(view);
-      view.on('navigate', function(route) {
-        me.navigate(route, {
-          trigger: true
-        });
-      });
     },
 
     theStory: function() {
