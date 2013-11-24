@@ -111,6 +111,7 @@ define([
     // TODO: Remove this
     onCurrentPlayerBoxClick: function() {
       this.game.throwDie();
+      // this.trigger('dice:throw');
     },
 
     onPawnClick: function(pawnPlayerId, pawnId) {
@@ -136,6 +137,7 @@ define([
 
     onGamePlayerChange: function(e) {
       this.updateCurrentPlayerBox(e.playerId);
+      this.trigger('dice:throw');
     },
 
     onGameDieThrow: function(e) {

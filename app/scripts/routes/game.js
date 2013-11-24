@@ -29,7 +29,7 @@ define([
     routes: {
       'game': 'index',
       'game/board/:name': 'board',
-      'game/test': 'test'
+      'game/test/:name': 'test'
     },
 
     diceResult: null,
@@ -133,30 +133,32 @@ define([
       });
     },
 
-    test: function() {
+    test: function(boardName) {
+      boardName = boardName || 'standard';
       var game;
       var gameView = new TestGameView();
 
-      var SequentialThrowGenerator = function(sequence) {
-        this._sequence = sequence;
-        this._index = 0;
+      // var SequentialThrowGenerator = function(sequence) {
+      //   this._sequence = sequence;
+      //   this._index = 0;
 
-        this.generate = function() {
-          this._index += 1;
-          return this._sequence[this._index - 1];
-        };
-      };
+      //   this.generate = function() {
+      //     this._index += 1;
+      //     return this._sequence[this._index - 1];
+      //   };
+      // };
 
       app.currentGame = {
         players: ['Ivan', 'Pero', 'Luka', 'Marko']
       };
+
       $('body').html(gameView.render().el);
-      $.ajax('boards/standard.json', {
+      $.ajax('boards/' + boardName + '.json', {
         success: function(response) {
-          window.throws = [6, 6, 6, 1, 6, 3];
+          // window.throws = [6, 6, 6, 1, 6, 3];
           game = GameLogic.create({
-            board: response,
-            dieThrowGenerator: new SequentialThrowGenerator(window.throws)
+            board: response
+            // dieThrowGenerator: new SequentialThrowGenerator(window.throws)
           });
           gameView.createBoard(response, game);
         }
