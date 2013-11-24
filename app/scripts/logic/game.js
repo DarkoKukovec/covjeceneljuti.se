@@ -155,7 +155,7 @@ define(['lodash', 'backbone'], function(_, Backbone) {
       this._dieThrowGenerator = options.dieThrowGenerator || new RandomThrowGenerator();
       this._generatePlayersFromBoard = function (board) {
         this._players = {};
-        for (var playerId = 0; playerId < 4; playerId++) {
+        for (var playerId = 0; playerId < options.playerCount; playerId++) {
           var paths = board.paths[playerId];
           var homes = board.homes[playerId];
           var pawns = [];
