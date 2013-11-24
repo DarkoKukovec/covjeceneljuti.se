@@ -210,7 +210,7 @@
     };
 
     this.isMovablePawnsExist = function (die) {
-      return this.getMovablePawns(die).length > 0;
+      return Object.keys(this.getMovablePawns(die)).length !== 0;
     };
 
     this.isAnyPawnsOnTheBoard = function () {
@@ -222,7 +222,7 @@
       return false;
     };
 
-    this.isAllPawnsAreAtFinish = function() {
+    this.isAllPawnsAreAtFinish = function () {
       for (var i = 0; i < this._pawns.length; i++) {
         var atTheFinish = this._getPawn(i).isAtTheFinish();
         if (!atTheFinish) {
@@ -261,10 +261,10 @@
         }
       }
 
-      var result = [];
+      var result = {};
       for (var i = 0; i < this._pawns.length; i++) {
         if (typeof pawnNextPositions[i] === 'number') {
-          result.push(i);
+          result[i] = this._getPawn(i).getNextPosition(die);
         }
       }
       return result;
@@ -312,7 +312,7 @@
         var pawn2 = new Pawn(0, path);
 
         var player = new Player([pawn1, pawn2], path);
-        expect(player.getMovablePawns(5)).toEqual([]);
+        expect(player.getMovablePawns(5)).toEqual({});
       });
 
       it('when all pawns are at home and you get less than 6', function () {
@@ -321,7 +321,7 @@
         var pawn2 = new Pawn(0, path);
 
         var player = new Player([pawn1, pawn2], path);
-        expect(player.getMovablePawns(6)).toEqual([0, 1]);
+        expect(player.getMovablePawns(6)).toEqual({0: 1, 1: 1});
       });
 
       it('when a pawn is not at home and you get less than 6', function () {
@@ -330,7 +330,7 @@
         var pawn2 = new Pawn(0, path);
         pawn1.setPosition(1);
         var player = new Player([pawn1, pawn2], path);
-        expect(player.getMovablePawns(2)).toEqual([0]);
+        expect(player.getMovablePawns(2)).toEqual({0: 3});
       });
 
       it('when a pawn is not at home and you get 6', function () {
@@ -339,7 +339,7 @@
         var pawn2 = new Pawn(0, path);
         pawn1.setPosition(2);
         var player = new Player([pawn1, pawn2], path);
-        expect(player.getMovablePawns(6)).toEqual([0, 1]);
+        expect(player.getMovablePawns(6)).toEqual({0: 8, 1: 1});
       });
 
       it('when a pawn is at the exit and gets too large a number', function () {
@@ -348,7 +348,7 @@
         var pawn2 = new Pawn(0, path);
         pawn1.setPosition(4);
         var player = new Player([pawn1, pawn2], path);
-        expect(player.getMovablePawns(5)).toEqual([]);
+        expect(player.getMovablePawns(5)).toEqual({});
       });
     });
   });
@@ -388,7 +388,7 @@
         this._currentDieValue = value;
         var movablePawnsExist = this._getCurrentPlayer().isMovablePawnsExist(value);
         var movablePawns = this._getCurrentPlayer().getMovablePawns(value);
-        var result = { value: value, movablePawns: movablePawns};
+        var result = { playerId: this.getCurrentPlayerId(), value: value, movablePawns: movablePawns};
         this.trigger('die:thrown', result);
 
         if (!movablePawnsExist) {
@@ -464,7 +464,7 @@
         return null;
       };
 
-      this._checkForEatenPawns = function(pawn) {
+      this._checkForEatenPawns = function (pawn) {
         var eatenPawnInfo = this._getPlayerIdAndPawnIdAtSamePositionAs(pawn);
         if (eatenPawnInfo) {
           eatenPawnInfo.pawn.moveToHome();
@@ -472,7 +472,7 @@
         }
       };
 
-      this._checkIfFinished = function(playerId) {
+      this._checkIfFinished = function (playerId) {
         var player = this._getPlayer(playerId);
         var isFinished = player.isAllPawnsAreAtFinish();
         if (isFinished) {
@@ -504,7 +504,7 @@
       };
 
 
-      this._logState= function() {
+      this._logState = function () {
         var state = {};
         for (var i = 0; i < 4; i++) {
           state[i] = [];
@@ -532,7 +532,7 @@
       var throws = [6, 6, 4].concat(emptyThrows).concat([6, 6, 3]).concat(emptyThrows).concat([6, 6, 2]).concat(emptyThrows).concat([6, 6, 1]);
       var game = generateSmallGame({throws: throws});
 
-      var playForPlayer0 = function(pawnId) {
+      var playForPlayer0 = function (pawnId) {
         for (var i = 0; i < 3; i++) {
           game.throwDie();
           game.playMove(pawnId);
@@ -540,7 +540,7 @@
         }
       };
 
-      var playForOtherPlayers = function() {
+      var playForOtherPlayers = function () {
         for (var i = 0; i < 9; i++) {
           game.throwDie();
         }
@@ -568,7 +568,7 @@
     it('should give you three chances to throw a 6 to exit home', function () {
       var game = generateDefaultGame({throws: [1, 1, 1]});
       expect(game.getCurrentPlayerId()).toBe(0);
-      expect(game.throwDie()).toEqual({ value: 1, movablePawns: [] });
+      expect(game.throwDie()).toEqual({ playerId: 0, value: 1, movablePawns: {} });
       expect(game.getCurrentPlayerId()).toBe(0);
       game.throwDie();
       expect(game.getCurrentPlayerId()).toBe(0);
