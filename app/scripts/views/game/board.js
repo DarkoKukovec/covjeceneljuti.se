@@ -33,6 +33,7 @@ define([
       this.listenTo(this.game, 'pawn:eaten', this.onGamePawnEaten, this);
       this.listenTo(this.game, 'player:finished', this.onGamePlayerFinished, this);
       this.listenTo(this.game, 'player:change', this.onGamePlayerChange, this);
+      this.listenTo(this.game, 'die:awaitingThrow', this.onGameDieAvaitingThrow, this);
 
       this.addPointsToBoard();
       this.addPawnsToBoard();
@@ -101,7 +102,7 @@ define([
         .css(this.board.currentPlayerBox)
         .html('');
       this.$el.append(this.$currentPlayerBox);
-      this.$currentPlayerBox.on('click', _.bind(this.onCurrentPlayerBoxClick, this));
+      // this.$currentPlayerBox.on('click', _.bind(this.onCurrentPlayerBoxClick, this));
     },
 
     onPointTransitionEnd: function() {
@@ -162,6 +163,11 @@ define([
 
     onPointClick: function(point) {
       this.trigger('point:click', point);
+    },
+
+    onGameDieAvaitingThrow: function() {
+      console.log('Triggering dice throw');
+      this.trigger('dice:throw');
     },
 
 
