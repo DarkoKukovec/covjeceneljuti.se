@@ -15,6 +15,7 @@ define([
     template: JST['app/scripts/templates/game/next-player.hbs'],
 
     localPlayer: true,
+    player: null,
 
     events: {
       'touchend .next-button': 'onButtonTap'
@@ -23,10 +24,11 @@ define([
     initialize: function(options) {
       this.listenTo(Backbone, 'player:continue', this.onPlayerContinue, this);
       this.localPlayer = options.local;
+      this.player = options.player;
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template(this.player));
       if (this.localPlayer) {
         this.$('.next-waiting').hide();
       } else {

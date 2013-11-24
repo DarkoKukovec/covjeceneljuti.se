@@ -56,9 +56,9 @@ require([
   //   window.location.hash = '';
   // }
 
-  // if (window.location.hash !== '') {
-  //   window.location.hash = '';
-  // }
+  if (window.location.hash !== '') {
+    window.location.hash = '';
+  }
   $(document).gShake(function() {
     Backbone.trigger('shake');
   });

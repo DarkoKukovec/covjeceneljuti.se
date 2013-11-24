@@ -86,6 +86,7 @@ define([
       var me = this;
       var view = new NextPlayerView({
         // TODO: promjeniti ovo za network game
+        player: app.currentGame.players[playerId],
         local: true
       });
       view.on('game:continue', function() {
