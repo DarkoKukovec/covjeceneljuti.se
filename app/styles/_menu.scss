@@ -116,3 +116,31 @@
 .player-input {
   margin: 5px auto;
 }
+
+
+.the-story {
+  text-align: left;
+  padding: 5%;
+}
+
+.help-screen {
+  padding: 0 20px;
+  p {
+    text-align: left;
+  }
+  div {
+    height: 305px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: -10px 40px 0 40px;
+  }
+  .screen1 {
+    background-image: url(../assets/android_instructions.jpg);
+  }
+
+  .screen2 {
+    background-image: url(../assets/ios_instructions.jpg);
+  }
+
+}
