@@ -134,11 +134,13 @@ define([
     },
 
     onGamePlayerChange: function(e) {
+      console.log('On game player change');
       this.updateCurrentPlayerBox(e.playerId);
       this.trigger('dice:throw');
     },
 
     onGameDieThrow: function(e) {
+      console.log('Game die throw');
       this.showPossibleMoves(e.playerId, e.movablePawns);
       this.updateCurrentPlayerBox(e.playerId, e.value);
     },
