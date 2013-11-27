@@ -7,7 +7,10 @@
     "jquery": "~2.0.3",
     "handlebars": "~1.0.0",
     "lodash": "~2.2.1",
-    "backbone": "~1.1.0"
+    "backbone": "~1.1.0",
+    "pure": "~0.3.0",
+    "topcoat": "~0.8.0",
+    "fastclick": "~0.6.10"
   },
   "devDependencies": {}
 }

@@ -1,0 +1,42 @@
+canvas, img {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+body {
+  font-family: Roboto, Arial, serif;
+}
+
+.title {
+  font-size: 24px;
+  text-align: center;
+  padding: 20px;
+  font-weight: 400;
+}
+
+.topcoat-text-input {
+  width: 100%;
+  background-color: transparent;
+  border: dashed #dbb885;
+  border-width: 0 0 1px 0;
+  box-shadow: none;
+  color: #4C3F2E;
+  border-radius: 5px;
+
+  &::-webkit-input-placeholder { color:#AA8D68; }
+  &::-moz-placeholder { color:#AA8D68; } /* firefox 19+ */
+  &:-ms-input-placeholder { color:#AA8D68; } /* ie */
+  &:-moz-placeholder { color:#AA8D68; }
+
+  &:focus {
+    background-color: transparent;
+    border: dashed #dbb885;
+    border-width: 0 0 1px 0;
+    box-shadow: none;
+    // color: #99805D;
+    color: #4C3F2E;
+  }
+}

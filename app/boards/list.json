@@ -1,0 +1,12 @@
+[
+  {
+    "id": "standard",
+    "about": "Traditional board",
+    "img": "boards/standard.jpg"
+  },
+  {
+    "id": 1,
+    "about": "Square",
+    "img": "boards/1.jpg"
+  }
+]

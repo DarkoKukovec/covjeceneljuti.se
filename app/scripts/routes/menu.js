@@ -1,26 +1,49 @@
 /*global define*/
 
 define([
-  'jquery',
+  'app',
   'backbone',
-  'views/menu/main'
-], function (
-  $,
+  'views/menu/main',
+  'views/help-screen',
+  'views/story',
+  'routes/game'
+], function(
+  app,
   Backbone,
-  MainMenuView
-  ) {
+  MainMenuView,
+  HelpScreenView,
+  StoryView,
+  GameRouter
+) {
   'use strict';
 
   var MenuRouter = Backbone.Router.extend({
     routes: {
-      '': 'index'
+      '': 'index',
+      'board': 'board',
+      'the-story': 'theStory',
+      'help': 'help'
+    },
+
+    routers: {},
+
+    initialize: function() {
+      this.routers.game = new GameRouter();
     },
 
     index: function() {
       var view = new MainMenuView();
-      view.render();
-      $('body').html(view.el);
-      console.log('first view!');
+      app.switchView(view);
+    },
+
+    theStory: function() {
+      var view = new StoryView();
+      app.switchView(view);
+    },
+
+    help: function() {
+      var view = new HelpScreenView();
+      app.switchView(view);
     }
 
   });

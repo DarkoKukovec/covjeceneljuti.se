@@ -1,0 +1,146 @@
+.menu {
+  .item {
+    width: 90%;
+    margin: 10px;
+  }
+}
+
+.head {
+  padding: 30px 20px 20px 20px;
+
+  .head-1 {
+    font-size: 320%;
+  }
+  .head-2 {
+    font-size: 320%;
+  }
+  .head-3 {
+    font-weight: 500;
+    font-size: 90px;
+    margin-top: -30px;
+  }
+}
+
+
+.board-chooser {
+  .yes-btn {
+    width: 90%;
+  }
+  .board-photo {
+    // width: 305px;
+    height: 305px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: -10px 40px 0 40px;
+  }
+  .board-description {
+    margin: 10px auto 20px auto;
+    font-weight: 400;
+  }
+
+  .chooser-buttons {
+    position: absolute;
+    top: 158px;
+    width: 100%;
+    font-size: 200%;
+    div {
+      padding-top: 30px;
+      padding-bottom: 30px;
+      font-weight: 300;
+    }
+    .previous-slide {
+      padding-right: 30px;
+      padding-left: 10px;
+      float: left;
+    }
+
+    .next-slide {
+      float: right;
+      padding-left: 30px;
+      padding-right: 10px;
+    }
+  }
+}
+
+.player-chooser {
+  .player-input {
+    margin: 10px;
+  }
+
+  .player-number {
+    height: 45px;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+
+    select {
+      width: 100%;
+      -webkit-appearance: listbox;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: none;
+      color: transparent;
+      background: transparent;
+    }
+  }
+
+  .player-name {
+    margin-left: 50px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .player-color {
+    width: 30px;
+    height: 30px;
+    float: left;
+    opacity: 0.5;
+    margin: 10px -40px -40px 5px;
+    border-radius: 3px;
+  }
+
+  .start-game-btn {
+    width: 90%;
+  }
+}
+
+.player-input-fields {
+  padding: 30px 0;
+}
+
+.player-input {
+  margin: 5px auto;
+}
+
+
+.the-story {
+  text-align: left;
+  padding: 5%;
+}
+
+.help-screen {
+  padding: 0 20px;
+  p {
+    text-align: left;
+  }
+  div {
+    height: 305px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: -10px 40px 0 40px;
+  }
+  .screen1 {
+    background-image: url(../assets/android_instructions.jpg);
+  }
+
+  .screen2 {
+    background-image: url(../assets/ios_instructions.jpg);
+  }
+
+}

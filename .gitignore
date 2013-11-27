@@ -1,6 +1,5 @@
 node_modules
 dist
-test/
 test/temp
 .sass-cache
 app/bower_components
@@ -9,3 +8,5 @@ test/bower_components/
 _SpecRunner.html
 .grunt
 app/styles/main.css
+.idea
+.DS_Store

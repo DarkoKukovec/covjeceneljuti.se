@@ -1,0 +1,148 @@
+.board-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+
+  .zoom-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  @include stretch(0,0,50px,0);
+  @include display-box();
+  @include box-pack(center);
+  @include box-align(center);
+  padding: 1%;
+}
+
+.player {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background-color: #dbb885;
+  border-top: 1px solid #BFA074;
+
+  .player-color {
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin: 9px;
+    border-radius: 3px;
+    opacity: 0.5;
+  }
+
+  .player-name {
+    padding: 16px 60px 0 0;
+    color: #000;
+    overflow: hidden;
+    height: 18px;
+  }
+}
+
+.next-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 400;
+}
+.next-color {
+  margin: 10px auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  opacity: 0.5;
+}
+.next-name {
+  text-align: center;
+  padding: 15px 0 25px 0;
+  font-size: 28px;
+  font-weight: 500;
+}
+.next-waiting {
+  opacity: 0.7;
+  text-align: center;
+  padding: 20px;
+  font-size: 22px;
+}
+
+.game {
+  // position: relative;
+  // @include stretch(0,0,0,0);
+}
+
+.board {
+  position: relative;
+  overflow: hidden;
+
+  .point {
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    border: 1px solid #666;
+    background-color: #fff;
+    @include border-radius(50%);
+    @include transition(all 200ms);
+    z-index: 100;
+  }
+
+  .home-box {
+    position: absolute;
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
+    z-index: 1;
+  }
+
+  .current-player-box {
+    position: absolute;
+    @include display-box();
+    @include box-pack(center);
+    @include box-align(center);
+    z-index: 1;
+    @include transition(all 200ms);
+  }
+}
+
+.next-button {
+  margin: 0 20px;
+  display: block;
+  width: auto;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 250;
+  display: none;
+}
+
+.correct {
+  display: none;
+  color: #0f0;
+}
+.wrong {
+  display: none;
+  color: #f00;
+}
+
+.answer-button {
+  display: block;
+  width: auto;
+  margin: 10px;
+
+  &.choosen-answer {
+    color: #f00;
+  }
+  &.correct-answer {
+    color: #0f0;
+  }
+}

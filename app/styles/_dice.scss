@@ -1,0 +1,167 @@
+
+.cube-container {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 70px;
+
+  -webkit-perspective:800px;
+  -webkit-perspective-origin: 50% 200px;
+  -moz-perspective:800px;
+  -moz-perspective-origin: 50% 200px;
+}
+
+.button-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  padding: 10px;
+}
+.throw-button {
+  width: 100%;
+  text-align: center;
+}
+
+.shakeable {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30px;
+}
+
+.thrown-value {
+  font-size: 48px;
+  font-weight: 500;
+  margin-top: -40px;
+  display: block;
+}
+
+.waiting, .thrown {
+  display: none;
+}
+
+.cube-wrapper {
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -100px;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+}
+
+.cube {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  -webkit-transition: -webkit-transform 0.12s linear;
+  -webkit-transform-style: preserve-3d;
+  -moz-transition: -moz-transform 0.12s linear;
+  -moz-transform-style: preserve-3d;
+  transition: transform 0.12s linear;
+  transform-style: preserve-3d;
+
+  .face {
+    position: absolute;
+    height: 158px;
+    width: 158px;
+    padding: 20px;
+    background-color: #9e4e4d;
+    @include filter-gradient(#9e4e4d, #9b3030, horizontal);
+    @include background-image(radial-gradient(center, ellipse cover,  #9e4e4d 0%,#9b3030 100%));
+    border: 1px solid #000;
+    border-radius: 10px;
+  }
+  .one  {
+    -webkit-transform: rotateX(90deg) translateZ(100px);
+    -moz-transform: rotateX(90deg) translateZ(100px);
+  }
+  .two {
+    -webkit-transform: translateZ(100px);
+    -moz-transform: translateZ(100px);
+  }
+  .three {
+    -webkit-transform: rotateY(90deg) translateZ(100px);
+    -moz-transform: rotateY(90deg) translateZ(100px);
+  }
+  .four {
+    -webkit-transform: rotateY(-90deg) translateZ(100px);
+    -moz-transform: rotateY(-90deg) translateZ(100px);
+  }
+  .five {
+    -webkit-transform: rotateY(180deg) translateZ(100px);
+    -moz-transform: rotateY(180deg) translateZ(100px);
+  }
+  .six {
+    -webkit-transform: rotateX(-90deg) translateZ(100px) rotate(180deg);
+    -moz-transform: rotateX(-90deg) translateZ(100px) rotate(180deg);
+  }
+  .onedot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    top:65px;
+    left:85px;
+  }
+  .tldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    top:10px;
+    left:20px;
+  }
+  .trdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    top:10px;
+    right:20px;
+  }
+  .bldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    bottom:10px;
+    left:20px;
+  }
+  .brdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    bottom:10px;
+    right:20px;
+  }
+  .mldot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    top:65px;
+    left:20px;
+  }
+  .mrdot {
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: #fff;
+    position:absolute;
+    top:65px;
+    right:20px;
+  }
+}
